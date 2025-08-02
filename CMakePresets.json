@@ -1,0 +1,127 @@
+{
+    "$schema": "https://cmake.org/cmake/help/latest/_downloads/3e2d73bff478d88a7de0de736ba5e361/schema.json",
+    "version": 9,
+    "cmakeMinimumRequired": {
+        "major": 4,
+        "minor": 0,
+        "patch": 0
+    },
+    "include": [],
+    "configurePresets": [
+        { "name": "windows-only", "hidden": true, "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" } },
+        { "name": "linux-only",   "hidden": true, "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" } },
+        { "name": "debug",        "hidden": true, "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" } },
+        { "name": "release",      "hidden": true, "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" } },
+        { "name": "reldeb",       "hidden": true, "cacheVariables": { "CMAKE_BUILD_TYPE": "RelWithDebInfo" } },
+        { "name": "msvc",         "hidden": true, "inherits":[ "windows-only" ], "cacheVariables": { "CMAKE_C_COMPILER": "cl.exe",  "CMAKE_CXX_COMPILER": "cl.exe" } },
+        { "name": "gcc",          "hidden": true, "cacheVariables": { "CMAKE_C_COMPILER": "gcc",     "CMAKE_CXX_COMPILER": "g++" } },
+        { "name": "clang",        "hidden": true, "cacheVariables": { "CMAKE_C_COMPILER": "clang",   "CMAKE_CXX_COMPILER": "clang++" } },
+        { "name": "clang-cl",     "hidden": true, "inherits":[ "windows-only" ], "cacheVariables": { "CMAKE_C_COMPILER": "clang-cl","CMAKE_CXX_COMPILER": "clang-cl" } },
+        {
+            "name": "vcpkg-base",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "VCPKG_INSTALL_OPTIONS": "--no-print-usage",
+                "VCPKG_TRACE_FIND_PACKAGE": false,
+                "VCPKG_MANIFEST_INSTALL": true
+            }
+        },
+        {
+            "name": "base-config",
+            "inherits": [ "vcpkg-base" ],
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir":  "${sourceDir}/build/${presetName}/build",
+            "installDir": "${sourceDir}/build/${presetName}/install",
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "VCPKG_INSTALLED_DIR" : "${sourceDir}/build",
+                "CMAKE_WIN32_EXECUTABLE": false
+            }
+        },
+        {
+            "name": "vs2022",
+            "inherits": [ "base-config", "windows-only" ],
+            "generator": "Visual Studio 17 2022",
+            "displayName": "Visual Studio 17 2022",
+            "description": "This build is only available on Windows"
+        },
+        {
+            "name": "vs2022-clang",
+            "inherits": [ "vs2022" ],
+            "displayName": "Visual Studio 17 2022 with clang toolset",
+            "description": "This build is only available on Windows",
+            "toolset": "ClangCL"
+        },
+        {
+             "name": "msvc-debug",
+             "inherits": [ "base-config", "msvc", "debug" ]
+        },
+        {
+             "name": "msvc-release",
+             "inherits": [ "base-config", "msvc", "release" ]
+        },
+        {
+             "name": "msvc-reldeb",
+             "inherits": [ "base-config", "msvc", "reldeb" ]
+        },
+        {
+             "name": "clang-debug",
+             "inherits": [ "base-config", "clang", "debug" ],
+             "displayName": "Clang Debug",
+             "description": "Use default clang in path."
+        },
+        {
+             "name": "clang-release",
+             "inherits": [ "base-config", "clang", "release" ],
+             "displayName": "Clang Release",
+             "description": "Use default clang in path."
+        },
+        {
+             "name": "clang-reldeb",
+             "inherits": [ "base-config", "clang", "reldeb" ],
+             "displayName": "Clang RelWithDebInfo ",
+             "description": "Use default clang in path."
+        },
+        {
+             "name": "clang-cl-debug",
+             "inherits": [ "base-config", "clang-cl", "debug" ],
+             "displayName": "Clang-CL Debug ",
+             "description": "Use default clang-cl in path."
+        },
+        {
+             "name": "clang-cl-release",
+             "inherits": [ "base-config", "clang-cl", "release" ],
+             "displayName": "Clang-CL Release ",
+             "description": "Use default clang-cl in path."
+        },
+        {
+             "name": "clang-cl-reldeb",
+             "inherits": [ "base-config", "clang-cl", "reldeb" ],
+             "displayName": "Clang-CL RelWithDebInfo ",
+             "description": "Use default clang-cl in path."
+        },
+        {
+             "name": "gcc-debug",
+             "inherits": [ "base-config", "gcc", "debug" ],
+             "displayName": "GCC Debug",
+             "description": "Use default GCC in path."
+        },
+        {
+             "name": "gcc-release",
+             "inherits": [ "base-config", "gcc", "release" ],
+             "displayName": "GCC Release",
+             "description": "Use default GCC in path."
+        },
+        {
+             "name": "gcc-reldeb",
+             "inherits": [ "base-config", "gcc", "reldeb" ],
+             "displayName": "GCC RelWithDebInfo ",
+             "description": "Use default GCC in path."
+        }
+    ],
+    "buildPresets": [
+
+    ]
+}

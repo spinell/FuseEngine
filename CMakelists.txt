@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.28)
+
+#
+# Force using C++ 23 or higher
+#
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+
+project(FuseEngine
+    VERSION 0.0.1
+    DESCRIPTION "C++ Game Engine"
+    HOMEPAGE_URL "https://github.com/spinell/FuseEngine.git"
+    LANGUAGES C CXX
+)
+
+
+#
+# Lists of build options
+#
+include(CMakeDependentOption)
+cmake_dependent_option(FUSE_BUILD_TESTS "Build tests" ON PROJECT_IS_TOP_LEVEL OFF)
+cmake_dependent_option(FUSE_BUILD_TESTS "Build sandbox" ON PROJECT_IS_TOP_LEVEL OFF)
+
+
+add_subdirectory(src)
+
+
+if(FUSE_BUILD_TESTS)
+    message(STATUS "Building sandbox")
+    add_subdirectory(sandbox)
+else()
+    message(STATUS "Skipping sandbox")
+endif()
+
+if(FUSE_BUILD_TESTS)
+    message(STATUS "Building tests")
+    enable_testing()
+    add_subdirectory(tests)
+else()
+    message(STATUS "Skipping tests")
+endif()

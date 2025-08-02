@@ -1,0 +1,11 @@
+find_package(GTest 1.17.0 EXACT CONFIG REQUIRED)
+
+add_executable(TestFuseCore Test.cpp)
+
+target_link_libraries(TestFuseCore
+    PRIVATE
+        GTest::gtest_main
+        Fuse::Core
+)
+
+add_test(NAME FuseCore COMMAND TestFuseCore)
