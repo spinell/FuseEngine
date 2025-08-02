@@ -1,8 +1,7 @@
 #pragma once
 
-namespace fuse
-{
+namespace fuse {
 
-    int add(int a, int b);
+int add(int a, int b);
 
 } // namespace fuse

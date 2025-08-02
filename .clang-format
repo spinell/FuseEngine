@@ -1,0 +1,208 @@
+---
+# Project
+Language:      Cpp
+BasedOnStyle:  Google
+Standard:      c++20
+ColumnLimit:   100
+
+#########################################################
+# Indentation
+#########################################################
+AccessModifierOffset: -4
+#BitFieldColonSpacing: Both
+ContinuationIndentWidth: 2
+IndentCaseLabels: true
+IndentCaseBlocks: false
+IndentExternBlock: Indent
+IndentPPDirectives: None
+IndentWidth: 4
+IndentWrappedFunctionNames: false
+#TabWidth: 4
+UseTab: Never
+
+#########################################################
+# Alignment
+#########################################################
+AlignConsecutiveAssignments:  true    # This will align the assignment operators of consecutive lines.
+AlignConsecutiveDeclarations: true    # This will align the declaration names of consecutive lines.
+AlignAfterOpenBracket: Align
+#AlignConsecutiveBitFields: Consecutive
+#AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Left
+#AlignOperands: Align
+#AlignTrailingComments: true
+
+#########################################################
+# Allow
+#########################################################
+AllowAllArgumentsOnNextLine: false
+#AllowAllConstructorInitializersOnNextLine: false
+#AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Never
+#AllowShortCaseLabelsOnASingleLine: false
+#AllowShortEnumsOnASingleLine: false
+#AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+#AllowShortLoopsOnASingleLine: false
+#AllowShortLambdasOnASingleLine: All
+
+#########################################################
+# Break
+#########################################################
+#AlwaysBreakAfterReturnType: None
+#AlwaysBreakBeforeMultilineStrings: true
+#AlwaysBreakTemplateDeclarations: Yes
+#BreakBeforeConceptDeclarations: true
+#BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeComma
+#BreakBeforeBinaryOperators: None
+#BreakInheritanceList: AfterColon
+#BreakStringLiterals: true
+
+
+#########################################################
+# Initializers & arguments
+#########################################################
+BinPackArguments: false
+BinPackParameters: false
+PackConstructorInitializers: Never
+#ConstructorInitializerIndentWidth: 4
+Cpp11BracedListStyle: true
+
+#########################################################
+# Braces
+#########################################################
+BreakBeforeBraces: Attach
+InsertBraces:    true
+
+#########################################################
+# Namespaces
+#########################################################
+CompactNamespaces: true  # consecutive namespace declarations will be on the same line
+FixNamespaceComments: true
+NamespaceIndentation: None
+
+#########################################################
+# Derive
+#########################################################
+DeriveLineEnding: false
+DerivePointerAlignment:  false
+
+#########################################################
+# Empty lines
+#########################################################
+KeepEmptyLines:
+  AtEndOfFile: true
+  AtStartOfBlock: true
+  AtStartOfFile: false
+EmptyLineBeforeAccessModifier: Always
+MaxEmptyLinesToKeep: 2
+SeparateDefinitionBlocks: Always
+
+#########################################################
+# Penalties
+#########################################################
+#PenaltyBreakAssignment: 1000
+#PenaltyBreakBeforeFirstCallParameter: 1000
+#PenaltyBreakComment: 200
+#PenaltyBreakFirstLessLess: 100
+#PenaltyBreakOpenParenthesis: 1000
+#PenaltyBreakString: 1
+#PenaltyBreakTemplateDeclaration: 0
+#PenaltyExcessCharacter: 5
+#PenaltyIndentedWhitespace: 1
+#PenaltyReturnTypeOnItsOwnLine: 500
+
+#########################################################
+# Pointer alignment
+#########################################################
+PointerAlignment: Left
+
+#########################################################
+# Comments
+#########################################################
+# With clang-format 19: it a bool
+# With clang-format 20: it Never,IndentOnly,Always
+ReflowComments: false
+
+#########################################################
+# Spaces
+#########################################################
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceAroundPointerQualifiers: Default
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: false
+SpacesInSquareBrackets: false
+#SpacesInParensOptions
+
+#########################################################
+# Qualifiers (const, volatile, static, etc)
+#########################################################
+QualifierAlignment: Custom
+QualifierOrder: ['static', 'inline', 'constexpr', 'const', 'volatile', 'type']
+
+#########################################################
+# Sorting
+#
+# main header
+#  space
+# header "a.h"
+# header "aa/a.h"
+# space
+# Fuse hader
+# space
+# header with <a.h>
+# header with <a/a.h>
+# space
+# header with <a>
+#########################################################
+SortIncludes: CaseInsensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+    # Any local include without directory ex: "a.h"
+  - Regex        : '^"[^/]+"$'
+    Priority     : 1
+    # Any local include with directory ex: "a/a.h"
+  - Regex        : '^".*/.*"$'
+    Priority     : 1
+    # Fuse header
+  - Regex        : '^<Fuse.*'
+    Priority     : 2
+  # stl extentions
+  - Regex        : '^<ext/.*>$'
+    Priority     : 100
+    SortPriority : 101
+  # other system includes (e.g. with a '.') without directory
+  - Regex        : '^<[^/]+\.+'
+    Priority     : 9
+  # other system includes (e.g. with a '.') with directory
+  - Regex        : '^<.*/.+'
+    Priority     : 9
+    SortPriority : 10
+  # STL includes (no '.')
+  - Regex        : '^<[^.]+'
+    Priority     : 100
+
+IncludeIsMainRegex: '(Test)?$'
+IncludeIsMainSourceRegex: ''
+
+#########################################################
+# Line endings
+#########################################################
+UseCRLF: false
+InsertNewlineAtEOF: true
+
+...
