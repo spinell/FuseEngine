@@ -142,6 +142,16 @@ public:
     /// @brief Trqnspose this matrix in-place.
     constexpr Mat4& transpose() noexcept;
 
+    constexpr Vec4 getCol(unsigned col) const {
+        assert(col < kNbCol);
+        return {mData[0][col], mData[1][col], mData[2][col], mData[3][col]};
+    }
+
+    constexpr Vec4 getRow(unsigned row) const {
+        assert(row < kNbRow);
+        return {mData[row][0], mData[row][1], mData[row][2], mData[row][3]};
+    }
+
     /// @brief Return the tranpose of this matrix.
     constexpr [[nodiscard]] Mat4 transposed() const noexcept;
 
@@ -150,6 +160,49 @@ public:
     [[nodiscard]] const float* ptr() const noexcept {
         return reinterpret_cast<const float*>(mData);
     }
+
+    ///@{
+
+    /// @brief Create a 4x4 translation matrix.
+    static [[nodiscard]] Mat4 CreateTranslation(float x, float y, float z) noexcept;
+
+    ///@}
+
+    ///@{
+
+    /// @brief Create a orthographic projection matrix.
+    /// The resulting matrix is a centered orthographic projection matrix.
+    /// This function is the equivalent of
+    /// <b>CreateProjectionOrthographicOffCenter(-width/2, width/2, -height/2, height/2, near, far)</b>
+    /// @see CreateProjectionOrthographicOffCenter()
+    static [[nodiscard]] Mat4 CreateProjectionOrthographic(float width,
+                                                           float height,
+                                                           float near = -1.0F,
+                                                           float far  = 1.0F) noexcept;
+
+    /// @brief Create a orthographic projection matrix.
+    ///
+    /// All the parameters are distances in camera space. The parameters describe the dimensions of the view volume.
+    ///
+    /// @note This function use OpenGL convention.
+    /// The view volume is a unit cube with +z pointing into the screen.
+    ///
+    /// @param left   The coordinates for the left vertical clipping plane.
+    /// @param right  The coordinates for theright vertical clipping plane.
+    /// @param bottom The coordinates for the bottom horizontal clipping plane.
+    /// @param top    The coordinates for the top horizontal clipping plans.
+    /// @param near   The distances to the nearer depth clipping plane.
+    ///               This distance is negative if the plane is to be behind the viewer.
+    /// @param far    The distances to the farther depth clipping plane.
+    ///               This distance is negative if the plane is to be behind the viewer.
+    /// @return The projection matrix.
+    static [[nodiscard]] Mat4 CreateProjectionOrthographicOffCenter(float left,
+                                                                    float right,
+                                                                    float bottom,
+                                                                    float top,
+                                                                    float near /* =-1*/,
+                                                                    float far /*= 1*/) noexcept;
+    ///@}
 
 private:
     float mData[4][4];

@@ -19,11 +19,12 @@ const char* vertexShaderSource = R"(
     #version 330 core
     layout (location = 0) in vec3 aPos;
 
+    uniform mat4 proj;
     uniform mat4 transform;
 
     void main()
     {
-        gl_Position = transform * vec4(aPos, 1.0f);
+        gl_Position = proj * transform * vec4(aPos, 1.0f);
     }
 )";
 
@@ -117,14 +118,14 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    fuse::Mat4   transform = fuse::Mat4::kIdentity;
-    transform(3,0) = .3;
-    transform(3,1) = .3;
-    transform(3,2) = 0;
+    fuse::Mat4   proj = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
+    fuse::Mat4   transform = fuse::Mat4::CreateTranslation(-5,5,0);
     //transform.transpose();
     unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE/*transpose*/, transform.ptr());
+    glUniformMatrix4fv(transformLoc, 1, GL_TRUE/*transpose*/, transform.ptr());
 
+    unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
+    glUniformMatrix4fv(projLoc, 1, GL_TRUE/*transpose*/, proj.ptr());
 
     bool done = false;
     while (!done) {

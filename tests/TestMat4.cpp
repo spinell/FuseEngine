@@ -162,12 +162,7 @@ TEST(Mat4, isAffine) {
 }
 
 TEST(Mat4, tranpose) {
-    Mat4 mat(
-         0,  1,  2, 3,
-         4,  5,  6, 7,
-         8,  9, 10, 11,
-        12, 13, 14, 15
-    );
+    Mat4 mat(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
     mat.transpose();
     // check col 0
     EXPECT_EQ(mat(0, 0), 0);
@@ -195,13 +190,8 @@ TEST(Mat4, tranpose) {
 }
 
 TEST(Mat4, tranposed) {
-    const Mat4 mat(
-         0,  1,  2, 3,
-         4,  5,  6, 7,
-         8,  9, 10, 11,
-        12, 13, 14, 15
-    );
-    auto m = mat.transposed();
+    const Mat4 mat(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    auto       m = mat.transposed();
     // check col 0
     EXPECT_EQ(m(0, 0), 0);
     EXPECT_EQ(m(1, 0), 1);
@@ -225,4 +215,71 @@ TEST(Mat4, tranposed) {
     EXPECT_EQ(m(1, 3), 13);
     EXPECT_EQ(m(2, 3), 14);
     EXPECT_EQ(m(3, 3), 15);
+}
+
+/// ===================================================
+///                 Transform functions
+/// ===================================================
+
+
+//
+// Test CreateTranslation()
+//
+// This should result as the fallowing matrix.
+//
+//	0  0   0  tX
+//  0  0   0  tY
+//  0  0   0  tZ
+//  0  0   0   1
+//
+TEST(Mat4, createTranslation) {
+    const auto trans = Mat4::CreateTranslation(2, 3, 4);
+    EXPECT_EQ(trans.getRow(0), Vec4(1, 0, 0, 2));
+    EXPECT_EQ(trans.getRow(1), Vec4(0, 1, 0, 3));
+    EXPECT_EQ(trans.getRow(2), Vec4(0, 0, 1, 4));
+    EXPECT_EQ(trans.getRow(3), Vec4(0, 0, 0, 1));
+
+    EXPECT_EQ(Mat4::CreateTranslation(1, 0, 0) * Vec4(1, 1, 1, 1), Vec4(2, 1, 1, 1));
+    EXPECT_EQ(Mat4::CreateTranslation(0, 1, 0) * Vec4(1, 1, 1, 1), Vec4(1, 2, 1, 1));
+    EXPECT_EQ(Mat4::CreateTranslation(0, 0, 1) * Vec4(1, 1, 1, 1), Vec4(1, 1, 2, 1));
+}
+
+/// ===================================================
+///                 Projection
+/// ===================================================
+
+
+TEST(Mat4, CreateProjectionOrthographicOffCenter) {
+    // view volume unit cube x (-1, 1) y (-1, 1) z (-1, 1)
+    // should be a no operation except flipping Z because the matrix use OpenGL
+    // standard (+Z poiting into the screen).
+    {
+        const auto proj = Mat4::CreateProjectionOrthographicOffCenter(-1, 1, -1, 1, -1, 1);
+        // clang-format off
+        EXPECT_THAT(proj * Vec4( 0,  0,  0, 1), Eq(Vec4( 0,  0,  0.f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 1,  0,  0, 1), Eq(Vec4( 1,  0,  0.f, 1.f)));
+        EXPECT_THAT(proj * Vec4(-1,  0,  0, 1), Eq(Vec4(-1,  0,  0.f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0,  1,  0, 1), Eq(Vec4( 0,  1,  0.f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0, -1,  0, 1), Eq(Vec4( 0, -1,  0.f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0,  0,  1, 1), Eq(Vec4( 0,  0, -1.f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0,  0, -1, 1), Eq(Vec4( 0,  0,  1.f, 1.f)));
+        // clang-format on
+    }
+    // view volume x (0, 10) y (0, 5) z (0, 8)
+    // standard (+Z poiting into the screen).
+    {
+        // clang-format off
+        const auto proj = Mat4::CreateProjectionOrthographicOffCenter(0, 10, 0, 5, 0, 4);
+        EXPECT_THAT(proj * Vec4( 0, 0, 0, 1), Eq(Vec4(-1, -1, -1.f,  1.f)));
+        EXPECT_THAT(proj * Vec4( 5, 0, 0, 1), Eq(Vec4( 0, -1, -1.f,  1.f)));
+        EXPECT_THAT(proj * Vec4(10, 0, 0, 1), Eq(Vec4( 1, -1, -1.f,  1.f)));
+        EXPECT_THAT(proj * Vec4(11, 0, 0, 1), Eq(Vec4(1.2,-1, -1.f,  1.f)));
+        EXPECT_THAT(proj * Vec4( 0, 5, 0, 1), Eq(Vec4(-1,  1, -1.f,  1.f)));
+        EXPECT_THAT(proj * Vec4( 0, 0,-2, 1), Eq(Vec4(-1, -1,  0.0f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0, 0,-3, 1), Eq(Vec4(-1, -1,  0.5f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0, 0,-4, 1), Eq(Vec4(-1, -1,  1.f,  1.f)));
+        EXPECT_THAT(proj * Vec4( 0, 0,-5, 1), Eq(Vec4(-1, -1,  1.5f, 1.f)));
+        EXPECT_THAT(proj * Vec4( 0, 0,-8, 1), Eq(Vec4(-1, -1,  3.f,  1.f)));
+        // clang-format on
+    }
 }
