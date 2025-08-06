@@ -1,0 +1,228 @@
+#include "GtestUtils.h"
+
+#include <FuseCore/math/Mat4.h>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+using fuse::Mat4;
+using fuse::Vec4;
+using namespace testing;
+
+TEST(Mat4, constant) {
+    EXPECT_EQ(Mat4::kZero(0, 0), 0);
+    EXPECT_EQ(Mat4::kZero(0, 1), 0);
+    EXPECT_EQ(Mat4::kZero(0, 2), 0);
+    EXPECT_EQ(Mat4::kZero(0, 3), 0);
+    EXPECT_EQ(Mat4::kZero(1, 0), 0);
+    EXPECT_EQ(Mat4::kZero(1, 1), 0);
+    EXPECT_EQ(Mat4::kZero(1, 2), 0);
+    EXPECT_EQ(Mat4::kZero(1, 3), 0);
+    EXPECT_EQ(Mat4::kZero(2, 0), 0);
+    EXPECT_EQ(Mat4::kZero(2, 1), 0);
+    EXPECT_EQ(Mat4::kZero(2, 2), 0);
+    EXPECT_EQ(Mat4::kZero(2, 3), 0);
+    EXPECT_EQ(Mat4::kZero(3, 0), 0);
+    EXPECT_EQ(Mat4::kZero(3, 1), 0);
+    EXPECT_EQ(Mat4::kZero(3, 2), 0);
+    EXPECT_EQ(Mat4::kZero(3, 3), 0);
+
+    EXPECT_EQ(Mat4::kIdentity(0, 0), 1);
+    EXPECT_EQ(Mat4::kIdentity(0, 1), 0);
+    EXPECT_EQ(Mat4::kIdentity(0, 2), 0);
+    EXPECT_EQ(Mat4::kIdentity(0, 3), 0);
+    EXPECT_EQ(Mat4::kIdentity(1, 0), 0);
+    EXPECT_EQ(Mat4::kIdentity(1, 1), 1);
+    EXPECT_EQ(Mat4::kIdentity(1, 2), 0);
+    EXPECT_EQ(Mat4::kIdentity(1, 3), 0);
+    EXPECT_EQ(Mat4::kIdentity(2, 0), 0);
+    EXPECT_EQ(Mat4::kIdentity(2, 1), 0);
+    EXPECT_EQ(Mat4::kIdentity(2, 2), 1);
+    EXPECT_EQ(Mat4::kIdentity(2, 3), 0);
+    EXPECT_EQ(Mat4::kIdentity(3, 0), 0);
+    EXPECT_EQ(Mat4::kIdentity(3, 1), 0);
+    EXPECT_EQ(Mat4::kIdentity(3, 2), 0);
+    EXPECT_EQ(Mat4::kIdentity(3, 3), 1);
+}
+
+/// ===================================================
+/// ============      Constructors          ===========
+/// ===================================================
+
+// test constructor with c-style array
+TEST(Mat4, ctor_which_values) {
+    const auto  mat        = Mat4(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15);
+    const float expected[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    EXPECT_THAT(std::span<const float>(mat.ptr(), 16), ElementsAreArray(expected, 16));
+}
+
+// test constructor with c-style array
+TEST(Mat4, ctor_with_raw_data) {
+    const float data[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    const auto  mat    = Mat4(data);
+    EXPECT_THAT(std::span<const float>(mat.ptr(), 16), ElementsAreArray(data, 16));
+}
+
+// test constructor with c-style array
+TEST(Mat4, ctor_with_pointer) {
+    const std::vector<float> data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    const auto               mat  = Mat4(data.data());
+    EXPECT_THAT(std::span<const float>(mat.ptr(), 16), ElementsAreArray(data));
+}
+
+// test constructor with 4 Vec4
+TEST(Mat4, ctor_with_vec4) {
+    const auto row1 = Vec4(1.F, 2.F, 3.F, 4.F);
+    const auto row2 = Vec4(5.F, 6.F, 7.F, 8.F);
+    const auto row3 = Vec4(9.F, 10.F, 11.F, 12.F);
+    const auto row4 = Vec4(13.F, 14.F, 15.F, 16.F);
+    const auto mat  = Mat4(row1, row2, row3, row4);
+
+    auto expected =
+      {1.F, 2.F, 3.F, 4.F, 5.F, 6.F, 7.F, 8.F, 9.F, 10.F, 11.F, 12.F, 13.F, 14.F, 15.F, 16.F};
+    EXPECT_THAT(std::span<const float>(mat.ptr(), 16), ElementsAreArray(expected));
+}
+
+/// ===================================================
+/// ==============  Arithmethic Operator    ===========
+/// ===================================================
+
+// test scalare * mat and mat * scalar
+TEST(Mat4, multiplyByScalar) {
+    const float data[16] =
+      {0.f, 1.f, 2.f, 3.f, 4.f, 5.f, 6.f, 7.f, 8.f, 9.f, 10.f, 11.f, 12.f, 13.f, 14.f, 15.f};
+    const auto expected =
+      {0.f, 2.f, 4.f, 6.f, 8.f, 10.f, 12.f, 14.f, 16.f, 18.f, 20.f, 22.f, 24.f, 26.f, 28.f, 30.f};
+    const auto multiplyBy = 2.F;
+    const Mat4 mat(data);
+    const Mat4 result1 = mat * multiplyBy;
+    const Mat4 result2 = multiplyBy * mat;
+    EXPECT_THAT(std::span<const float>(result1.ptr(), 16), ElementsAreArray(expected));
+    EXPECT_THAT(std::span<const float>(result2.ptr(), 16), ElementsAreArray(expected));
+}
+
+// test mat * mat
+TEST(Mat4, multiplyByMatrix) {
+    const float data1[16] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    const float data2[16] = {3, 4, 7, 0, 9, 12, 2, 7, 8, 5, 6, 13, 15, 22, 26, 4};
+    const Mat4  matrix1(data1);
+    const Mat4  matrix2(data2);
+    const Mat4  result = matrix1 * matrix2;
+    EXPECT_EQ(result(0, 0), 70);
+    EXPECT_EQ(result(0, 1), 88);
+    EXPECT_EQ(result(0, 2), 92);
+    EXPECT_EQ(result(0, 3), 45);
+    EXPECT_EQ(result(1, 0), 210);
+    EXPECT_EQ(result(1, 1), 260);
+    EXPECT_EQ(result(1, 2), 256);
+    EXPECT_EQ(result(1, 3), 141);
+    EXPECT_EQ(result(2, 0), 350);
+    EXPECT_EQ(result(2, 1), 432);
+    EXPECT_EQ(result(2, 2), 420);
+    EXPECT_EQ(result(2, 3), 237);
+    EXPECT_EQ(result(3, 0), 490);
+    EXPECT_EQ(result(3, 1), 604);
+    EXPECT_EQ(result(3, 2), 584);
+    EXPECT_EQ(result(3, 3), 333);
+}
+
+/// ===================================================
+///                 Other functions
+/// ===================================================
+TEST(Mat4, determinant) {
+    const auto row1 = Vec4(0.f, 1.f, 2.f, 3.f);
+    const auto row2 = Vec4(4.f, 5.f, 6.f, 7.f);
+    const auto row3 = Vec4(8.f, 9.f, 10.f, 11.f);
+    const auto row4 = Vec4(12.f, 13.f, 14.f, 15.f);
+    Mat4       matrix(row1, row2, row3, row4);
+
+    EXPECT_FLOAT_EQ(matrix.determinant(), 0);
+
+    matrix(0, 0) = 2;
+    matrix(2, 1) = 3;
+    EXPECT_FLOAT_EQ(matrix.determinant(), -96);
+}
+
+TEST(Mat4, isAffine) {
+    EXPECT_TRUE(Mat4::kIdentity.isAffine());
+
+    // the first 3 colum of the last row must be 0
+    // to be affine, so just put another value than 0.
+    for (unsigned i = 0; i < 3; i++) {
+        Mat4 mat  = Mat4::kIdentity;
+        mat(3, i) = 1;
+        EXPECT_FALSE(mat.isAffine());
+    }
+
+    // The last collum of the last row must be 1 to be affine.
+    // so just put another value than 1.
+    Mat4 mat  = Mat4::kIdentity;
+    mat(3, 3) = 10;
+    EXPECT_FALSE(mat.isAffine());
+}
+
+TEST(Mat4, tranpose) {
+    Mat4 mat(
+         0,  1,  2, 3,
+         4,  5,  6, 7,
+         8,  9, 10, 11,
+        12, 13, 14, 15
+    );
+    mat.transpose();
+    // check col 0
+    EXPECT_EQ(mat(0, 0), 0);
+    EXPECT_EQ(mat(1, 0), 1);
+    EXPECT_EQ(mat(2, 0), 2);
+    EXPECT_EQ(mat(3, 0), 3);
+
+    // check col 1
+    EXPECT_EQ(mat(0, 1), 4);
+    EXPECT_EQ(mat(1, 1), 5);
+    EXPECT_EQ(mat(2, 1), 6);
+    EXPECT_EQ(mat(3, 1), 7);
+
+    // check col 2
+    EXPECT_EQ(mat(0, 2), 8);
+    EXPECT_EQ(mat(1, 2), 9);
+    EXPECT_EQ(mat(2, 2), 10);
+    EXPECT_EQ(mat(3, 2), 11);
+
+    // check col 3
+    EXPECT_EQ(mat(0, 3), 12);
+    EXPECT_EQ(mat(1, 3), 13);
+    EXPECT_EQ(mat(2, 3), 14);
+    EXPECT_EQ(mat(3, 3), 15);
+}
+
+TEST(Mat4, tranposed) {
+    const Mat4 mat(
+         0,  1,  2, 3,
+         4,  5,  6, 7,
+         8,  9, 10, 11,
+        12, 13, 14, 15
+    );
+    auto m = mat.transposed();
+    // check col 0
+    EXPECT_EQ(m(0, 0), 0);
+    EXPECT_EQ(m(1, 0), 1);
+    EXPECT_EQ(m(2, 0), 2);
+    EXPECT_EQ(m(3, 0), 3);
+
+    // check col 1
+    EXPECT_EQ(m(0, 1), 4);
+    EXPECT_EQ(m(1, 1), 5);
+    EXPECT_EQ(m(2, 1), 6);
+    EXPECT_EQ(m(3, 1), 7);
+
+    // check col 2
+    EXPECT_EQ(m(0, 2), 8);
+    EXPECT_EQ(m(1, 2), 9);
+    EXPECT_EQ(m(2, 2), 10);
+    EXPECT_EQ(m(3, 2), 11);
+
+    // check col 3
+    EXPECT_EQ(m(0, 3), 12);
+    EXPECT_EQ(m(1, 3), 13);
+    EXPECT_EQ(m(2, 3), 14);
+    EXPECT_EQ(m(3, 3), 15);
+}

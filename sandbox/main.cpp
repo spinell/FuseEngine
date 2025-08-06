@@ -1,3 +1,5 @@
+#include <FuseCore/math/Mat4.h>
+
 #include <glad/glad.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
@@ -115,13 +117,13 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    const GLfloat value[] = {
-        1.f, 0.f, 0.f, 0.f,
-        0.f, 1.f, 0.f, 0.f,
-        0.f, 0.f, 1.f, 0.f,
-        0.f, 0.f, 0.f, 1.f};
+    fuse::Mat4   transform = fuse::Mat4::kIdentity;
+    transform(3,0) = .3;
+    transform(3,1) = .3;
+    transform(3,2) = 0;
+    //transform.transpose();
     unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, value);
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE/*transpose*/, transform.ptr());
 
 
     bool done = false;

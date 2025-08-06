@@ -1,6 +1,11 @@
 find_package(GTest 1.17.0 EXACT CONFIG REQUIRED)
 
-add_executable(TestFuseCore Test.cpp)
+add_executable(TestFuseCore
+    GtestUtils.cpp
+    GtestUtils.h
+    TestVec4.cpp
+    TestMat4.cpp
+)
 
 target_link_libraries(TestFuseCore
     PRIVATE
