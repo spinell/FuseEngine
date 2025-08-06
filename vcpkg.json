@@ -2,10 +2,12 @@
     "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
     "dependencies": [
         "gtest",
-        "sdl3"
+        "sdl3",
+        "glad"
     ],
     "overrides": [
         { "name": "gtest", "version": "1.17.0",  "port-version": 1 },
-        { "name": "sdl3",  "version": "3.2.18",  "port-version": 0 }
+        { "name": "sdl3",  "version": "3.2.18",  "port-version": 0 },
+        { "name": "glad",  "version": "0.1.36",  "port-version": 0 }
     ]
 }
