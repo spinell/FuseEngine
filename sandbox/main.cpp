@@ -7,34 +7,78 @@
 #include <print>
 
 // clang-format off
-const float vertices[] = {
-    // counter clock wise
-    -0.5f, -0.5f, 0.0f, // vertex 1
-     0.5f, -0.5f, 0.0f, // vertex 2
-     0.0f,  0.5f, 0.0f, // vertex 3
-};
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // back
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // front
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // left
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f
+    };
+
+
 // clang-format on
 
 const char* vertexShaderSource = R"(
     #version 330 core
-    layout (location = 0) in vec3 aPos;
+    layout (location = 0) in  vec3 aPos;
+    layout (location = 1) in  vec4 aColor;
+    out vec4 outColor;
 
     uniform mat4 proj;
     uniform mat4 transform;
 
     void main()
     {
+        outColor = aColor;
         gl_Position = proj * transform * vec4(aPos, 1.0f);
     }
 )";
 
 const char* fragmentShaderSource = R"(
     #version 330 core
-    out vec4 FragColor;
+    in  vec4 outColor;
 
+    out vec4 FragColor;
     void main()
     {
-        FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        FragColor = outColor;
     }
 )";
 
@@ -47,6 +91,7 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 
     const SDL_WindowFlags windowFlags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_OPENGL;
     SDL_Window*           window = SDL_CreateWindow("FuseEngine Sandbox", 800, 600, windowFlags);
@@ -115,17 +160,15 @@ int main() {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)20);
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
 
-
-
-
-
-    unsigned int lastTime = SDL_GetTicks();
+    unsigned int lastTime    = SDL_GetTicks();
     unsigned int currentTime = SDL_GetTicks();
-    float delta = 0;
-    bool done = false;
+    float        delta       = 0;
+    bool         done        = false;
     while (!done) {
         SDL_Event event{};
         while (SDL_PollEvent(&event)) {
@@ -138,14 +181,19 @@ int main() {
             }
         }
         glClearColor(.2, .2, .2, 1);
+        glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        fuse::Mat4 proj        = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
-        fuse::Mat4 translation = fuse::Mat4::CreateTranslation(-5, 0, 0);
-        fuse::Mat4 scale       = fuse::Mat4::CreateScaling(3, 3, 1);
-        fuse::Mat4 rotation    = fuse::Mat4::CreateRotationZ(delta / 3.1416);
+        //fuse::Mat4 proj        = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
+        //fuse::Mat4 proj = fuse::Mat4::CreateProjectionPerspectiveOffCenter(-2, 2, -2, 2, 0.1f, 25.0f);
+        fuse::Mat4 proj =
+          fuse::Mat4::CreateProjectionPerspectiveFOVY(45.f / 180.f * 3.1416, 4 / 3.f, 0.1f, 1000.f);
+        fuse::Mat4 translation = fuse::Mat4::CreateTranslation(0, 0, -11);
+        fuse::Mat4 scale       = fuse::Mat4::CreateScaling(1, 1, 1);
+        fuse::Mat4 rotation =
+          fuse::Mat4::CreateRotationY(delta / 3.1416) * fuse::Mat4::CreateRotationZ(delta / 3.1416);
         //fuse::Mat4 transform   = rotation * translation * scale;
-        fuse::Mat4 transform   = translation * rotation * scale;
+        fuse::Mat4 transform = translation * rotation * scale;
         //transform.transpose();
         unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
@@ -155,7 +203,7 @@ int main() {
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         SDL_GL_SwapWindow(window);
 
