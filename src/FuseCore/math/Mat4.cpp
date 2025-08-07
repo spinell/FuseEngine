@@ -1,5 +1,7 @@
 #include "Mat4.h"
 
+#include <cmath>
+
 namespace {
 
 inline float matMinor(const fuse::Mat4& mat, int r0, int r1, int r2, int c0, int c1, int c2) {
@@ -28,6 +30,50 @@ Mat4 Mat4::CreateTranslation(float x, float y, float z) noexcept {
     mat(1, 3) = y;
     mat(2, 3) = z;
     return mat;
+}
+
+Mat4 Mat4::CreateScaling(float x, float y, float z) noexcept {
+    Mat4 mat  = Mat4::kIdentity;
+    mat(0, 0) = x;
+    mat(1, 1) = y;
+    mat(2, 2) = z;
+    return mat;
+}
+
+Mat4 Mat4::CreateRotationX(float angle) noexcept {
+    const float sin = std::sin(angle);
+    const float cos = std::cos(angle);
+
+    Mat4 rot  = Mat4::kIdentity;
+    rot(1, 1) = cos;
+    rot(1, 2) = -sin;
+    rot(2, 1) = sin;
+    rot(2, 2) = cos;
+    return rot;
+}
+
+Mat4 Mat4::CreateRotationY(float angle) noexcept {
+    const float sin = std::sin(angle);
+    const float cos = std::cos(angle);
+
+    Mat4 rot  = Mat4::kIdentity;
+    rot(0, 0) = cos;
+    rot(0, 2) = sin;
+    rot(2, 0) = -sin;
+    rot(2, 2) = cos;
+    return rot;
+}
+
+Mat4 Mat4::CreateRotationZ(float angle) noexcept {
+    const float sin = std::sin(angle);
+    const float cos = std::cos(angle);
+
+    Mat4 rot  = Mat4::kIdentity;
+    rot(0, 0) = cos;
+    rot(0, 1) = -sin;
+    rot(1, 0) = sin;
+    rot(1, 1) = cos;
+    return rot;
 }
 
 // ======================================================

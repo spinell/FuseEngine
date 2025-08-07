@@ -118,15 +118,13 @@ int main() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    fuse::Mat4   proj = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
-    fuse::Mat4   transform = fuse::Mat4::CreateTranslation(-5,5,0);
-    //transform.transpose();
-    unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_TRUE/*transpose*/, transform.ptr());
 
-    unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
-    glUniformMatrix4fv(projLoc, 1, GL_TRUE/*transpose*/, proj.ptr());
 
+
+
+    unsigned int lastTime = SDL_GetTicks();
+    unsigned int currentTime = SDL_GetTicks();
+    float delta = 0;
     bool done = false;
     while (!done) {
         SDL_Event event{};
@@ -142,11 +140,30 @@ int main() {
         glClearColor(.2, .2, .2, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        fuse::Mat4 proj        = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
+        fuse::Mat4 translation = fuse::Mat4::CreateTranslation(-5, 0, 0);
+        fuse::Mat4 scale       = fuse::Mat4::CreateScaling(3, 3, 1);
+        fuse::Mat4 rotation    = fuse::Mat4::CreateRotationZ(delta / 3.1416);
+        //fuse::Mat4 transform   = rotation * translation * scale;
+        fuse::Mat4 transform   = translation * rotation * scale;
+        //transform.transpose();
+        unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
+
+        unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
+        glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
+
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         SDL_GL_SwapWindow(window);
+
+        currentTime = SDL_GetTicks();
+        if (currentTime > lastTime + 1000) {
+            lastTime = currentTime;
+            delta++;
+        }
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);

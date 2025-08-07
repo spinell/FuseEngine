@@ -5,6 +5,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <numbers>
+
 using fuse::Mat4;
 using fuse::Vec4;
 using namespace testing;
@@ -242,6 +244,91 @@ TEST(Mat4, createTranslation) {
     EXPECT_EQ(Mat4::CreateTranslation(1, 0, 0) * Vec4(1, 1, 1, 1), Vec4(2, 1, 1, 1));
     EXPECT_EQ(Mat4::CreateTranslation(0, 1, 0) * Vec4(1, 1, 1, 1), Vec4(1, 2, 1, 1));
     EXPECT_EQ(Mat4::CreateTranslation(0, 0, 1) * Vec4(1, 1, 1, 1), Vec4(1, 1, 2, 1));
+}
+
+//
+// Test the CreateScaling function
+//
+// This should result as the fallowing matrix.
+//
+//	sX    0	  0   0
+//  0    sY   0   0
+//  0     0  sZ   0
+//  0     0   0   1
+//
+TEST(Mat4, createScaling) {
+    const auto scale = Mat4::CreateScaling(2, 3, 4);
+    EXPECT_EQ(scale.getCol(0), Vec4(2, 0, 0, 0));
+    EXPECT_EQ(scale.getCol(1), Vec4(0, 3, 0, 0));
+    EXPECT_EQ(scale.getCol(2), Vec4(0, 0, 4, 0));
+    EXPECT_EQ(scale.getCol(3), Vec4(0, 0, 0, 1));
+
+    EXPECT_EQ(Mat4::CreateScaling(2, 0, 0) * Vec4(1, 1, 1, 1), Vec4(2, 0, 0, 1));
+    EXPECT_EQ(Mat4::CreateScaling(0, 2, 0) * Vec4(1, 1, 1, 1), Vec4(0, 2, 0, 1));
+    EXPECT_EQ(Mat4::CreateScaling(0, 0, 2) * Vec4(1, 1, 1, 1), Vec4(0, 0, 2, 1));
+}
+
+//
+// Test the CreateRotationX function (rotation around X-axis)
+//
+// This should result as the fallowing matrix.
+//
+//	1     0			 0         0
+//  0  cos(angle) -sin(angle)  0
+//  0  sin(angle)  cos(angle)  0
+//  0     0          0         1
+//
+TEST(Mat4, CreateRotationX) {
+    const auto  angle    = 45.f / std::numbers::pi_v<float> * 180.f;
+    const float sinAngle = std::sin(angle);
+    const float cosAngle = std::cos(angle);
+    const auto  rot      = Mat4::CreateRotationX(angle);
+    EXPECT_EQ(rot.getCol(0), Vec4(1, 0, 0, 0));
+    EXPECT_EQ(rot.getCol(1), Vec4(0, cosAngle, sinAngle, 0));
+    EXPECT_EQ(rot.getCol(2), Vec4(0, -sinAngle, cosAngle, 0));
+    EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+}
+
+//
+// Test the CreateRotationY function (rotation around y-axis)
+//
+// This should result as the fallowing matrix.
+//
+//	cos(angle)     0	sin(angle)  0
+//      0		   1		0		0
+// -sin(angle)     0    cos(angle)  0
+//      0          0        0       1
+//
+TEST(Mat4, CreateRotationY) {
+    const auto  angle    = 45.f / std::numbers::pi_v<float> * 180.f;
+    const float sinAngle = std::sin(angle);
+    const float cosAngle = std::cos(angle);
+    const auto  rot      = Mat4::CreateRotationY(angle);
+    EXPECT_EQ(rot.getCol(0), Vec4(cosAngle, 0, -sinAngle, 0));
+    EXPECT_EQ(rot.getCol(1), Vec4(0, 1, 0, 0));
+    EXPECT_EQ(rot.getCol(2), Vec4(sinAngle, 0, cosAngle, 0));
+    EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+}
+
+//
+// Test the CreateRotationZ function (rotation around z-axis)
+//
+// This should result as the fallowing matrix.
+//
+//	cos(angle) -sin(angle)	0   0
+//  sin(angle)	cos(angle)	0	0
+//      0          0        1   0
+//      0          0        0   1
+//
+TEST(Mat4, CreateRotationZ) {
+    const auto  angle    = 45.f / std::numbers::pi_v<float> * 180.f;
+    const float sinAngle = std::sin(angle);
+    const float cosAngle = std::cos(angle);
+    const auto  rot      = Mat4::CreateRotationZ(angle);
+    EXPECT_EQ(rot.getCol(0), Vec4(cosAngle, sinAngle, 0, 0));
+    EXPECT_EQ(rot.getCol(1), Vec4(-sinAngle, cosAngle, 0, 0));
+    EXPECT_EQ(rot.getCol(2), Vec4(0, 0, 1, 0));
+    EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
 }
 
 /// ===================================================

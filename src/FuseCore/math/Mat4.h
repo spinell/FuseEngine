@@ -166,6 +166,18 @@ public:
     /// @brief Create a 4x4 translation matrix.
     static [[nodiscard]] Mat4 CreateTranslation(float x, float y, float z) noexcept;
 
+    /// @brief Create a 4x4 sclaing matrix.
+    static [[nodiscard]] Mat4 CreateScaling(float x, float y, float z) noexcept;
+
+    /// @brief Create a 4x4 rotation matrix around x-axis.
+    static [[nodiscard]] Mat4 CreateRotationX(float angle) noexcept;
+
+    /// @brief Create a 4x4 rotation matrix around y-axis.
+    static [[nodiscard]] Mat4 CreateRotationY(float angle) noexcept;
+
+    /// @brief Create a 4x4 rotation matrix around z-axis.
+    static [[nodiscard]] Mat4 CreateRotationZ(float angle) noexcept;
+
     ///@}
 
     ///@{
@@ -205,7 +217,7 @@ public:
     ///@}
 
 private:
-    float mData[4][4];
+    float mData[4][4]{};
 };
 
 inline constexpr Mat4 Mat4::kZero(Vec4(0.F, 0.F, 0.F, 0.F),
