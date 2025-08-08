@@ -1,4 +1,5 @@
 #include "Mat4.h"
+#include "Angle.h"
 
 #include <cmath>
 
@@ -40,7 +41,7 @@ Mat4 Mat4::CreateScaling(float x, float y, float z) noexcept {
     return mat;
 }
 
-Mat4 Mat4::CreateRotationX(float angle) noexcept {
+Mat4 Mat4::CreateRotationX(const Angle&  angle) noexcept {
     const float sin = std::sin(angle);
     const float cos = std::cos(angle);
 
@@ -52,7 +53,7 @@ Mat4 Mat4::CreateRotationX(float angle) noexcept {
     return rot;
 }
 
-Mat4 Mat4::CreateRotationY(float angle) noexcept {
+Mat4 Mat4::CreateRotationY(const Angle&  angle) noexcept {
     const float sin = std::sin(angle);
     const float cos = std::cos(angle);
 
@@ -64,7 +65,7 @@ Mat4 Mat4::CreateRotationY(float angle) noexcept {
     return rot;
 }
 
-Mat4 Mat4::CreateRotationZ(float angle) noexcept {
+Mat4 Mat4::CreateRotationZ(const Angle&  angle) noexcept {
     const float sin = std::sin(angle);
     const float cos = std::cos(angle);
 
@@ -199,7 +200,7 @@ Mat4 Mat4::CreateProjectionPerspectiveOffCenter(
     return matrix;
 }
 
-Mat4 Mat4::CreateProjectionPerspectiveFOVX(float fovx, float aspectRatio, float zNear, float zFar) {
+Mat4 Mat4::CreateProjectionPerspectiveFOVX(const Angle&  fovx, float aspectRatio, float zNear, float zFar) {
     // =====================================
     // Frustum view from top
     //
@@ -233,7 +234,7 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVX(float fovx, float aspectRatio, float 
                                                 zFar);
 }
 
-Mat4 Mat4::CreateProjectionPerspectiveFOVY(float fovY, float aspectRatio, float zNear, float zFar) {
+Mat4 Mat4::CreateProjectionPerspectiveFOVY(const Angle&  fovY, float aspectRatio, float zNear, float zFar) {
     // =====================================
     //  Frustum view from side
     //

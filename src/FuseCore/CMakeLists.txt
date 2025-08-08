@@ -3,6 +3,7 @@ add_library(Fuse::Core ALIAS FuseCore)
 
 target_sources(FuseCore
     PRIVATE
+        math/Angle.h
         math/Mat4.cpp
         math/Mat4.h
         math/Vec4.h

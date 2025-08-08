@@ -5,6 +5,7 @@
 #include <cassert>
 
 namespace fuse {
+class Angle;
 
 /// @brief 4 dimensional matrix.
 /// This class represents a 4x4 matrix, which is commonly used in 3D graphics for transformations.
@@ -174,13 +175,13 @@ public:
     static [[nodiscard]] Mat4 CreateScaling(float x, float y, float z) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around x-axis.
-    static [[nodiscard]] Mat4 CreateRotationX(float angle) noexcept;
+    static [[nodiscard]] Mat4 CreateRotationX(const Angle& angle) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around y-axis.
-    static [[nodiscard]] Mat4 CreateRotationY(float angle) noexcept;
+    static [[nodiscard]] Mat4 CreateRotationY(const Angle& angle) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around z-axis.
-    static [[nodiscard]] Mat4 CreateRotationZ(float angle) noexcept;
+    static [[nodiscard]] Mat4 CreateRotationZ(const Angle& angle) noexcept;
 
     ///@}
 
@@ -249,18 +250,15 @@ public:
     ///                        Determines the vertical field of view.
     /// @param[in] zNear       Distance to the near plane.
     /// @param[in] zFar		   Distance to the far plane.
-    /// @param[in] positiveZ   If true the matrix will project geometry as if its looking
-    ///                        along the positive Z axis. Otherwise it projects along the negative
-    ///                        Z axis (default).
     /// @remark
     ///     For typical usage, @b zNear is less than @b zFar. <br/>
     ///     However, if you flip these values so @b zFar is
     ///     less than @b zNear, the result is an inverted z buffer which can provide increased
     ///     floating-point precision.
-    static [[nodiscard]] Mat4 CreateProjectionPerspectiveFOVX(float fovx,
-                                                              float aspectRatio,
-                                                              float zNear,
-                                                              float zFar);
+    static [[nodiscard]] Mat4 CreateProjectionPerspectiveFOVX(const Angle& fovx,
+                                                              float        aspectRatio,
+                                                              float        zNear,
+                                                              float        zFar);
 
     /// @brief Create a right-handed perspective projection matrix based on a vertical field of view.
     ///
@@ -269,17 +267,15 @@ public:
     ///                        Determines the vertical field of view.
     /// @param[in] zNear       Distance to the near plane.
     /// @param[in] zFar		   Distance to the far plane.
-    /// @param[in] positiveZ   If true the matrix will project geometry as if its looking along the positive Z axis.
-    ///                        Otherwise it projects along the negative Z axis (default).
     /// @remark
     ///     For typical usage, @b zNear is less than @b zFar. <br/>
     ///     However, if you flip these values so @b zFar is
     ///     less than @b zNear, the result is an inverted z buffer which can provide increased
     ///     floating-point precision.
-    static [[nodiscard]] Mat4 CreateProjectionPerspectiveFOVY(float fovY,
-                                                              float aspectRatio,
-                                                              float zNear,
-                                                              float zFar);
+    static [[nodiscard]] Mat4 CreateProjectionPerspectiveFOVY(const Angle& fovY,
+                                                              float        aspectRatio,
+                                                              float        zNear,
+                                                              float        zFar);
 
     ///@}
 

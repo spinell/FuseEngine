@@ -1,5 +1,6 @@
 #include "GtestUtils.h"
 
+#include <FuseCore/math/Angle.h>
 #include <FuseCore/math/Mat4.h>
 
 #include <gmock/gmock.h>
@@ -279,7 +280,7 @@ TEST(Mat4, createScaling) {
 //  0     0          0         1
 //
 TEST(Mat4, CreateRotationX) {
-    const auto  angle    = 45.f / std::numbers::pi_v<float> * 180.f;
+    const auto  angle    = fuse::degrees(45.f);
     const float sinAngle = std::sin(angle);
     const float cosAngle = std::cos(angle);
     const auto  rot      = Mat4::CreateRotationX(angle);
@@ -300,7 +301,7 @@ TEST(Mat4, CreateRotationX) {
 //      0          0        0       1
 //
 TEST(Mat4, CreateRotationY) {
-    const auto  angle    = 45.f / std::numbers::pi_v<float> * 180.f;
+    const auto  angle    = fuse::degrees(45.f);
     const float sinAngle = std::sin(angle);
     const float cosAngle = std::cos(angle);
     const auto  rot      = Mat4::CreateRotationY(angle);
@@ -321,7 +322,7 @@ TEST(Mat4, CreateRotationY) {
 //      0          0        0   1
 //
 TEST(Mat4, CreateRotationZ) {
-    const auto  angle    = 45.f / std::numbers::pi_v<float> * 180.f;
+    const auto  angle    = fuse::degrees(45.f);
     const float sinAngle = std::sin(angle);
     const float cosAngle = std::cos(angle);
     const auto  rot      = Mat4::CreateRotationZ(angle);
