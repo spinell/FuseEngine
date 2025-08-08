@@ -143,8 +143,26 @@ public:
         return mData[3][0] == 0 && mData[3][1] == 0 && mData[3][2] == 0 && mData[3][3] == 1;
     }
 
-    /// @brief Trqnspose this matrix in-place.
-    constexpr Mat4& transpose() noexcept;
+    [[nodiscard]] constexpr bool isAlmostEquals(const Mat4& other,
+                                                float       elipson = 0.000001f) const noexcept {
+        for (int row = 0; row < kNbRow; row++) {
+            for (int col = 0; col < kNbCol; col++) {
+                if (std::abs(mData[row][col] - other.mData[row][col]) > elipson) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /// @brief Inverse this matrix in-place.
+    [[nodiscard]] Mat4& inverse() noexcept {
+        *this = inversed();
+        return *this;
+    }
+
+    /// @brief Return the inverse of this matrix
+    [[nodiscard]] Mat4 inversed() const noexcept;
 
     constexpr Vec4 getCol(unsigned col) const {
         assert(col < kNbCol);
@@ -155,6 +173,9 @@ public:
         assert(row < kNbRow);
         return {mData[row][0], mData[row][1], mData[row][2], mData[row][3]};
     }
+
+    /// @brief Transpose this matrix in-place.
+    constexpr Mat4& transpose() noexcept;
 
     /// @brief Return the tranpose of this matrix.
     constexpr [[nodiscard]] Mat4 transposed() const noexcept;

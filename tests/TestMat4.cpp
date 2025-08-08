@@ -12,6 +12,10 @@ using fuse::Mat4;
 using fuse::Vec4;
 using namespace testing;
 
+MATCHER_P(almostEquals, rhs, "") {
+    return arg.isAlmostEquals(rhs);
+}
+
 TEST(Mat4, constant) {
     EXPECT_EQ(Mat4::kZero(0, 0), 0);
     EXPECT_EQ(Mat4::kZero(0, 1), 0);
@@ -218,6 +222,55 @@ TEST(Mat4, tranposed) {
     EXPECT_EQ(m(1, 3), 13);
     EXPECT_EQ(m(2, 3), 14);
     EXPECT_EQ(m(3, 3), 15);
+}
+
+TEST(Mat4, inversed) {
+    EXPECT_EQ(Mat4::kIdentity.inversed() * Mat4::kIdentity, Mat4::kIdentity);
+
+    const Mat4 mat(2, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 15);
+    EXPECT_THAT(mat.inversed() * mat, almostEquals(Mat4::kIdentity));
+
+    const float data[16] = {2, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 15};
+    const Mat4  matrix(data);
+    Mat4        result = matrix.inversed();
+    EXPECT_FLOAT_EQ(result(0, 0), 0.5f);
+    EXPECT_FLOAT_EQ(result(0, 1), -1.0f);
+    EXPECT_FLOAT_EQ(result(0, 2), 0.5f);
+    EXPECT_FLOAT_EQ(result(0, 3), 0.0f);
+    EXPECT_FLOAT_EQ(result(1, 0), -0.75f);
+    EXPECT_FLOAT_EQ(result(1, 1), 0.163461551f);
+    EXPECT_FLOAT_EQ(result(1, 2), 0.0480769239f);
+    EXPECT_FLOAT_EQ(result(1, 3), 0.0384615399f);
+    EXPECT_FLOAT_EQ(result(2, 0), 0.0f);
+    EXPECT_FLOAT_EQ(result(2, 1), -0.0769230798f);
+    EXPECT_FLOAT_EQ(result(2, 2), 0.153846160f);
+    EXPECT_FLOAT_EQ(result(2, 3), -0.0769230798f);
+    EXPECT_FLOAT_EQ(result(3, 0), 0.25f);
+    EXPECT_FLOAT_EQ(result(3, 1), 0.663461566f);
+    EXPECT_FLOAT_EQ(result(3, 2), -0.451923102f);
+    EXPECT_FLOAT_EQ(result(3, 3), 0.0384615399f);
+
+    {
+        const float data[16] = {1, 0, 0, 1, 0, 1, 0, 2, 0, 0, 1, 3, 0, 0, 0, 1};
+        const Mat4  matrix(data);
+        Mat4        result = matrix.inversed();
+        EXPECT_FLOAT_EQ(result(0, 0), 1.0f);
+        EXPECT_FLOAT_EQ(result(0, 1), 0.0f);
+        EXPECT_FLOAT_EQ(result(0, 2), 0.0f);
+        EXPECT_FLOAT_EQ(result(0, 3), -1.0f);
+        EXPECT_FLOAT_EQ(result(1, 0), 0.0f);
+        EXPECT_FLOAT_EQ(result(1, 1), 1.0f);
+        EXPECT_FLOAT_EQ(result(1, 2), 0.0f);
+        EXPECT_FLOAT_EQ(result(1, 3), -2.0f);
+        EXPECT_FLOAT_EQ(result(2, 0), 0.0f);
+        EXPECT_FLOAT_EQ(result(2, 1), 0.0f);
+        EXPECT_FLOAT_EQ(result(2, 2), 1.0f);
+        EXPECT_FLOAT_EQ(result(2, 3), -3.0f);
+        EXPECT_FLOAT_EQ(result(3, 0), 0.0f);
+        EXPECT_FLOAT_EQ(result(3, 1), 0.0f);
+        EXPECT_FLOAT_EQ(result(3, 2), 0.0f);
+        EXPECT_FLOAT_EQ(result(3, 3), 1.0f);
+    }
 }
 
 /// ===================================================

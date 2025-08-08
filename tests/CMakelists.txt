@@ -10,7 +10,7 @@ add_executable(TestFuseCore
 
 target_link_libraries(TestFuseCore
     PRIVATE
-        GTest::gtest_main
+        GTest::gmock_main
         Fuse::Core
 )
 

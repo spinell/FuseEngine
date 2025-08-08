@@ -1,4 +1,5 @@
 #include "Mat4.h"
+
 #include "Angle.h"
 
 #include <cmath>
@@ -10,6 +11,7 @@ inline float matMinor(const fuse::Mat4& mat, int r0, int r1, int r2, int c0, int
            mat(r0, c1) * (mat(r1, c0) * mat(r2, c2) - mat(r2, c0) * mat(r1, c2)) +
            mat(r0, c2) * (mat(r1, c0) * mat(r2, c1) - mat(r2, c0) * mat(r1, c1));
 }
+
 } // namespace
 
 namespace fuse {
@@ -19,6 +21,64 @@ float Mat4::determinant() const noexcept {
            mData[0][1] * matMinor(*this, 1, 2, 3, 0, 2, 3) +
            mData[0][2] * matMinor(*this, 1, 2, 3, 0, 1, 3) -
            mData[0][3] * matMinor(*this, 1, 2, 3, 0, 1, 2);
+}
+
+Mat4 Mat4::inversed() const noexcept {
+    // just define some shorcut
+    const float m00 = mData[0][0], m01 = mData[0][1], m02 = mData[0][2], m03 = mData[0][3];
+    const float m10 = mData[1][0], m11 = mData[1][1], m12 = mData[1][2], m13 = mData[1][3];
+    const float m20 = mData[2][0], m21 = mData[2][1], m22 = mData[2][2], m23 = mData[2][3];
+    const float m30 = mData[3][0], m31 = mData[3][1], m32 = mData[3][2], m33 = mData[3][3];
+
+    float v0 = m20 * m31 - m21 * m30;
+    float v1 = m20 * m32 - m22 * m30;
+    float v2 = m20 * m33 - m23 * m30;
+    float v3 = m21 * m32 - m22 * m31;
+    float v4 = m21 * m33 - m23 * m31;
+    float v5 = m22 * m33 - m23 * m32;
+
+    const float t00 = +(v5 * m11 - v4 * m12 + v3 * m13);
+    const float t10 = -(v5 * m10 - v2 * m12 + v1 * m13);
+    const float t20 = +(v4 * m10 - v2 * m11 + v0 * m13);
+    const float t30 = -(v3 * m10 - v1 * m11 + v0 * m12);
+
+    const float invDet = 1 / (t00 * m00 + t10 * m01 + t20 * m02 + t30 * m03);
+
+    const float d00 = t00 * invDet;
+    const float d10 = t10 * invDet;
+    const float d20 = t20 * invDet;
+    const float d30 = t30 * invDet;
+
+    const float d01 = -(v5 * m01 - v4 * m02 + v3 * m03) * invDet;
+    const float d11 = +(v5 * m00 - v2 * m02 + v1 * m03) * invDet;
+    const float d21 = -(v4 * m00 - v2 * m01 + v0 * m03) * invDet;
+    const float d31 = +(v3 * m00 - v1 * m01 + v0 * m02) * invDet;
+
+    v0 = m10 * m31 - m11 * m30;
+    v1 = m10 * m32 - m12 * m30;
+    v2 = m10 * m33 - m13 * m30;
+    v3 = m11 * m32 - m12 * m31;
+    v4 = m11 * m33 - m13 * m31;
+    v5 = m12 * m33 - m13 * m32;
+
+    const float d02 = +(v5 * m01 - v4 * m02 + v3 * m03) * invDet;
+    const float d12 = -(v5 * m00 - v2 * m02 + v1 * m03) * invDet;
+    const float d22 = +(v4 * m00 - v2 * m01 + v0 * m03) * invDet;
+    const float d32 = -(v3 * m00 - v1 * m01 + v0 * m02) * invDet;
+
+    v0 = m21 * m10 - m20 * m11;
+    v1 = m22 * m10 - m20 * m12;
+    v2 = m23 * m10 - m20 * m13;
+    v3 = m22 * m11 - m21 * m12;
+    v4 = m23 * m11 - m21 * m13;
+    v5 = m23 * m12 - m22 * m13;
+
+    const float d03 = -(v5 * m01 - v4 * m02 + v3 * m03) * invDet;
+    const float d13 = +(v5 * m00 - v2 * m02 + v1 * m03) * invDet;
+    const float d23 = -(v4 * m00 - v2 * m01 + v0 * m03) * invDet;
+    const float d33 = +(v3 * m00 - v1 * m01 + v0 * m02) * invDet;
+
+    return Mat4(d00, d01, d02, d03, d10, d11, d12, d13, d20, d21, d22, d23, d30, d31, d32, d33);
 }
 
 // =========================================================
@@ -41,7 +101,7 @@ Mat4 Mat4::CreateScaling(float x, float y, float z) noexcept {
     return mat;
 }
 
-Mat4 Mat4::CreateRotationX(const Angle&  angle) noexcept {
+Mat4 Mat4::CreateRotationX(const Angle& angle) noexcept {
     const float sin = std::sin(angle);
     const float cos = std::cos(angle);
 
@@ -53,7 +113,7 @@ Mat4 Mat4::CreateRotationX(const Angle&  angle) noexcept {
     return rot;
 }
 
-Mat4 Mat4::CreateRotationY(const Angle&  angle) noexcept {
+Mat4 Mat4::CreateRotationY(const Angle& angle) noexcept {
     const float sin = std::sin(angle);
     const float cos = std::cos(angle);
 
@@ -65,7 +125,7 @@ Mat4 Mat4::CreateRotationY(const Angle&  angle) noexcept {
     return rot;
 }
 
-Mat4 Mat4::CreateRotationZ(const Angle&  angle) noexcept {
+Mat4 Mat4::CreateRotationZ(const Angle& angle) noexcept {
     const float sin = std::sin(angle);
     const float cos = std::cos(angle);
 
@@ -200,7 +260,10 @@ Mat4 Mat4::CreateProjectionPerspectiveOffCenter(
     return matrix;
 }
 
-Mat4 Mat4::CreateProjectionPerspectiveFOVX(const Angle&  fovx, float aspectRatio, float zNear, float zFar) {
+Mat4 Mat4::CreateProjectionPerspectiveFOVX(const Angle& fovx,
+                                           float        aspectRatio,
+                                           float        zNear,
+                                           float        zFar) {
     // =====================================
     // Frustum view from top
     //
@@ -234,7 +297,10 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVX(const Angle&  fovx, float aspectRatio
                                                 zFar);
 }
 
-Mat4 Mat4::CreateProjectionPerspectiveFOVY(const Angle&  fovY, float aspectRatio, float zNear, float zFar) {
+Mat4 Mat4::CreateProjectionPerspectiveFOVY(const Angle& fovY,
+                                           float        aspectRatio,
+                                           float        zNear,
+                                           float        zFar) {
     // =====================================
     //  Frustum view from side
     //
