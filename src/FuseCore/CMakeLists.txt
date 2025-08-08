@@ -5,6 +5,7 @@ target_sources(FuseCore
     PRIVATE
         math/Angle.h
         math/Mat4.cpp
+        math/Vec3.h
         math/Mat4.h
         math/Vec4.h
 )

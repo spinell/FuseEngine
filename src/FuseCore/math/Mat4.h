@@ -1,4 +1,5 @@
 #pragma once
+#include "Vec3.h"
 #include "Vec4.h"
 
 #include <algorithm>
@@ -190,10 +191,10 @@ public:
     ///@{
 
     /// @brief Create a 4x4 translation matrix.
-    static [[nodiscard]] Mat4 CreateTranslation(float x, float y, float z) noexcept;
+    static [[nodiscard]] Mat4 CreateTranslation(const Vec3& translation) noexcept;
 
     /// @brief Create a 4x4 sclaing matrix.
-    static [[nodiscard]] Mat4 CreateScaling(float x, float y, float z) noexcept;
+    static [[nodiscard]] Mat4 CreateScaling(const Vec3& scale) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around x-axis.
     static [[nodiscard]] Mat4 CreateRotationX(const Angle& angle) noexcept;
@@ -203,6 +204,9 @@ public:
 
     /// @brief Create a 4x4 rotation matrix around z-axis.
     static [[nodiscard]] Mat4 CreateRotationZ(const Angle& angle) noexcept;
+
+    /// @brief Create a 4x4 rotation matrix from a angle and an axis.
+    static [[nodiscard]] Mat4 CreateRotation(Angle angle, const Vec3& axis) noexcept;
 
     ///@}
 

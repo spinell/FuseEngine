@@ -192,9 +192,9 @@ int main() {
         fuse::Mat4 proj2 =
           fuse::Mat4::CreateProjectionPerspectiveFOVY(fuse::degrees(45.f), 4 / 3.f, 0.1f, 1000.f);
 
-        fuse::Mat4 translation = fuse::Mat4::CreateTranslation(0, 0, -11);
-        fuse::Mat4 scale       = fuse::Mat4::CreateScaling(1, 1, 1);
-        fuse::Mat4 rotation    = fuse::Mat4::CreateRotationZ(fuse::degrees(10.0f) * delta);
+        fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
+        fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
+        fuse::Mat4 rotation    = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * delta, fuse::Vec3(1,1,0));
         //fuse::Mat4 transform   = rotation * translation * scale;
         fuse::Mat4 transform = translation * rotation * scale;
         //transform.transpose();

@@ -85,19 +85,19 @@ Mat4 Mat4::inversed() const noexcept {
 //                      Transform
 // =========================================================
 
-Mat4 Mat4::CreateTranslation(float x, float y, float z) noexcept {
+Mat4 Mat4::CreateTranslation(const Vec3& translation) noexcept {
     Mat4 mat  = Mat4::kIdentity;
-    mat(0, 3) = x;
-    mat(1, 3) = y;
-    mat(2, 3) = z;
+    mat(0, 3) = translation.x;
+    mat(1, 3) = translation.y;
+    mat(2, 3) = translation.z;
     return mat;
 }
 
-Mat4 Mat4::CreateScaling(float x, float y, float z) noexcept {
+Mat4 Mat4::CreateScaling(const Vec3& scale) noexcept {
     Mat4 mat  = Mat4::kIdentity;
-    mat(0, 0) = x;
-    mat(1, 1) = y;
-    mat(2, 2) = z;
+    mat(0, 0) = scale.x;
+    mat(1, 1) = scale.y;
+    mat(2, 2) = scale.z;
     return mat;
 }
 
@@ -134,6 +134,29 @@ Mat4 Mat4::CreateRotationZ(const Angle& angle) noexcept {
     rot(0, 1) = -sin;
     rot(1, 0) = sin;
     rot(1, 1) = cos;
+    return rot;
+}
+
+Mat4 Mat4::CreateRotation(Angle angle, const Vec3& aaxis) noexcept {
+    const float cos         = std::cos(angle);
+    const float sin         = std::sin(angle);
+    const Vec3  axisNorm    = aaxis.normalized();
+    const float oneMinusCos = 1 - cos;
+    Mat4        rot         = Mat4::kIdentity;
+    // First row
+    rot(0, 0) = cos + oneMinusCos * (axisNorm.x * axisNorm.x);
+    rot(0, 1) = axisNorm.x * axisNorm.y * oneMinusCos - axisNorm.z * sin;
+    rot(0, 2) = axisNorm.x * axisNorm.z * oneMinusCos + axisNorm.y * sin;
+
+    // Second row
+    rot(1, 0) = axisNorm.y * axisNorm.x * oneMinusCos + axisNorm.z * sin;
+    rot(1, 1) = cos + (axisNorm.y * axisNorm.y) * oneMinusCos;
+    rot(1, 2) = axisNorm.y * axisNorm.z * oneMinusCos - axisNorm.x * sin;
+
+    // Third row
+    rot(2, 0) = axisNorm.z * axisNorm.x * oneMinusCos - axisNorm.y * sin;
+    rot(2, 1) = axisNorm.z * axisNorm.y * oneMinusCos + axisNorm.x * sin;
+    rot(2, 2) = cos + (axisNorm.z * axisNorm.z) * oneMinusCos;
     return rot;
 }
 

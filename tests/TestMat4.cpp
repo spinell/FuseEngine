@@ -9,6 +9,7 @@
 #include <numbers>
 
 using fuse::Mat4;
+using fuse::Vec3;
 using fuse::Vec4;
 using namespace testing;
 
@@ -289,15 +290,15 @@ TEST(Mat4, inversed) {
 //  0  0   0   1
 //
 TEST(Mat4, createTranslation) {
-    const auto trans = Mat4::CreateTranslation(2, 3, 4);
+    const auto trans = Mat4::CreateTranslation({2, 3, 4});
     EXPECT_EQ(trans.getRow(0), Vec4(1, 0, 0, 2));
     EXPECT_EQ(trans.getRow(1), Vec4(0, 1, 0, 3));
     EXPECT_EQ(trans.getRow(2), Vec4(0, 0, 1, 4));
     EXPECT_EQ(trans.getRow(3), Vec4(0, 0, 0, 1));
 
-    EXPECT_EQ(Mat4::CreateTranslation(1, 0, 0) * Vec4(1, 1, 1, 1), Vec4(2, 1, 1, 1));
-    EXPECT_EQ(Mat4::CreateTranslation(0, 1, 0) * Vec4(1, 1, 1, 1), Vec4(1, 2, 1, 1));
-    EXPECT_EQ(Mat4::CreateTranslation(0, 0, 1) * Vec4(1, 1, 1, 1), Vec4(1, 1, 2, 1));
+    EXPECT_EQ(Mat4::CreateTranslation({1, 0, 0}) * Vec4(1, 1, 1, 1), Vec4(2, 1, 1, 1));
+    EXPECT_EQ(Mat4::CreateTranslation({0, 1, 0}) * Vec4(1, 1, 1, 1), Vec4(1, 2, 1, 1));
+    EXPECT_EQ(Mat4::CreateTranslation({0, 0, 1}) * Vec4(1, 1, 1, 1), Vec4(1, 1, 2, 1));
 }
 
 //
@@ -311,15 +312,15 @@ TEST(Mat4, createTranslation) {
 //  0     0   0   1
 //
 TEST(Mat4, createScaling) {
-    const auto scale = Mat4::CreateScaling(2, 3, 4);
+    const auto scale = Mat4::CreateScaling({2, 3, 4});
     EXPECT_EQ(scale.getCol(0), Vec4(2, 0, 0, 0));
     EXPECT_EQ(scale.getCol(1), Vec4(0, 3, 0, 0));
     EXPECT_EQ(scale.getCol(2), Vec4(0, 0, 4, 0));
     EXPECT_EQ(scale.getCol(3), Vec4(0, 0, 0, 1));
 
-    EXPECT_EQ(Mat4::CreateScaling(2, 0, 0) * Vec4(1, 1, 1, 1), Vec4(2, 0, 0, 1));
-    EXPECT_EQ(Mat4::CreateScaling(0, 2, 0) * Vec4(1, 1, 1, 1), Vec4(0, 2, 0, 1));
-    EXPECT_EQ(Mat4::CreateScaling(0, 0, 2) * Vec4(1, 1, 1, 1), Vec4(0, 0, 2, 1));
+    EXPECT_EQ(Mat4::CreateScaling({2, 0, 0}) * Vec4(1, 1, 1, 1), Vec4(2, 0, 0, 1));
+    EXPECT_EQ(Mat4::CreateScaling({0, 2, 0}) * Vec4(1, 1, 1, 1), Vec4(0, 2, 0, 1));
+    EXPECT_EQ(Mat4::CreateScaling({0, 0, 2}) * Vec4(1, 1, 1, 1), Vec4(0, 0, 2, 1));
 }
 
 //
@@ -383,6 +384,41 @@ TEST(Mat4, CreateRotationZ) {
     EXPECT_EQ(rot.getCol(1), Vec4(-sinAngle, cosAngle, 0, 0));
     EXPECT_EQ(rot.getCol(2), Vec4(0, 0, 1, 0));
     EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+}
+
+TEST(Mat4, CreateRotation_angleAxis) {
+    //
+    // Test with a angle around x-axis
+    // The rotation matrix must match the one create by CreateRotationX()
+    //
+    {
+        const auto angle  = fuse::degrees(45);
+        const auto result = Mat4::CreateRotationX(angle);
+        const auto rot    = Mat4::CreateRotation(angle, Vec3::kAxisX);
+        EXPECT_TRUE(rot == result);
+    }
+
+    //
+    // Test with a angle around y-axis
+    // The rotation matrix must match the one create by CreateRotationY()
+    //
+    {
+        const auto angle  = fuse::degrees(45);
+        const auto result = Mat4::CreateRotationY(angle);
+        const auto rot    = Mat4::CreateRotation(angle, Vec3::kAxisY);
+        EXPECT_TRUE(rot == result);
+    }
+
+    //
+    // Test with a angle around Z-axis
+    // The rotation matrix must match the one create by CreateRotationZ()
+    //
+    {
+        const auto angle  = fuse::degrees(45);
+        const auto result = Mat4::CreateRotationZ(angle);
+        const auto rot    = Mat4::CreateRotation(angle, Vec3::kAxisZ);
+        EXPECT_TRUE(rot == result);
+    }
 }
 
 /// ===================================================
