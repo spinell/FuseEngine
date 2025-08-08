@@ -186,20 +186,20 @@ int main() {
 
         //fuse::Mat4 proj        = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
         //fuse::Mat4 proj = fuse::Mat4::CreateProjectionPerspectiveOffCenter(-2, 2, -2, 2, 0.1f, 25.0f);
-        fuse::Mat4 proj =
-          fuse::Mat4::CreateProjectionPerspectiveFOVY(45.f / 180.f * 3.1416, 4 / 3.f, 0.1f, 1000.f);
+        fuse::Mat4 proj1 = fuse::Mat4::CreateProjectionPerspectiveFOVX(45.f / 180.f * 3.1416, 4 / 3.f, 0.1f, 1000.f);
+        fuse::Mat4 proj2 = fuse::Mat4::CreateProjectionPerspectiveFOVY(45.f / 180.f * 3.1416, 4 / 3.f, 0.1f, 1000.f);
+
         fuse::Mat4 translation = fuse::Mat4::CreateTranslation(0, 0, -11);
         fuse::Mat4 scale       = fuse::Mat4::CreateScaling(1, 1, 1);
-        fuse::Mat4 rotation =
-          fuse::Mat4::CreateRotationY(delta / 3.1416) * fuse::Mat4::CreateRotationZ(delta / 3.1416);
-        //fuse::Mat4 transform   = rotation * translation * scale;
-        fuse::Mat4 transform = translation * rotation * scale;
+        fuse::Mat4 rotation    = fuse::Mat4::CreateRotationZ(delta / 3.1416);
+          //fuse::Mat4 transform   = rotation * translation * scale;
+          fuse::Mat4 transform = translation * rotation * scale;
         //transform.transpose();
         unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
 
         unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
-        glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
+        glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj2.ptr());
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);

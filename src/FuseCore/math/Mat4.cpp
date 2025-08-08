@@ -169,7 +169,6 @@ Mat4 Mat4::CreateProjectionPerspectiveOffCenter(
     //  D =>   (top + bottom) / (top - bottom)
     //  E =>  -(far + near) / (far - near)
     //  F =>  -( 2 * far * near) / (far - near)
-    //
     // ============================================================
 
     assert(zNear > 0);
@@ -183,28 +182,27 @@ Mat4 Mat4::CreateProjectionPerspectiveOffCenter(
     const float invHeight = 1.0f / height;
     const float invDepth  = 1.0f / depth;
 
-    Mat4 matrix  = Mat4::kIdentity;
-    matrix(0, 0) = 2.0f * zNear * invWidth;
-    matrix(0, 2) = (right + left) * invWidth;
+    const float a = 2.0f * zNear * invWidth;
+    const float b = (right + left) * invWidth;
+    const float c = 2.0f * zNear * invHeight;
+    const float d = (top + bottom) * invHeight;
+    const float e = -(zFar + zNear) * invDepth;
+    const float f = -2.0f * zFar * zNear * invDepth;
 
-    matrix(1, 1) = 2.0f * zNear * invHeight;
-    matrix(1, 2) = (top + bottom) * invHeight;
-
-    matrix(2, 2) = -(zFar + zNear) * invDepth;
-    matrix(2, 3) = -2.0f * zFar * zNear * invDepth;
-
-    matrix(3, 2) = -1.0f;
-    matrix(3, 3) = 0.0f;
+    Mat4 matrix = Mat4::kIdentity;
+    // clang-format off
+    matrix(0, 0) = a;    matrix(0, 1) = 0.0f; matrix(0, 2) =  b;   matrix(0, 3) = 0.0f;
+    matrix(1, 0) = 0.0f; matrix(1, 1) = c;    matrix(1, 2) =  d;   matrix(1, 3) = 0.0f;
+    matrix(2, 0) = 0.0f; matrix(2, 1) = 0.0f; matrix(2, 2) =  e;   matrix(2, 3) = f;
+    matrix(3, 0) = 0.0f; matrix(3, 1) = 0.0f; matrix(3, 2) = -1.f; matrix(3, 3) = 0.0f;
+    // clang-format on
     return matrix;
 }
 
 Mat4 Mat4::CreateProjectionPerspectiveFOVX(float fovx, float aspectRatio, float zNear, float zFar) {
     // =====================================
+    // Frustum view from top
     //
-    //          Frustum view from top
-    //
-    //     \                        /
-    //      \                      /
     //       \     w              /
     //        \---------         /
     //         \       |        /
@@ -216,30 +214,17 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVX(float fovx, float aspectRatio, float 
     //               \ |  /
     //                \| /
     //                 \/
-    //
     //  Where:
     //      w => half width of the near plane
     //      n => distance of the near plane
     //      a => half fov x
     //
-    // By definition tan(x) = opposite / adjancent so,
-    //
-    // tan(a) = w / n    =>    w = n * tan(a)
-    //
+    // By definition tan(x) = opposite / adjancent
+    //  tan(a) = w / n => w = n * tan(a)
     //
     // =====================================
-
-    // compute the near plane half width
-    const float nearHalfWidth = zNear * std::tan(0.5f * fovx);
-
-    // compute the near plane half height with the aspect ratio
-    //
-    // aspect ratio = width / height
-    //
-    // so divided the near plane half width by the aspect ration will
-    // give us the near plane half height that match the aspect ratio
+    const float nearHalfWidth  = zNear * std::tan(0.5f * fovx);
     const float nearHalfHeight = nearHalfWidth / aspectRatio;
-
     return CreateProjectionPerspectiveOffCenter(-nearHalfWidth,
                                                 nearHalfWidth,
                                                 -nearHalfHeight,
@@ -252,8 +237,6 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVY(float fovY, float aspectRatio, float 
     // =====================================
     //  Frustum view from side
     //
-    //            /
-    //           /
     //          /
     //         / |
     //        /  |
@@ -270,23 +253,10 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVY(float fovY, float aspectRatio, float 
     //      a => half fov y
     //
     // By definition tan(x) = opposite / adjancent so,
-    //
-    // tan(a) = h / n    =>    h = n * tan(a)
+    //  tan(a) = h / n => h = n * tan(a)
     // =====================================
-    const auto fovy     = fovY;
-    const auto halfFovy = fovy * 0.5f;
-
-    // compute the near plane half height
-    const float nearHalfHeight = zNear * std::tan(halfFovy);
-
-    // compute the near plane half width with the aspect ratio
-    //
-    // aspect ratio = width / height
-    //
-    // so mutiply the near plane half height by the aspect ration will
-    // give us the near plane half width that match the aspect ratio
-    const float nearHalfWidth = nearHalfHeight * aspectRatio;
-
+    const float nearHalfHeight = zNear * std::tan(fovY * 0.5f);
+    const float nearHalfWidth  = nearHalfHeight * aspectRatio;
     return CreateProjectionPerspectiveOffCenter(-nearHalfWidth,
                                                 nearHalfWidth,
                                                 -nearHalfHeight,

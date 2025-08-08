@@ -264,14 +264,13 @@ public:
 
     /// @brief Create a right-handed perspective projection matrix based on a vertical field of view.
     ///
-    /// @param[in] fovY 	   Field of view in the y direction.
+    /// @param[in] fovY 	   Vertical field of view.
     /// @param[in] aspectRatio Aspect ratio, defined as view space width divided by height.
     ///                        Determines the vertical field of view.
     /// @param[in] zNear       Distance to the near plane.
     /// @param[in] zFar		   Distance to the far plane.
-    /// @param[in] positiveZ   If true the matrix will project geometry as if its looking
-    ///                        along the positive Z axis. Otherwise it projects along the negative
-    ///                        Z axis (default).
+    /// @param[in] positiveZ   If true the matrix will project geometry as if its looking along the positive Z axis.
+    ///                        Otherwise it projects along the negative Z axis (default).
     /// @remark
     ///     For typical usage, @b zNear is less than @b zFar. <br/>
     ///     However, if you flip these values so @b zFar is
