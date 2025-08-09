@@ -210,6 +210,37 @@ public:
 
     ///@}
 
+    ///@{
+
+    /// @brief Builds a view matrix for a right-handed coordinate.
+    ///
+    /// Builds a view matrix for a right-handed coordinate system using a camera position,
+    /// an up direction, and a reference point to look at.
+    ///
+    /// @pre The <b>upVector</b> vector must not be parallel to the line of sight from the
+    ///       camera position to the reference point.
+    /// @param [in] position Position of the camera.
+    /// @param [in] target   Position of the reference point to look at.
+    /// @param [in] upVector Up direction of the camera.
+    static [[nodiscard]] Mat4 CreateViewLookAt(const Vec3& position,
+                                               const Vec3& target,
+                                               const Vec3& upVector) noexcept;
+
+    /// @brief Builds a view matrix for a right-handed coordinate.
+    ///
+    ///  Builds a view matrix for a right-handed coordinate system using a camera position,
+    ///  an up direction, and a camera direction.
+    ///
+    /// @pre The <b>upVector</b> vector must not be parallel to the line of sight from the
+    ///      camera position to the reference point.
+    /// @param [in] position  Position of the camera.
+    /// @param [in] direction Direction of the camera.
+    /// @param [in] upVector  Up direction of the camera.
+    static [[nodiscard]] Mat4 CreateViewLookTo(const Vec3& position,
+                                               const Vec3& direction,
+                                               const Vec3& upVector) noexcept;
+    ///@}
+
     /// @name Projection
     ///@{
 

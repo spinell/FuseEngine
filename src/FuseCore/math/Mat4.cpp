@@ -161,6 +161,88 @@ Mat4 Mat4::CreateRotation(Angle angle, const Vec3& aaxis) noexcept {
 }
 
 // ======================================================
+//                   View matrix
+// ======================================================
+
+Mat4 Mat4::CreateViewLookAt(const Vec3& position,
+                            const Vec3& target,
+                            const Vec3& upVector) noexcept {
+    // View matrix
+    //   Rx  Ry  Rz -Tx
+    //   Ux  Uy  Uz -Ty
+    //  -Dx -Dy -Dz -Tz
+    //    0  0   0   1
+    //
+    // Where:
+    //	R => the right vector (x-axis)
+    //	U => the up vector (y-axis)
+    //	D => the direction vector (z-axis)
+    //	T => the translation vector
+    //
+    const auto zAxis = (target - position).normalized();
+    const auto xAxis = zAxis.crossRH(upVector).normalize();
+    const auto yAxis = zAxis.crossRH(xAxis).normalize();
+
+    const auto tx = -xAxis.dot(position);
+    const auto ty = -yAxis.dot(position);
+    const auto tz = zAxis.dot(position);
+
+    Mat4 mat = Mat4::kIdentity;
+    // clang-format off
+    mat(0, 0) =  xAxis.x; mat(0, 1) =  xAxis.y; mat(0, 2) =  xAxis.z; mat(0, 3) = tx;
+    mat(1, 0) =  yAxis.x; mat(1, 1) =  yAxis.y; mat(1, 2) =  yAxis.z; mat(1, 3) = ty;
+    mat(2, 0) = -zAxis.x; mat(2, 1) = -zAxis.y; mat(2, 2) = -zAxis.z; mat(2, 3) = tz;
+    mat(3, 0) = 0.0f;     mat(3, 1) = 0.0f;     mat(3, 2) = 0.0f;     mat(3, 3) = 1.0f;
+    // clang-format on
+    return mat;
+}
+
+Mat4 Mat4::CreateViewLookTo(const Vec3& position,
+                            const Vec3& direction,
+                            const Vec3& upVector) noexcept {
+    const Vec3 directionNorm = direction.normalized();
+
+    // compute the right vector (view x-axis) from the pUpVector. We need to normalized
+    // here because pUpVector is maybe not be a unit vector.
+    const auto right = directionNorm.crossRH(upVector).normalized();
+
+    // compute the new up vector (view y-axis) of the view matrix.
+    // we can't use the pUpVector here because we need a up vector that is perpandicular to
+    // direction and right.
+    //
+    // Note: direction and right are already normalized, so don't need to normalize up.
+    const Vec3 up = right.crossRH(directionNorm);
+
+    // conpute the translation
+    const auto tx = -right.dot(position);
+    const auto ty = -up.dot(position);
+    const auto tz = directionNorm.dot(position);
+
+    // ==============================================================
+    // Create the view matrix
+    //
+    //  Rx  Ry  Rz -Tx
+    //  Ux  Uy  Uz -Ty
+    // -Dx -Dy -Dz -Tz
+    //   0  0   0   1
+    //
+    // Where:
+    //	R => is the right vector (x-axis)
+    //	U => is the up vector (y-axis)
+    //	D => is the direction vector (z-axis)
+    //	T => is the translation vector
+    //
+    Mat4 matrix;
+    // clang-format off
+    matrix(0, 0) = right.x;      matrix(0, 1) = right.y;      matrix(0, 2) = right.z;      matrix(0, 3) = tx;
+    matrix(1, 0) = up.x;         matrix(1, 1) = up.y;         matrix(1, 2) = up.z;         matrix(1, 3) = ty;
+    matrix(2, 0) = -direction.x; matrix(2, 1) = -direction.y; matrix(2, 2) = -direction.z; matrix(2, 3) = tz;
+    matrix(3, 0) = 0.0f;         matrix(3, 1) = 0.0f;         matrix(3, 2) = 0.0f;         matrix(3, 3) = 1.0f;
+    // clang-format on
+    return matrix;
+}
+
+// ======================================================
 //                  Projection matrix
 // ======================================================
 

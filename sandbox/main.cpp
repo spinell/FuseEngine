@@ -62,12 +62,13 @@ const char* vertexShaderSource = R"(
     out vec4 outColor;
 
     uniform mat4 proj;
+    uniform mat4 view;
     uniform mat4 transform;
 
     void main()
     {
         outColor = aColor;
-        gl_Position = proj * transform * vec4(aPos, 1.0f);
+        gl_Position = proj * view * transform * vec4(aPos, 1.0f);
     }
 )";
 
@@ -185,24 +186,23 @@ int main() {
         glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //fuse::Mat4 proj        = fuse::Mat4::CreateProjectionOrthographic(20, 20, -1, 1);
-        //fuse::Mat4 proj = fuse::Mat4::CreateProjectionPerspectiveOffCenter(-2, 2, -2, 2, 0.1f, 25.0f);
-        fuse::Mat4 proj1 =
+        fuse::Mat4 proj =
           fuse::Mat4::CreateProjectionPerspectiveFOVX(fuse::degrees(45.f), 4 / 3.f, 0.1f, 1000.f);
-        fuse::Mat4 proj2 =
-          fuse::Mat4::CreateProjectionPerspectiveFOVY(fuse::degrees(45.f), 4 / 3.f, 0.1f, 1000.f);
+        fuse::Mat4 view =
+          fuse::Mat4::CreateViewLookTo(fuse::Vec3(0,20,40), fuse::Vec3(0,0,-5), fuse::Vec3::kAxisY);
 
         fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
         fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
         fuse::Mat4 rotation    = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * delta, fuse::Vec3(1,1,0));
-        //fuse::Mat4 transform   = rotation * translation * scale;
         fuse::Mat4 transform = translation * rotation * scale;
-        //transform.transpose();
         unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
 
+        unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+        glUniformMatrix4fv(viewLoc, 1, GL_TRUE /*transpose*/, view.ptr());
+
         unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
-        glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj2.ptr());
+        glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
 
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
