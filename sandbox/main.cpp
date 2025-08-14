@@ -1,3 +1,6 @@
+#include "Camera.h"
+#include "Timer.h"
+
 #include <FuseCore/math/Angle.h>
 #include <FuseCore/math/Mat4.h>
 
@@ -84,9 +87,11 @@ const char* fragmentShaderSource = R"(
     }
 )";
 
+Camera camera;
+
 int main() {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-
+    fuse::GameTimer timer;
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
@@ -167,10 +172,9 @@ int main() {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
-    unsigned int lastTime    = SDL_GetTicks();
-    unsigned int currentTime = SDL_GetTicks();
-    float        delta       = 0;
-    bool         done        = false;
+
+    bool done = false;
+    timer.reset();
     while (!done) {
         SDL_Event event{};
         while (SDL_PollEvent(&event)) {
@@ -180,24 +184,78 @@ int main() {
             if (event.type == SDL_EVENT_WINDOW_RESIZED) {
                 auto& windowEvent = event.window;
                 glViewport(0, 0, windowEvent.data1, windowEvent.data2);
+                camera.setAspectRatio(windowEvent.data1 / (float)windowEvent.data2);
+            }
+            if (event.type == SDL_EVENT_MOUSE_MOTION) {
+                auto& motionEvent = event.motion;
+                // Make each pixel correspond to a 1/8 of a degree.
+                auto dx = fuse::degrees(0.125f) * motionEvent.xrel; // rotation around local Up
+                auto dy = fuse::degrees(0.125f) * motionEvent.yrel; // rotation around local right
+                camera.pitch(-dy);
+                camera.yaw(-dx);
+            }
+            if (event.type == SDL_EVENT_KEY_DOWN) {
+                auto& keyEvent = event.key;
+                if (keyEvent.key == SDLK_A) {
+                    auto pos = camera.getPosition();
+                    pos -= camera.getRight() * 2;
+                    camera.setPosition(pos);
+                }
+                if (keyEvent.key == SDLK_D) {
+                    auto pos = camera.getPosition();
+                    pos += camera.getRight() * 2;
+                    camera.setPosition(pos);
+                }
+                if (keyEvent.key == SDLK_W) {
+                    auto pos = camera.getPosition();
+                    pos += camera.getDirection() * 2;
+                    camera.setPosition(pos);
+                }
+                if (keyEvent.key == SDLK_S) {
+                    auto pos = camera.getPosition();
+                    pos -= camera.getDirection() * 2;
+                    camera.setPosition(pos);
+                }
+                if (keyEvent.key == SDLK_Q) {
+                    auto pos = camera.getPosition();
+                    pos += fuse::Vec3::kAxisY;
+                    camera.setPosition(pos);
+                }
+                if (keyEvent.key == SDLK_E) {
+                    auto pos = camera.getPosition();
+                    pos += fuse::Vec3::kAxisYNeg;
+                    camera.setPosition(pos);
+                }
+                if (keyEvent.key == SDLK_P) {
+                    timer.stop();
+                }
+                if (keyEvent.key == SDLK_O) {
+                    timer.start();
+                }
+                if (keyEvent.key == SDLK_I) {
+                    timer.reset();
+                }
             }
         }
+        timer.tick();
+
         glClearColor(.2, .2, .2, 1);
         glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        fuse::Mat4 proj =
-          fuse::Mat4::CreateProjectionPerspectiveFOVX(fuse::degrees(45.f), 4 / 3.f, 0.1f, 1000.f);
-        fuse::Mat4 view =
-          fuse::Mat4::CreateViewLookTo(fuse::Vec3(0,20,40), fuse::Vec3(0,0,-5), fuse::Vec3::kAxisY);
-
         fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
         fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
-        fuse::Mat4 rotation    = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * delta, fuse::Vec3(1,1,0));
-        fuse::Mat4 transform = translation * rotation * scale;
+        fuse::Mat4 rotation =
+          fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * timer.totalTime(), fuse::Vec3(1, 1, 0));
+        fuse::Mat4   transform    = translation * rotation * scale;
         unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
 
+        //
+        // update camera
+        //
+        fuse::Mat4   proj    = camera.getProjMatrix();
+        fuse::Mat4   view    = camera.getViewMatrix();
         unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_TRUE /*transpose*/, view.ptr());
 
@@ -210,11 +268,8 @@ int main() {
 
         SDL_GL_SwapWindow(window);
 
-        currentTime = SDL_GetTicks();
-        if (currentTime > lastTime + 1000) {
-            lastTime = currentTime;
-            delta++;
-        }
+
+        std::println("total {} elapsed {}", timer.totalTime(), timer.deltaTime());
     }
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
