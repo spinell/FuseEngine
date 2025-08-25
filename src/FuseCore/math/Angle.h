@@ -44,7 +44,7 @@ namespace fuse {
 class Angle final {
 public:
     /// @brief Constant for angle with value 0.
-    static const Angle Zero;
+    static const Angle kZero;
 
     /// @brief Default contructor.
     /// Create a angle of 0 degree.
@@ -139,7 +139,7 @@ private:
     float mValue{};
 };
 
-inline constexpr Angle Angle::Zero;
+inline constexpr Angle Angle::kZero;
 
 /// @brief Create a new Angle from a value in degree.
 /// @param degree The value in degree used to create the angle.

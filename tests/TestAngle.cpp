@@ -134,7 +134,7 @@ TEST(Angle, wrap) {
 }
 
 TEST(Angle, wrapSigned) {
-    EXPECT_THAT(Angle::Zero.wrapSigned(), fuse::degrees(0.F));
+    EXPECT_THAT(Angle::kZero.wrapSigned(), fuse::degrees(0.F));
 
     // test positive angle in step of 45 fuse::degrees
     EXPECT_THAT(fuse::degrees(45.F).wrapSigned(), Eq(fuse::degrees(45.F)));

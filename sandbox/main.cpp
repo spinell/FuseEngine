@@ -14,7 +14,7 @@ namespace {
 
 
 // clang-format off
-constexpr float vertices[] = {
+constexpr float kVertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // back
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -61,7 +61,7 @@ constexpr float vertices[] = {
 
 // clang-format on
 
-constexpr const char* vertexShaderSource = R"(
+constexpr const char* kVertexShaderSource = R"(
     #version 330 core
     layout (location = 0) in  vec3 aPos;
     layout (location = 1) in  vec4 aColor;
@@ -78,7 +78,7 @@ constexpr const char* vertexShaderSource = R"(
     }
 )";
 
-constexpr const char* fragmentShaderSource = R"(
+constexpr const char* kFragmentShaderSource = R"(
     #version 330 core
     in  vec4 outColor;
 
@@ -89,7 +89,6 @@ constexpr const char* fragmentShaderSource = R"(
         FragColor = outColor;
     }
 )";
-
 
 } // namespace
 
@@ -132,7 +131,7 @@ int main() {
 
     unsigned int vertexShader = 0;
     vertexShader              = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
+    glShaderSource(vertexShader, 1, &kVertexShaderSource, nullptr);
     glCompileShader(vertexShader);
     int  success{};
     char infoLog[512];
@@ -144,7 +143,7 @@ int main() {
 
     unsigned int fragmentShader = 0;
     fragmentShader              = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
+    glShaderSource(fragmentShader, 1, &kFragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
@@ -165,14 +164,14 @@ int main() {
     }
     glUseProgram(shaderProgram);
 
-    unsigned int VBO = 0;
-    glGenBuffers(1, &VBO);
+    unsigned int vbo = 0;
+    glGenBuffers(1, &vbo);
 
-    unsigned int VAO = 0;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    unsigned int vao = 0;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(kVertices), kVertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(20));
     glEnableVertexAttribArray(0);
@@ -269,7 +268,7 @@ int main() {
         glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
 
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+        glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         SDL_GL_SwapWindow(window);
