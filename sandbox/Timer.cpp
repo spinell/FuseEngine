@@ -22,7 +22,8 @@ float GameTimer::totalTime() const noexcept {
     // ----*---------------*-----------------*------------*------------*------> time
     //  mBaseTime       mStopTime        startTime     mStopTime    mCurrTime
     if (mStopped) {
-        return (mStopTime - mPausedTime - mBaseTime) * mSecondsPerCount;
+        return static_cast<float>(static_cast<double>(mStopTime - mPausedTime - mBaseTime) *
+                                  mSecondsPerCount);
     } else {
         // The distance mCurrTime - mBaseTime includes paused time,
         // which we do not want to count.  To correct this, we can subtract
@@ -33,7 +34,8 @@ float GameTimer::totalTime() const noexcept {
         //                     |<--paused time-->|
         // ----*---------------*-----------------*------------*------> time
         //  mBaseTime       mStopTime        startTime     mCurrTime
-        return (mCurrTime - mPausedTime - mBaseTime) * mSecondsPerCount;
+        return static_cast<float>(static_cast<double>(mCurrTime - mPausedTime - mBaseTime) *
+                                  mSecondsPerCount);
     }
 }
 
@@ -83,7 +85,7 @@ void GameTimer::tick() noexcept {
     mCurrTime           = currTime;
 
     // Time difference between this frame and the previous.
-    mDeltaTime = (mCurrTime - mPrevTime) * mSecondsPerCount;
+    mDeltaTime = static_cast<double>(mCurrTime - mPrevTime) * mSecondsPerCount;
 
     // Prepare for next frame.
     mPrevTime = mCurrTime;

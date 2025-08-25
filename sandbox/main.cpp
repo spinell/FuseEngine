@@ -189,7 +189,7 @@ int main() {
             if (event.type == SDL_EVENT_WINDOW_RESIZED) {
                 auto& windowEvent = event.window;
                 glViewport(0, 0, windowEvent.data1, windowEvent.data2);
-                camera.setAspectRatio(windowEvent.data1 / (float)windowEvent.data2);
+                camera.setAspectRatio((float)windowEvent.data1 / (float)windowEvent.data2);
             }
             if (event.type == SDL_EVENT_MOUSE_MOTION) {
                 auto& motionEvent = event.motion;
@@ -252,19 +252,19 @@ int main() {
         const fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
         const fuse::Mat4 rotation =
           fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * timer.totalTime(), fuse::Vec3(1, 1, 0));
-        fuse::Mat4         transform    = translation * rotation * scale;
-        const unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        fuse::Mat4  transform    = translation * rotation * scale;
+        const GLint transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
 
         //
         // update camera
         //
-        fuse::Mat4         proj    = camera.getProjMatrix();
-        fuse::Mat4         view    = camera.getViewMatrix();
-        const unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+        fuse::Mat4  proj    = camera.getProjMatrix();
+        fuse::Mat4  view    = camera.getViewMatrix();
+        const GLint viewLoc = glGetUniformLocation(shaderProgram, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_TRUE /*transpose*/, view.ptr());
 
-        const unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
+        const GLint projLoc = glGetUniformLocation(shaderProgram, "proj");
         glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
 
         glUseProgram(shaderProgram);
