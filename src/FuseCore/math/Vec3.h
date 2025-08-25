@@ -39,7 +39,7 @@ public:
         , y(y)
         , z(z) {}
 
-    constexpr bool [[nodiscard]] operator==(const Vec3 & rhs) const noexcept = default;
+    [[nodiscard]] constexpr bool operator==(const Vec3 & rhs) const noexcept = default;
 
     /// @brief Negates the vector, flipping the sign of each component.
     /// @return A new Vec3 with each component negated.

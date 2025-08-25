@@ -179,7 +179,7 @@ public:
     constexpr Mat4& transpose() noexcept;
 
     /// @brief Return the tranpose of this matrix.
-    constexpr [[nodiscard]] Mat4 transposed() const noexcept;
+    [[nodiscard]] constexpr Mat4 transposed() const noexcept;
 
     [[nodiscard]] float* ptr() noexcept { return reinterpret_cast<float*>(mData); }
 
@@ -191,22 +191,22 @@ public:
     ///@{
 
     /// @brief Create a 4x4 translation matrix.
-    static [[nodiscard]] Mat4 CreateTranslation(const Vec3& translation) noexcept;
+    [[nodiscard]] static Mat4 CreateTranslation(const Vec3& translation) noexcept;
 
     /// @brief Create a 4x4 sclaing matrix.
-    static [[nodiscard]] Mat4 CreateScaling(const Vec3& scale) noexcept;
+    [[nodiscard]] static Mat4 CreateScaling(const Vec3& scale) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around x-axis.
-    static [[nodiscard]] Mat4 CreateRotationX(const Angle& angle) noexcept;
+    [[nodiscard]] static Mat4 CreateRotationX(const Angle& angle) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around y-axis.
-    static [[nodiscard]] Mat4 CreateRotationY(const Angle& angle) noexcept;
+    [[nodiscard]] static Mat4 CreateRotationY(const Angle& angle) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around z-axis.
-    static [[nodiscard]] Mat4 CreateRotationZ(const Angle& angle) noexcept;
+    [[nodiscard]] static Mat4 CreateRotationZ(const Angle& angle) noexcept;
 
     /// @brief Create a 4x4 rotation matrix from a angle and an axis.
-    static [[nodiscard]] Mat4 CreateRotation(Angle angle, const Vec3& axis) noexcept;
+    [[nodiscard]] static Mat4 CreateRotation(Angle angle, const Vec3& axis) noexcept;
 
     ///@}
 
@@ -222,7 +222,7 @@ public:
     /// @param [in] position Position of the camera.
     /// @param [in] target   Position of the reference point to look at.
     /// @param [in] upVector Up direction of the camera.
-    static [[nodiscard]] Mat4 CreateViewLookAt(const Vec3& position,
+    [[nodiscard]] static Mat4 CreateViewLookAt(const Vec3& position,
                                                const Vec3& target,
                                                const Vec3& upVector) noexcept;
 
@@ -236,7 +236,7 @@ public:
     /// @param [in] position  Position of the camera.
     /// @param [in] direction Direction of the camera.
     /// @param [in] upVector  Up direction of the camera.
-    static [[nodiscard]] Mat4 CreateViewLookTo(const Vec3& position,
+    [[nodiscard]] static Mat4 CreateViewLookTo(const Vec3& position,
                                                const Vec3& direction,
                                                const Vec3& upVector) noexcept;
     ///@}
@@ -249,7 +249,7 @@ public:
     /// This function is the equivalent of
     /// <b>CreateProjectionOrthographicOffCenter(-width/2, width/2, -height/2, height/2, near, far)</b>
     /// @see CreateProjectionOrthographicOffCenter()
-    static [[nodiscard]] Mat4 CreateProjectionOrthographic(float width,
+    [[nodiscard]] static Mat4 CreateProjectionOrthographic(float width,
                                                            float height,
                                                            float near = -1.0F,
                                                            float far  = 1.0F) noexcept;
@@ -270,7 +270,7 @@ public:
     /// @param far    The distances to the farther depth clipping plane.
     ///               This distance is negative if the plane is to be behind the viewer.
     /// @return The projection matrix.
-    static [[nodiscard]] Mat4 CreateProjectionOrthographicOffCenter(float left,
+    [[nodiscard]] static Mat4 CreateProjectionOrthographicOffCenter(float left,
                                                                     float right,
                                                                     float bottom,
                                                                     float top,
@@ -292,7 +292,7 @@ public:
     ///     However, if you flip these values so @b zFar is
     ///     less than @b zNear, the result is an inverted z buffer which can provide increased
     ///     floating-point precision.
-    static [[nodiscard]] Mat4 CreateProjectionPerspectiveOffCenter(float left,
+    [[nodiscard]] static Mat4 CreateProjectionPerspectiveOffCenter(float left,
                                                                    float right,
                                                                    float bottom,
                                                                    float top,
@@ -311,7 +311,7 @@ public:
     ///     However, if you flip these values so @b zFar is
     ///     less than @b zNear, the result is an inverted z buffer which can provide increased
     ///     floating-point precision.
-    static [[nodiscard]] Mat4 CreateProjectionPerspectiveFOVX(const Angle& fovx,
+    [[nodiscard]] static Mat4 CreateProjectionPerspectiveFOVX(const Angle& fovx,
                                                               float        aspectRatio,
                                                               float        zNear,
                                                               float        zFar);
@@ -328,7 +328,7 @@ public:
     ///     However, if you flip these values so @b zFar is
     ///     less than @b zNear, the result is an inverted z buffer which can provide increased
     ///     floating-point precision.
-    static [[nodiscard]] Mat4 CreateProjectionPerspectiveFOVY(const Angle& fovY,
+    [[nodiscard]] static Mat4 CreateProjectionPerspectiveFOVY(const Angle& fovY,
                                                               float        aspectRatio,
                                                               float        zNear,
                                                               float        zFar);
