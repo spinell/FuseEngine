@@ -14,7 +14,7 @@ namespace {
 
 
 // clang-format off
-float vertices[] = {
+constexpr float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // back
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -61,7 +61,7 @@ float vertices[] = {
 
 // clang-format on
 
-const char* vertexShaderSource = R"(
+constexpr const char* vertexShaderSource = R"(
     #version 330 core
     layout (location = 0) in  vec3 aPos;
     layout (location = 1) in  vec4 aColor;
@@ -78,7 +78,7 @@ const char* vertexShaderSource = R"(
     }
 )";
 
-const char* fragmentShaderSource = R"(
+constexpr const char* fragmentShaderSource = R"(
     #version 330 core
     in  vec4 outColor;
 
@@ -90,11 +90,12 @@ const char* fragmentShaderSource = R"(
     }
 )";
 
-Camera camera;
 
 } // namespace
 
 int main() {
+    Camera camera;
+
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
     fuse::GameTimer timer;
 

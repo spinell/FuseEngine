@@ -19,7 +19,6 @@ Checks:  clang-analyzer-*,
         -cppcoreguidelines-avoid-magic-numbers,
         -cppcoreguidelines-avoid-c-arrays,
         -cppcoreguidelines-avoid-const-or-ref-data-members,
-        -cppcoreguidelines-avoid-non-const-global-variables,
         -cppcoreguidelines-pro-bounds-constant-array-index,
         -cppcoreguidelines-pro-bounds-pointer-arithmetic,               
         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
@@ -32,7 +31,6 @@ Checks:  clang-analyzer-*,
          concurrency-*,
          bugprone-*,
         -bugprone-easily-swappable-parameters,
-        -bugprone-narrowing-conversions,
         -bugprone-exception-escape
 
 
