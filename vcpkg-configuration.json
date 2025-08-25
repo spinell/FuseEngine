@@ -12,6 +12,6 @@
       "name": "microsoft"
     }
   ],
-  "overlay-ports": [],
+  "overlay-ports": [ "misc/vcpkg/overlay" ],
   "overlay-triplets": []
 }
