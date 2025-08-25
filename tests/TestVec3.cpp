@@ -469,15 +469,15 @@ TEST(Vec3, perpenticularOnto) {
 
 TEST(Vec3, ptr) {
     // const version
-    const auto v   = Vec3(3.F, 4.F, 0.F);
-    auto       ptr = v.ptr();
+    const auto  v   = Vec3(3.F, 4.F, 0.F);
+    const auto* ptr = v.ptr();
     EXPECT_FLOAT_EQ(ptr[0], 3.F);
     EXPECT_FLOAT_EQ(ptr[1], 4.F);
     EXPECT_FLOAT_EQ(ptr[2], 0.F);
 
     // non const version
-    auto       v2   = Vec3(3.F, 4.F, 0.F);
-    const auto ptr2 = v2.ptr();
+    auto        v2   = Vec3(3.F, 4.F, 0.F);
+    const auto* ptr2 = v2.ptr();
     EXPECT_FLOAT_EQ(ptr2[0], 3.F);
     EXPECT_FLOAT_EQ(ptr2[1], 4.F);
     EXPECT_FLOAT_EQ(ptr2[2], 0.F);
