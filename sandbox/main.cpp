@@ -10,8 +10,11 @@
 
 #include <print>
 
+namespace {
+
+
 // clang-format off
-    float vertices[] = {
+float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // back
          0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -89,6 +92,8 @@ const char* fragmentShaderSource = R"(
 
 Camera camera;
 
+} // namespace
+
 int main() {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
     fuse::GameTimer timer;
@@ -125,7 +130,7 @@ int main() {
     }
 
     unsigned int vertexShader = 0;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    vertexShader              = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
     int  success{};
@@ -137,7 +142,7 @@ int main() {
     }
 
     unsigned int fragmentShader = 0;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    fragmentShader              = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
@@ -147,7 +152,7 @@ int main() {
     }
 
     unsigned int shaderProgram = 0;
-    shaderProgram = glCreateProgram();
+    shaderProgram              = glCreateProgram();
 
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
@@ -247,15 +252,15 @@ int main() {
         const fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
         const fuse::Mat4 rotation =
           fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * timer.totalTime(), fuse::Vec3(1, 1, 0));
-        fuse::Mat4   transform    = translation * rotation * scale;
+        fuse::Mat4         transform    = translation * rotation * scale;
         const unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
 
         //
         // update camera
         //
-        fuse::Mat4   proj    = camera.getProjMatrix();
-        fuse::Mat4   view    = camera.getViewMatrix();
+        fuse::Mat4         proj    = camera.getProjMatrix();
+        fuse::Mat4         view    = camera.getViewMatrix();
         const unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_TRUE /*transpose*/, view.ptr());
 

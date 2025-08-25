@@ -13,9 +13,11 @@ using fuse::Vec3;
 using fuse::Vec4;
 using namespace testing;
 
-MATCHER_P(almostEquals, rhs, "") {
-    return arg.isAlmostEquals(rhs);
-}
+namespace {
+
+MATCHER_P(almostEquals, rhs, "") { return arg.isAlmostEquals(rhs); }
+
+} // namespace
 
 TEST(Mat4, constant) {
     EXPECT_EQ(Mat4::kZero(0, 0), 0);
