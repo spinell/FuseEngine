@@ -243,12 +243,12 @@ int main() {
         glEnable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
-        fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
-        fuse::Mat4 rotation =
+        const fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
+        const fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
+        const fuse::Mat4 rotation =
           fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * timer.totalTime(), fuse::Vec3(1, 1, 0));
         fuse::Mat4   transform    = translation * rotation * scale;
-        unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
+        const unsigned int transformLoc = glGetUniformLocation(shaderProgram, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
 
         //
@@ -256,10 +256,10 @@ int main() {
         //
         fuse::Mat4   proj    = camera.getProjMatrix();
         fuse::Mat4   view    = camera.getViewMatrix();
-        unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+        const unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_TRUE /*transpose*/, view.ptr());
 
-        unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
+        const unsigned int projLoc = glGetUniformLocation(shaderProgram, "proj");
         glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
 
         glUseProgram(shaderProgram);

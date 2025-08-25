@@ -37,7 +37,7 @@ TEST(Vec4, ctor_from_components) {
 
 TEST(Vec4, add_vec_and_assign) {
     Vec4  v(1, 2, 3, 4);
-    Vec4& r = v += Vec4(10, 20, 30, 40);
+    const Vec4& r = v += Vec4(10, 20, 30, 40);
 
     EXPECT_FLOAT_EQ(v.x, 11.f);
     EXPECT_FLOAT_EQ(v.y, 22.f);
@@ -52,7 +52,7 @@ TEST(Vec4, add_vec_and_assign) {
 
 TEST(Vec4, sub_vec_and_assign) {
     Vec4  v(1, 2, 3, 4);
-    Vec4& r = v -= Vec4(10, 20, 30, 40);
+    const Vec4& r = v -= Vec4(10, 20, 30, 40);
 
     EXPECT_FLOAT_EQ(v.x, -9.f);
     EXPECT_FLOAT_EQ(v.y, -18.f);
@@ -67,7 +67,7 @@ TEST(Vec4, sub_vec_and_assign) {
 
 TEST(Vec4, mul_scalar_and_assign) {
     Vec4  v(1, 2, 3, 4);
-    Vec4& r = v *= 2.f;
+    const Vec4& r = v *= 2.f;
 
     EXPECT_FLOAT_EQ(v.x, 2.f);
     EXPECT_FLOAT_EQ(v.y, 4.f);
@@ -82,7 +82,7 @@ TEST(Vec4, mul_scalar_and_assign) {
 
 TEST(Vec4, div_scalar_and_assign) {
     Vec4  v(10, 20, 30, 40);
-    Vec4& r = v /= 2.f;
+    const Vec4& r = v /= 2.f;
 
     EXPECT_FLOAT_EQ(v.x, 5.f);
     EXPECT_FLOAT_EQ(v.y, 10.f);
