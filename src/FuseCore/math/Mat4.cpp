@@ -78,7 +78,7 @@ Mat4 Mat4::inversed() const noexcept {
     const float d23 = -(v4 * m00 - v2 * m01 + v0 * m03) * invDet;
     const float d33 = +(v3 * m00 - v1 * m01 + v0 * m02) * invDet;
 
-    return Mat4(d00, d01, d02, d03, d10, d11, d12, d13, d20, d21, d22, d23, d30, d31, d32, d33);
+    return {d00, d01, d02, d03, d10, d11, d12, d13, d20, d21, d22, d23, d30, d31, d32, d33};
 }
 
 // =========================================================
