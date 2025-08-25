@@ -36,7 +36,7 @@ private:
     fuse::Vec3 mUp{fuse::Vec3::kAxisY};
 
     fuse::Angle mYaw{fuse::degrees(-90.0f)};
-    fuse::Angle mPitch{};
+    fuse::Angle mPitch;
     fuse::Angle mFieldOfView{fuse::degrees(45.0f)};
     float       mAspectRatio{4.f / 3.f};
     float       mZNear{0.1f};
