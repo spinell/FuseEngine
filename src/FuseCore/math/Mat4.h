@@ -165,12 +165,12 @@ public:
     /// @brief Return the inverse of this matrix
     [[nodiscard]] Mat4 inversed() const noexcept;
 
-    constexpr Vec4 getCol(unsigned col) const {
+    [[nodiscard]] constexpr Vec4 getCol(unsigned col) const {
         assert(col < kNbCol);
         return {mData[0][col], mData[1][col], mData[2][col], mData[3][col]};
     }
 
-    constexpr Vec4 getRow(unsigned row) const {
+    [[nodiscard]] constexpr Vec4 getRow(unsigned row) const {
         assert(row < kNbRow);
         return {mData[row][0], mData[row][1], mData[row][2], mData[row][3]};
     }

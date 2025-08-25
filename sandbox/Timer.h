@@ -11,11 +11,11 @@ public:
 
     /// @brief Get the elapsed time since the last call to reset() without counting the time in pause.
     /// @return The elapsed time in second.
-    float totalTime() const noexcept;
+    [[nodiscard]] float totalTime() const noexcept;
 
     /// @brief Get the elapsed time since the last call to tick()
     /// @return The elapsed time in second.
-    float deltaTime() const noexcept;
+    [[nodiscard]] float deltaTime() const noexcept;
 
     /// @brief Reset the timer.
     void reset() noexcept;
