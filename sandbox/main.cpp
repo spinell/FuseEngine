@@ -124,7 +124,7 @@ int main() {
         return -1;
     }
 
-    unsigned int vertexShader;
+    unsigned int vertexShader = 0;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, nullptr);
     glCompileShader(vertexShader);
@@ -136,7 +136,7 @@ int main() {
         std::println("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n {}\n", infoLog);
     }
 
-    unsigned int fragmentShader;
+    unsigned int fragmentShader = 0;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, nullptr);
     glCompileShader(fragmentShader);
@@ -146,7 +146,7 @@ int main() {
         std::println("ERROR::SHADER::PIXEL::COMPILATION_FAILED\n {}\n", infoLog);
     }
 
-    unsigned int shaderProgram;
+    unsigned int shaderProgram = 0;
     shaderProgram = glCreateProgram();
 
     glAttachShader(shaderProgram, vertexShader);
@@ -159,10 +159,10 @@ int main() {
     }
     glUseProgram(shaderProgram);
 
-    unsigned int VBO;
+    unsigned int VBO = 0;
     glGenBuffers(1, &VBO);
 
-    unsigned int VAO;
+    unsigned int VAO = 0;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
