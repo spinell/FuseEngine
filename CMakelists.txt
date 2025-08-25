@@ -26,6 +26,7 @@ project(FuseEngine
 include(CMakeDependentOption)
 cmake_dependent_option(FUSE_BUILD_TESTS "Build tests" ON PROJECT_IS_TOP_LEVEL OFF)
 cmake_dependent_option(FUSE_BUILD_TESTS "Build sandbox" ON PROJECT_IS_TOP_LEVEL OFF)
+cmake_dependent_option(FUSE_BUILD_DOC   "Build doxygen documentation" ON PROJECT_IS_TOP_LEVEL OFF)
 
 
 add_subdirectory(src)
@@ -44,6 +45,13 @@ if(FUSE_BUILD_TESTS)
     add_subdirectory(tests)
 else()
     message(STATUS "Skipping tests")
+endif()
+
+if(FUSE_BUILD_DOC)
+    message(STATUS "Building documentation.")
+    add_subdirectory(docs)
+else()
+    message(STATUS "Skipping documentation")
 endif()
 
 # Add a custom target to run clang-format on all source files
