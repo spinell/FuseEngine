@@ -7,6 +7,9 @@ add_executable(TestFuseCore
     TestVec3.cpp
     TestVec4.cpp
     TestMat4.cpp
+    TestEnumFlags.cpp
+    TestEnum.cpp
+    TestGetTypeName.cpp
 )
 
 target_link_libraries(TestFuseCore

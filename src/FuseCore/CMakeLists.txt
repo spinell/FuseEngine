@@ -8,6 +8,12 @@ target_sources(FuseCore
         math/Vec3.h
         math/Mat4.h
         math/Vec4.h
+        utils/TypeTraits.h
+        utils/EnumUtils.h
+        utils/EnumUtils.inc.h
+        utils/EnumFlags.h
+        utils/GetTypeName.h
+        utils/GetTypeName.inc.h
 )
 
 target_include_directories(FuseCore

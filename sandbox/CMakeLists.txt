@@ -4,15 +4,15 @@ find_package(OpenGL REQUIRED)
 
 add_executable(sandbox
     main.cpp
+    Application.h
+    Application.cpp
     Camera.h
     Camera.cpp
-    Timer.cpp
-    Timer.h
 )
 
 target_link_libraries(sandbox
     PUBLIC
-        Fuse::Core
+        Fuse::App
         SDL3::SDL3
         glad::glad
 )

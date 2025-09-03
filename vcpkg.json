@@ -4,12 +4,17 @@
         "gtest",
         "sdl3",
         "glad",
-        "spdlog"
+        "spdlog",
+        {
+            "name": "imgui",
+            "features": ["docking-experimental", "sdl3-binding", "opengl3-binding", "wchar32"]
+        }
     ],
     "overrides": [
         { "name": "gtest", "version": "1.17.0",  "port-version": 1 },
         { "name": "sdl3",  "version": "3.2.18",  "port-version": 0 },
         { "name": "glad",  "version": "0.1.36",  "port-version": 0 },
-        { "name": "spdlog","version": "1.15.3",  "port-version": 0 }
+        { "name": "spdlog","version": "1.15.3",  "port-version": 0 },
+        { "name": "imgui", "version": "1.92.0",  "port-version": 0 }
     ]
 }

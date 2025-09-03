@@ -1,0 +1,67 @@
+#include "Event.h"
+
+#include <format>
+
+namespace fuse {
+
+std::string MouseButtonEvent::toString() const {
+    if (mIsPressed) {
+        return std::format("ButtonPressed: {} ({},{}) click={}",
+                           fuse::toString(mButton),
+                           mMouseX,
+                           mMouseY,
+                           mClick);
+    } else {
+        return std::format("ButtonReleased: {} ({},{})", fuse::toString(mButton), mMouseX, mMouseY);
+    }
+}
+
+std::string MouseMovedEvent::toString() const {
+    std::string str =
+      std::format("MouseMoved: position [{},{}] delta [{},{}]", mPosX, mPosY, mDeltaX, mDeltaY);
+
+    if (mButtonState.isAnySet()) {
+        return std::format("{} [{}]", str, fuse::toString(mButtonState));
+
+    } else {
+        return str;
+    }
+}
+
+std::string MouseScrolledEvent::toString() const {
+    return std::format("MouseScrolled: scroll [{},{}] position [{},{}]",
+                       mDeltaX,
+                       mDeltaY,
+                       mMouseX,
+                       mMouseY);
+}
+
+std::string WindowResizedEvent::toString() const {
+    return std::format("WindowResized: {}x{}", mWidth, mHeight);
+}
+
+std::string WindowMovedEvent::toString() const {
+    return std::format("WindowMoved: {},{}", mPosX, mPosY);
+}
+
+std::string KeyPressedEvent::toString() const {
+    const std::string modFormat = mModifier.isAnySet() ? fuse::toString(mModifier) : "";
+
+    return std::format("KeyPressed: key={} scannCode={} repeated={} [{}]",
+                       static_cast<unsigned>(mKeyCode),
+                       static_cast<unsigned>(mScannCode),
+                       mIsRepeated,
+                       modFormat);
+}
+
+std::string KeyReleasedEvent::toString() const {
+    const std::string modFormat = mModifier.isAnySet() ? fuse::toString(mModifier) : "";
+    return std::format("KeyRelesed: key={} scannCode={} [{}]",
+                       static_cast<unsigned>(mKeyCode),
+                       static_cast<unsigned>(mScannCode),
+                       modFormat);
+}
+
+std::string TextInputEvent::toString() const { return std::format("TextInputEvent: {}", mText); }
+
+} // namespace fuse
