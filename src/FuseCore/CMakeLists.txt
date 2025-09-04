@@ -1,6 +1,8 @@
 add_library(FuseCore STATIC)
 add_library(Fuse::Core ALIAS FuseCore)
 
+fuse_set_compiler_warnings(FuseCore)
+
 target_sources(FuseCore
     PRIVATE
         math/Angle.h

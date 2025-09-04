@@ -10,6 +10,8 @@
 #include <string_view>
 
 namespace {
+
+#ifdef TODO
 // from https://wiki.libsdl.org/SDL3/SDL_CreateCursor
 /* XPM */
 constexpr const char* kArrow[] = {
@@ -92,6 +94,8 @@ SDL_Cursor* init_system_cursor(const char* const image[]) {
 
     return SDL_CreateCursor(data, mask, 32, 32, hotX, hotY);
 }
+
+#endif
 
 } // namespace
 

@@ -30,13 +30,13 @@ public:
 
     /// @brief
     /// @param deltaTime
-    virtual void onUpdate(float deltaTime) {};
+    virtual void onUpdate(float /*deltaTime*/) {}
 
     /// @brief
     virtual void onEvent(const Event& event);
 
     /// @brief
-    virtual void onImGui() {};
+    virtual void onImGui() {}
 
 protected:
     /// @brief
@@ -44,7 +44,7 @@ protected:
     virtual bool onInit() { return true; }
 
     /// @brief
-    virtual void onShutdown() {};
+    virtual void onShutdown() {}
 
     GameTimer mTimer; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 

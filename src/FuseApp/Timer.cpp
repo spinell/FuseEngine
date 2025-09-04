@@ -7,7 +7,7 @@ namespace fuse {
 
 GameTimer::GameTimer() noexcept {
     const auto countsPerSec = SDL_GetPerformanceFrequency();
-    mSecondsPerCount        = 1.0 / (double)countsPerSec;
+    mSecondsPerCount        = 1.0 / static_cast<double>(countsPerSec);
 }
 
 // Returns the total time elapsed since Reset() was called, NOT counting any
@@ -39,7 +39,7 @@ float GameTimer::totalTime() const noexcept {
     }
 }
 
-float GameTimer::deltaTime() const noexcept { return (float)mDeltaTime; }
+float GameTimer::deltaTime() const noexcept { return static_cast<float>(mDeltaTime); }
 
 void GameTimer::reset() noexcept {
     const auto currTime = SDL_GetPerformanceCounter();

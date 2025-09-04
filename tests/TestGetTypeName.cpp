@@ -41,14 +41,14 @@ TEST(getTypeFullName, Static) {
     EXPECT_EQ(fuse::getTypeFullName<float>(), "float"sv);
     EXPECT_EQ(fuse::getTypeFullName<double>(), "double"sv);
 
-#if __GNUC__ || __clang__
+#if defined(__GNUC__) || defined(__clang__)
     EXPECT_EQ(fuse::getTypeFullName<Toto>(), "Toto"sv);
     EXPECT_EQ(fuse::getTypeFullName<ns::Toto>(), "ns::Toto"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeFullName<Bar>(), "Bar"sv);
     EXPECT_EQ(fuse::getTypeFullName<UnScopedEnum>(), "UnScopedEnum"sv);
     EXPECT_EQ(fuse::getTypeFullName<ScopedEnum>(), "ScopedEnum"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeFullName<Toto>(), "class Toto"sv);
     EXPECT_EQ(fuse::getTypeFullName<ns::Toto>(), "class ns::Toto"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo>(), "struct Foo"sv);
@@ -57,12 +57,12 @@ TEST(getTypeFullName, Static) {
     EXPECT_EQ(fuse::getTypeFullName<ScopedEnum>(), "enum ScopedEnum"sv);
 #endif
     // qualifier
-#if __GNUC__ || __clang__
+#if defined(__GNUC__) || defined(__clang__)
     EXPECT_EQ(fuse::getTypeFullName<const Foo>(), "const Foo"sv);
     EXPECT_EQ(fuse::getTypeFullName<volatile Foo>(), "volatile Foo"sv);
     EXPECT_EQ(fuse::getTypeFullName<const volatile Foo>(), "const volatile Foo"sv);
     EXPECT_EQ(fuse::getTypeFullName<volatile const Foo>(), "const volatile Foo"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeFullName<const Foo>(), "const struct Foo"sv);
     EXPECT_EQ(fuse::getTypeFullName<volatile Foo>(), "volatile struct Foo"sv);
     EXPECT_EQ(fuse::getTypeFullName<const volatile Foo>(), "volatile const struct Foo"sv);
@@ -71,19 +71,19 @@ TEST(getTypeFullName, Static) {
     //
     // pointer
     //
-#if __clang__
+#if defined(__clang__)
     EXPECT_EQ(fuse::getTypeFullName<Foo*>(), "Foo *"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo**>(), "Foo **"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const>(), "Foo *const"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const*>(), "Foo *const *"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const* const>(), "Foo *const *const"sv);
-#elif __GNUC__
+#elif defined(__GNUC__)
     EXPECT_EQ(fuse::getTypeFullName<Foo*>(), "Foo*"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo**>(), "Foo**"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const>(), "Foo* const"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const*>(), "Foo* const*"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const* const>(), "Foo* const* const"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeFullName<Foo*>(), "struct Foo*"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo**>(), "struct Foo**"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const>(), "struct Foo*const "sv);
@@ -92,19 +92,19 @@ TEST(getTypeFullName, Static) {
 #endif
 
     // ref
-#if __clang__
+#if defined(__clang__)
     EXPECT_EQ(fuse::getTypeFullName<Foo&>(), "Foo &"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo*&>(), "Foo *&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo**&>(), "Foo **&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const* const** const&>(), "Foo *const *const **const &"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo&&>(), "Foo &&"sv);
-#elif __GNUC__
+#elif defined(__GNUC__)
     EXPECT_EQ(fuse::getTypeFullName<Foo&>(), "Foo&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo*&>(), "Foo*&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo**&>(), "Foo**&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo* const* const** const&>(), "Foo* const* const** const&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo&&>(), "Foo&&"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeFullName<Foo&>(), "struct Foo&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo*&>(), "struct Foo*&"sv);
     EXPECT_EQ(fuse::getTypeFullName<Foo**&>(), "struct Foo**&"sv);
@@ -113,10 +113,10 @@ TEST(getTypeFullName, Static) {
     EXPECT_EQ(fuse::getTypeFullName<Foo&&>(), "struct Foo&&"sv);
 #endif
 
-#if __clang__ || __GNUC__
+#if defined(__clang__) || defined(__GNUC__)
     EXPECT_EQ(fuse::getTypeFullName<std::vector<int>>(), "std::vector<int>"sv);
     EXPECT_EQ(fuse::getTypeFullName<std::vector<Foo>>(), "std::vector<Foo>"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeFullName<std::vector<int>>(),
               "class std::vector<int,class std::allocator<int> >"sv);
     EXPECT_EQ(fuse::getTypeFullName<std::vector<Foo>>(),
@@ -132,13 +132,13 @@ TEST(getTypeName, Static) {
     EXPECT_EQ(fuse::getTypeName<int>(), "int"sv);
     EXPECT_EQ(fuse::getTypeName<unsigned>(), "unsigned int"sv);
 
-#if __clang__
+#if defined(__clang_)
     EXPECT_EQ(fuse::getTypeName<long>(), "long"sv);
-#elif __GNU__
+#elif defined(__GNU__)
     EXPECT_EQ(fuse::getTypeName<short>(), "short int"sv);
     EXPECT_EQ(fuse::getTypeName<unsigned short>(), "short unsigned int"sv);
     EXPECT_EQ(fuse::getTypeName<long>(), "long int"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeName<short>(), "short"sv);
     EXPECT_EQ(fuse::getTypeName<unsigned short>(), "unsigned short"sv);
     EXPECT_EQ(fuse::getTypeName<long>(), "long"sv);
@@ -147,14 +147,14 @@ TEST(getTypeName, Static) {
     EXPECT_EQ(fuse::getTypeName<float>(), "float"sv);
     EXPECT_EQ(fuse::getTypeName<double>(), "double"sv);
 
-#if __GNUC__ || __clang__
+#if defined(__GNUC__) || defined(__clang_)
     EXPECT_EQ(fuse::getTypeName<Toto>(), "Toto"sv);
     EXPECT_EQ(fuse::getTypeName<ns::Toto>(), "ns::Toto"sv);
     EXPECT_EQ(fuse::getTypeName<Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Bar>(), "Bar"sv);
     EXPECT_EQ(fuse::getTypeName<UnScopedEnum>(), "UnScopedEnum"sv);
     EXPECT_EQ(fuse::getTypeName<ScopedEnum>(), "ScopedEnum"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeName<Toto>(), "class Toto"sv);
     EXPECT_EQ(fuse::getTypeName<ns::Toto>(), "class ns::Toto"sv);
     EXPECT_EQ(fuse::getTypeName<Foo>(), "struct Foo"sv);
@@ -166,12 +166,12 @@ TEST(getTypeName, Static) {
     //
     // qualifier
     //
-#if __GNUC__ || __clang__
+#if defined(__GNUC__) || defined(__clang_)
     EXPECT_EQ(fuse::getTypeName<const Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<volatile Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<const volatile Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<volatile const Foo>(), "Foo"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeName<const Foo>(), "struct Foo"sv);
     EXPECT_EQ(fuse::getTypeName<volatile Foo>(), "struct Foo"sv);
     EXPECT_EQ(fuse::getTypeName<const volatile Foo>(), "struct Foo"sv);
@@ -181,13 +181,13 @@ TEST(getTypeName, Static) {
     //
     // pointer
     //
-#if __clang__ || __GNUC__
+#if defined(__clang__) || defined(__GNUC__)
     EXPECT_EQ(fuse::getTypeName<Foo*>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo**>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo* const>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo* const*>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo* const* const>(), "Foo"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeName<Foo*>(), "struct Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo**>(), "struct Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo* const>(), "struct Foo"sv);
@@ -198,13 +198,13 @@ TEST(getTypeName, Static) {
     //
     // ref
     //
-#if __clang__ || __GNUC__
+#if defined(__clang__) || defined(__GNUC__)
     EXPECT_EQ(fuse::getTypeName<Foo&>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo*&>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo**&>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo* const* const** const&>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo&&>(), "Foo"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeName<Foo&>(), "struct Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo*&>(), "struct Foo"sv);
     EXPECT_EQ(fuse::getTypeName<Foo**&>(), "struct Foo"sv);
@@ -212,10 +212,10 @@ TEST(getTypeName, Static) {
     EXPECT_EQ(fuse::getTypeName<Foo&&>(), "struct Foo"sv);
 #endif
 
-#if __clang__ || __GNUC__
+#if defined(__clang__) || defined(__GNUC__)
     EXPECT_EQ(fuse::getTypeName<std::vector<int>>(), "std::vector<int>"sv);
     EXPECT_EQ(fuse::getTypeName<std::vector<Foo>>(), "std::vector<Foo>"sv);
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     EXPECT_EQ(fuse::getTypeFullName<std::vector<int>>(),
               "class std::vector<int,class std::allocator<int> >"sv);
     EXPECT_EQ(fuse::getTypeFullName<std::vector<Foo>>(),

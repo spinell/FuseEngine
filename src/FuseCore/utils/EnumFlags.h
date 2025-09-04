@@ -21,14 +21,14 @@ public:
     template <class... Ts>
         requires(std::is_same_v<T, Ts> && ...)
     constexpr EnumFlags(T first, Ts... others) noexcept
-        : mData((std::to_underlying(first) | ... | std::to_underlying(others))) {}
+        : mData(static_cast<UnderlyingType>((std::to_underlying(first) | ... | std::to_underlying(others)))) {}
 
     /// @brief Flip all the bits.
     /// @return Return the EnumFlags with all bits flipped.
     /// @warning This will flip @b unused bits.
     [[nodiscard]] constexpr EnumFlags operator~() const noexcept {
         EnumFlags flags;
-        flags.mData = ~mData;
+        flags.mData = static_cast<UnderlyingType>(~mData);
         return flags;
     }
 
@@ -64,7 +64,8 @@ public:
     template <class... Ts>
         requires(sizeof...(Ts) > 0) && (std::is_same_v<T, Ts> && ...)
     constexpr void set(Ts... flags) noexcept {
-        mData |= (std::to_underlying(flags) | ...);
+        const auto result = (std::to_underlying(flags) | ...);
+        mData |= static_cast<UnderlyingType>(result);
     }
 
     /// @brief Unset one or more flags.
@@ -73,7 +74,8 @@ public:
     template <class... Ts>
         requires(sizeof...(Ts) > 0) && (std::is_same_v<T, Ts> && ...)
     constexpr void unset(Ts... flags) noexcept {
-        mData &= ~(std::to_underlying(flags) | ...);
+        const auto result = (std::to_underlying(flags) | ...);
+        mData &= ~(static_cast<UnderlyingType>(result));
     }
 
 private:

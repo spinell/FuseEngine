@@ -42,4 +42,4 @@ private:
     bool mStopped = false;
 };
 
-}; // namespace fuse
+} // namespace fuse

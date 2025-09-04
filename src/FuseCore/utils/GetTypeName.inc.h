@@ -7,7 +7,7 @@ template <class T>
 constexpr auto getTypeFullName() noexcept {
     // note: clang define __GNUC__ on linux
     // note: clang define _MSC_VER on windows
-#if __clang__
+#if defined(__clang__)
     // If this function return auto __PRETTY_FUNCTION__ look like
     //   auto fuse::getTypeFullName() [T = Toto]
     //   auto fuse::getTypeFullName() [T = ns::Toto]
@@ -21,7 +21,7 @@ constexpr auto getTypeFullName() noexcept {
     const auto end       = funcName.size() - 1;    // position where the paramater name end
     const auto paramName = funcName.substr(start, end - start);
     return paramName;
-#elif __GNUC__
+#elif defined(__GNUC__)
     // If this function return auto __PRETTY_FUNCTION__ look like
     //   auto fuse::getTypeFullName() [T = Toto]
     //   auto fuse::getTypeFullName() [T = ns::Toto]
@@ -36,7 +36,7 @@ constexpr auto getTypeFullName() noexcept {
     const auto paramName = funcName.substr(start, end - start);
 
     return paramName;
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     // on MSVC funcName will be line
     // - class std::basic_string_view<char,struct std::char_traits<char> > __cdecl fuse::enum_name<EnumName_EnumName_Test::TestBody::kRed>(void)
     // - class std::basic_string_view<char,struct std::char_traits<char> > __cdecl fuse::enum_name<EnumName_EnumName_Test::TestBody::Color::Red>(void)

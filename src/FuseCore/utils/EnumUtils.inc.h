@@ -5,7 +5,7 @@ namespace fuse {
 template <auto T>
 constexpr auto getEnumName() noexcept {
     // Base on from https://ykiko.me/en/articles/680412313/
-#if __GNUC__ || __clang__
+#if defined(__GNUC__) || defined(__clang__)
     // on GCC/Clang funcName will be line
     // - std::string_view fuse::enum_name() [T = xxx::xxx::kRed]
     // - std::string_view fuse::enum_name() [T = EnumName_EnumName_Test::TestBody()::Color::Red]
@@ -14,7 +14,7 @@ constexpr auto getEnumName() noexcept {
     const std::size_t      start     = funcName.find('=') + 2;
     const std::size_t      end       = funcName.size() - 1;
     const std::string_view paramName = std::string_view{funcName.data() + start, end - start};
-#elif _MSC_VER
+#elif defined(_MSC_VER)
     // on MSVC funcName will be line
     // - class std::basic_string_view<char,struct std::char_traits<char> > __cdecl fuse::enum_name<EnumName_EnumName_Test::TestBody::kRed>(void)
     // - class std::basic_string_view<char,struct std::char_traits<char> > __cdecl fuse::enum_name<EnumName_EnumName_Test::TestBody::Color::Red>(void)

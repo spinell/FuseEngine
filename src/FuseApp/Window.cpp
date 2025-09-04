@@ -77,13 +77,13 @@ bool Window::isOpen() const noexcept { return mWindow != nullptr; }
 void Window::maximize() noexcept {
     if (!SDL_MaximizeWindow(mWindow)) {
         fuse::sdl3::CheckSDLError("SDL_MaximizeWindow");
-    };
+    }
 }
 
 void Window::minimize() noexcept {
     if (!SDL_MinimizeWindow(mWindow)) {
         fuse::sdl3::CheckSDLError("SDL_MinimizeWindow");
-    };
+    }
 }
 
 bool Window::isMaximized() const noexcept {
@@ -97,13 +97,13 @@ bool Window::isMinimized() const noexcept {
 void Window::restore() noexcept {
     if (!SDL_RestoreWindow(mWindow)) {
         fuse::sdl3::CheckSDLError("SDL_RestoreWindow");
-    };
+    }
 }
 
 void Window::setSize(int width, int height) noexcept {
     if (!SDL_SetWindowSize(mWindow, width, height)) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowSize");
-    };
+    }
 }
 
 std::pair<int, int> Window::getSize() const noexcept {
@@ -118,19 +118,19 @@ std::pair<int, int> Window::getSize() const noexcept {
 void Window::setMaximumSize(int maxWidth, int maxHeight) noexcept {
     if (!SDL_SetWindowMaximumSize(mWindow, maxWidth, maxHeight)) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowMaximumSize");
-    };
+    }
 }
 
 void Window::setMinimalSize(int minWidth, int minHeight) noexcept {
     if (!SDL_SetWindowMinimumSize(mWindow, minWidth, minHeight)) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowMinimumSize");
-    };
+    }
 }
 
 void Window::setResizable(bool resizable) noexcept {
     if (!SDL_SetWindowResizable(mWindow, resizable)) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowResizable");
-    };
+    }
 }
 
 bool Window::isResizable() const noexcept {
@@ -140,7 +140,7 @@ bool Window::isResizable() const noexcept {
 void Window::setPosition(int x, int y) noexcept {
     if (!SDL_SetWindowPosition(mWindow, x, y)) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowPosition");
-    };
+    }
 }
 
 std::pair<int, int> Window::getPosition() const noexcept {
@@ -155,7 +155,7 @@ std::pair<int, int> Window::getPosition() const noexcept {
 void Window::setTitle(const std::string& title) noexcept {
     if (!SDL_SetWindowTitle(mWindow, title.data())) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowTitle");
-    };
+    }
 }
 
 std::string Window::getTitle() const { return SDL_GetWindowTitle(mWindow); }
@@ -164,11 +164,11 @@ void Window::setVisible(bool visible) noexcept {
     if (visible) {
         if (!SDL_ShowWindow(mWindow)) {
             fuse::sdl3::CheckSDLError("SDL_ShowWindow");
-        };
+        }
     } else {
         if (!SDL_HideWindow(mWindow)) {
             fuse::sdl3::CheckSDLError("SDL_HideWindow");
-        };
+        }
     }
 }
 
@@ -185,22 +185,22 @@ void Window::setIcon(unsigned width, unsigned height, const unsigned* pixels) no
     mIconSurface = SDL_CreateSurfaceFrom(static_cast<int>(width),
                                          static_cast<int>(height),
                                          pixelFormat,
-                                         (void*)pixels,
+                                         static_cast<void*>(const_cast<unsigned*>(pixels)),
                                          static_cast<int>(width) * 4);
 
     if (!mIconSurface) {
         fuse::sdl3::CheckSDLError("SDL_CreateSurfaceFrom");
-    };
+    }
 
     if (!SDL_SetWindowIcon(mWindow, mIconSurface)) {
         fuse::sdl3::CheckSDLError("SDL_CreateSurfaceFrom");
-    };
+    }
 }
 
 void Window::setOpacity(float opacity) noexcept {
     if (!SDL_SetWindowOpacity(mWindow, opacity)) {
         fuse::sdl3::CheckSDLError("SDL_SetWindowOpacity");
-    };
+    }
 }
 
 void Window::setMouseCursor(unsigned width, unsigned height, const unsigned* pixels) noexcept {
@@ -212,19 +212,19 @@ void Window::setMouseCursor(unsigned width, unsigned height, const unsigned* pix
     SDL_Surface* curorSurface = SDL_CreateSurfaceFrom(static_cast<int>(width),
                                                       static_cast<int>(height),
                                                       pixelFormat,
-                                                      (void*)pixels,
+                                                      static_cast<void*>(const_cast<unsigned*>(pixels)),
                                                       static_cast<int>(width) * 4);
 
     mCursor = SDL_CreateColorCursor(curorSurface, 10, 10);
     if (!mCursor) {
         fuse::sdl3::CheckSDLError("SDL_SetCursor");
-    };
+    }
 
     SDL_DestroySurface(curorSurface);
 
     if (!SDL_SetCursor(mCursor)) {
         fuse::sdl3::CheckSDLError("SDL_SetCursor");
-    };
+    }
 }
 
 bool Window::hasFocus() const noexcept {
@@ -234,7 +234,7 @@ bool Window::hasFocus() const noexcept {
 void Window::requestFocus() noexcept {
     if (!SDL_RaiseWindow(mWindow)) {
         fuse::sdl3::CheckSDLError("SDL_RaiseWindow");
-    };
+    }
 }
 
 void Window::toogleMouseRelative() noexcept {

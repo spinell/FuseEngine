@@ -149,7 +149,7 @@ void Application::onShutdown() {
 }
 
 void Application::onUpdate(float /*deltaTime*/) {
-    glClearColor(.2, .2, .2, 1);
+    glClearColor(.2f, .2f, .2f, 1.f);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -182,7 +182,7 @@ void Application::onEvent(const fuse::Event& event) {
 
     if (const auto* resizedEvent = event.getIf<fuse::WindowResizedEvent>()) {
         glViewport(0, 0, resizedEvent->getWidth(), resizedEvent->getHeight());
-        mCamera.setAspectRatio((float)resizedEvent->getWidth() / (float)resizedEvent->getHeight());
+        mCamera.setAspectRatio(static_cast<float>(resizedEvent->getWidth()) / static_cast<float>(resizedEvent->getHeight()));
     } else if (const auto* moveEvent = event.getIf<fuse::MouseMovedEvent>()) {
         // Make each pixel correspond to a 1/8 of a degree.
         auto dx =

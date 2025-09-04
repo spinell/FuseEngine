@@ -10,6 +10,8 @@ add_executable(sandbox
     Camera.cpp
 )
 
+fuse_set_compiler_warnings(sandbox)
+
 target_link_libraries(sandbox
     PUBLIC
         Fuse::App

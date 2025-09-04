@@ -4,6 +4,7 @@ find_package(imgui               CONFIG REQUIRED)
 
 add_library(FuseApp STATIC)
 add_library(Fuse::App ALIAS FuseApp)
+fuse_set_compiler_warnings(FuseApp)
 
 target_sources(FuseApp
     PRIVATE

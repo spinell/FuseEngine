@@ -59,7 +59,7 @@ bool Application::init() {
     mMainWindow = std::make_unique<Window>();
     if (!mMainWindow->create()) {
         return false;
-    };
+    }
 
     // does not work on WSL ?
     //mMainWindow->setPosition(0, 0);
@@ -224,6 +224,6 @@ void Application::onEvent(const Event& event) {
             mMainWindow->toogleMouseRelative();
         }
     }
-};
+}
 
 } // namespace fuse

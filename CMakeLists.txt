@@ -11,6 +11,7 @@ set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 include(PreventInSourceBuilds)
+include(CompilerWarning)
 
 project(FuseEngine
     VERSION 0.0.1

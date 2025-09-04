@@ -146,8 +146,8 @@ public:
 
     [[nodiscard]] constexpr bool isAlmostEquals(const Mat4& other,
                                                 float       elipson = 0.000001f) const noexcept {
-        for (int row = 0; row < kNbRow; row++) {
-            for (int col = 0; col < kNbCol; col++) {
+        for (unsigned row = 0; row < kNbRow; row++) {
+            for (unsigned col = 0; col < kNbCol; col++) {
                 if (std::abs(mData[row][col] - other.mData[row][col]) > elipson) {
                     return false;
                 }
@@ -353,7 +353,7 @@ constexpr Mat4 Mat4::operator*(float scalar) const noexcept {
     for (unsigned row = 0; row < Mat4::kNbRow; ++row) {
         for (unsigned col = 0; col < Mat4::kNbCol; ++col) {
             result.mData[row][col] = mData[row][col] * scalar;
-        };
+        }
     }
     return result;
 }
@@ -369,8 +369,8 @@ constexpr Vec4 Mat4::operator*(const Vec4& vec) const noexcept {
 
 constexpr Mat4 Mat4::operator*(const Mat4& other) const noexcept {
     Mat4 result;
-    for (int row = 0; row < kNbRow; row++) {
-        for (int col = 0; col < kNbCol; col++) {
+    for (unsigned row = 0; row < kNbRow; row++) {
+        for (unsigned col = 0; col < kNbCol; col++) {
             float temp = 0;
             for (int inner = 0; inner < 4; inner++) {
                 temp += mData[row][inner] * other.mData[inner][col];

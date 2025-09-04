@@ -6,19 +6,19 @@ class Camera {
 public:
     Camera() = default;
 
-    void setAspectRatio(float aspectRatio) noexcept { mAspectRatio = aspectRatio; };
+    void setAspectRatio(float aspectRatio) noexcept { mAspectRatio = aspectRatio; }
 
-    void setZNear(float zNear) noexcept { mZNear = zNear; };
+    void setZNear(float zNear) noexcept { mZNear = zNear; }
 
-    void setZFar(float zFar) noexcept { mZFar = zFar; };
+    void setZFar(float zFar) noexcept { mZFar = zFar; }
 
-    void setPosition(const fuse::Vec3& position) noexcept { mPosition = position; };
+    void setPosition(const fuse::Vec3& position) noexcept { mPosition = position; }
 
-    [[nodiscard]] const fuse::Vec3& getRight() const noexcept { return mRight; };
-    [[nodiscard]] const fuse::Vec3& getDirection() const noexcept { return mDirection; };
-    [[nodiscard]] const fuse::Vec3& getPosition() const noexcept { return mPosition; };
+    [[nodiscard]] const fuse::Vec3& getRight() const noexcept { return mRight; }
+    [[nodiscard]] const fuse::Vec3& getDirection() const noexcept { return mDirection; }
+    [[nodiscard]] const fuse::Vec3& getPosition() const noexcept { return mPosition; }
 
-    void setDirection(const fuse::Vec3& direction) noexcept { mDirection = direction; };
+    void setDirection(const fuse::Vec3& direction) noexcept { mDirection = direction; }
 
     [[nodiscard]] fuse::Mat4 getProjMatrix() const noexcept;
     [[nodiscard]] fuse::Mat4 getViewMatrix() noexcept;

@@ -169,11 +169,11 @@ public:
 
     /// @brief Get the X position of the mouse.
     /// @return The X position of the mouse.
-    [[nodiscard]] float getMousePosX() const noexcept { return mMouseX; };
+    [[nodiscard]] float getMousePosX() const noexcept { return mMouseX; }
 
     /// @brief Get the Y position of the mouse.
     /// @return The Y position of the mouse.
-    [[nodiscard]] float getMousePosY() const noexcept { return mMouseY; };
+    [[nodiscard]] float getMousePosY() const noexcept { return mMouseY; }
 
     [[nodiscard]] std::string toString() const;
 
@@ -236,15 +236,15 @@ public:
     /// @brief Return the amount scrolled horizontally and vertically.
     ///        Horizontal positive to the right and negative to the left.
     ///        Vertical positive away from the user and negative toward the user
-    [[nodiscard]] std::pair<float, float> getDelta() const noexcept { return {mDeltaX, mDeltaY}; };
+    [[nodiscard]] std::pair<float, float> getDelta() const noexcept { return {mDeltaX, mDeltaY}; }
 
     /// @brief Return the amount scrolled horizontally, positive to the right
     ///        and negative to the left.
-    [[nodiscard]] float getDeltaX() const noexcept { return mDeltaX; };
+    [[nodiscard]] float getDeltaX() const noexcept { return mDeltaX; }
 
     /// @brief Return the amount scrolled vertically, positive away from the user
     ///        and negative toward the user
-    [[nodiscard]] float getDeltaY() const noexcept { return mDeltaY; };
+    [[nodiscard]] float getDeltaY() const noexcept { return mDeltaY; }
 
     [[nodiscard]] std::string toString() const;
 
@@ -362,7 +362,7 @@ public:
     Event(T e)
         : mData(e){
             //static_assert(isValidEventType<T>, "T is not defined as a event in std::variant<> list.");
-          };
+          }
 
     /// @brief Check if the underlying event is a specific type.
     /// @tparam T The event type to check.
@@ -397,7 +397,7 @@ public:
     template <class... Handlers>
     void dispatch2(Handlers&&... handlers) const noexcept {
         OverloadSet overloadSet{std::forward<Handlers>(handlers)...,
-                                []<typename T>(const T& myNum) { /* ignore */ }};
+                                []<typename T>(const T&) { /* ignore */ }};
         visit(overloadSet);
     }
 

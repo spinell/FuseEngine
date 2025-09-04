@@ -189,7 +189,7 @@ constexpr Angle operator""_rad(unsigned long long angle) {
     return radians(static_cast<float>(angle));
 }
 
-}; // namespace literals
+} // namespace literals
 
 } // namespace fuse
 

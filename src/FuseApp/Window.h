@@ -258,21 +258,6 @@ public:
     /// @return A pointer to the window if found, otherwise return nullptr.
     [[nodiscard]] static std::optional<Window*> getWindowFromID(unsigned windowId);
 
-protected:
-    void onCreate() {}
-
-    void onResize(int width, int height) {}
-
-    void onFocusChanged(bool focusGained) {}
-
-    void onMouseEnter() {}
-
-    void onMouseLeaver() {}
-
-    void onMouseButtonPressed() {}
-
-    void onMouseButtonRelease() {}
-
 private:
     SDL_Window*         mWindow{};      ///< The SDL window
     SDL_GLContextState* mGLContext{};   ///< The OpenGL context
@@ -283,7 +268,7 @@ private:
 } // namespace fuse
 
 
-#if TODO
+#ifdef TODO
 /// @brief Get the windows which currently have input focus.
 std::optional<Window> getFocusWindow();
 std::vector<Window>   getAllWindows();

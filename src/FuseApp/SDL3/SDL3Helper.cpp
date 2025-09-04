@@ -69,7 +69,7 @@ namespace fuse::sdl3 {
         case SDL_SCANCODE_LEFTBRACKET:          return ScanCode::LeftBracket;
         case SDL_SCANCODE_RIGHTBRACKET:         return ScanCode::RightBracket;
         case SDL_SCANCODE_BACKSLASH:            return ScanCode::Backslash;
-        // case SDL_SCANCODE_NONUSHASH:			return ScanCode::NONUSHASH;
+        case SDL_SCANCODE_NONUSHASH:			return ScanCode::Unknown;
         case SDL_SCANCODE_SEMICOLON:            return ScanCode::Semicolon;
         case SDL_SCANCODE_APOSTROPHE:           return ScanCode::Apostrophe;
         case SDL_SCANCODE_GRAVE:                return ScanCode::Grave;
@@ -254,6 +254,24 @@ namespace fuse::sdl3 {
         case SDL_SCANCODE_MEDIA_REWIND:         return ScanCode::Unknown;
         case SDL_SCANCODE_MEDIA_FAST_FORWARD:   return ScanCode::Unknown;
         case SDL_SCANCODE_UNKNOWN:              return ScanCode::Unknown;
+        case SDL_SCANCODE_WAKE:                 return ScanCode::Unknown;
+        case SDL_SCANCODE_CHANNEL_INCREMENT:    return ScanCode::Unknown;
+        case SDL_SCANCODE_CHANNEL_DECREMENT:    return ScanCode::Unknown;
+        case SDL_SCANCODE_MEDIA_PAUSE:          return ScanCode::Unknown;
+        case SDL_SCANCODE_MEDIA_RECORD:         return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_NEW:               return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_OPEN:              return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_CLOSE:             return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_EXIT:              return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_SAVE:              return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_PRINT:             return ScanCode::Unknown;
+        case SDL_SCANCODE_AC_PROPERTIES:        return ScanCode::Unknown;
+        case SDL_SCANCODE_SOFTLEFT:             return ScanCode::Unknown;
+        case SDL_SCANCODE_SOFTRIGHT:            return ScanCode::Unknown;
+        case SDL_SCANCODE_CALL:                 return ScanCode::Unknown;
+        case SDL_SCANCODE_ENDCALL:              return ScanCode::Unknown;
+        case SDL_SCANCODE_RESERVED:             return ScanCode::Unknown;
+        case SDL_SCANCODE_COUNT:                return ScanCode::Unknown; // not a key
         default:                                return ScanCode::Unknown;
         // NOLINTEND(bugprone-branch-clone)
     }
@@ -500,7 +518,7 @@ namespace fuse::sdl3 {
         // It is disabled by default, at least for now.
         // spdlog::info("[JoyStick update] ID : {}", event.which);
     } else if (event.type == SDL_EVENT_JOYSTICK_AXIS_MOTION) {
-        const SDL_JoyAxisEvent& axisEvent = event.jaxis;
+        //const SDL_JoyAxisEvent& axisEvent = event.jaxis;
         //spdlog::info("[JoyStick axis motion] id {}, axis {}, value {}",
         //             axisEvent.which,
         //             axisEvent.axis,

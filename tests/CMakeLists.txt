@@ -12,6 +12,8 @@ add_executable(TestFuseCore
     TestGetTypeName.cpp
 )
 
+fuse_set_compiler_warnings(TestFuseCore)
+
 target_link_libraries(TestFuseCore
     PRIVATE
         GTest::gmock_main

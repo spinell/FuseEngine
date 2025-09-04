@@ -13,6 +13,7 @@ const char* toString(MouseButton button) {
         case MouseButton::X6:     return "X6";
         case MouseButton::X7:     return "X7";
         case MouseButton::X8:     return "X8";
+        case MouseButton::Unknow:
         default:                  return "Unknow";
             // clang-format on
     }
@@ -88,7 +89,6 @@ std::string toString(MouseButtonMask mask) {
     }
     return str;
 #endif
-    return "";
 }
 
 std::string toString(KeyModMask flags) {
