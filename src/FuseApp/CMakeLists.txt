@@ -1,4 +1,6 @@
 find_package(SDL3   3.2.18 EXACT CONFIG REQUIRED)
+find_package(glad   0.1.36 EXACT CONFIG REQUIRED)
+find_package(OpenGL                     REQUIRED)
 find_package(spdlog 1.15.3 EXACT CONFIG REQUIRED)
 find_package(imgui               CONFIG REQUIRED)
 
@@ -29,6 +31,7 @@ target_link_libraries(
     PUBLIC
         Fuse::Core
         SDL3::SDL3
+        glad::glad
         spdlog::spdlog
         imgui::imgui
 
