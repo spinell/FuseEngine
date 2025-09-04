@@ -132,6 +132,8 @@ bool Application::init() {
 bool Application::shutdown() {
     onShutdown();
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
     ImGui::DestroyContext();
     mMainWindow.reset();
     SDL_Quit();
