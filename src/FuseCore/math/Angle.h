@@ -101,12 +101,12 @@ public:
 
     /// @brief Wrap the angle in the range [-359, 359] degress.
     /// @return Unsigned angle, wrapped to [-359, 359] degress.
-    [[nodiscard]] Angle wrap() const noexcept { return std::fmodf(mValue, 360.F); }
+    [[nodiscard]] Angle wrap() const noexcept { return std::fmod(mValue, 360.F); }
 
     /// @brief Wrap the angle in the range [-180, 180]
     /// @return Unsigned angle, wrapped to [-180, 180]
     [[nodiscard]] Angle wrapSigned() const noexcept {
-        float remainder = std::fmodf(mValue + 180.f, 360.F);
+        float remainder = std::fmod(mValue + 180.f, 360.F);
         if (remainder < 0.0f) {
             remainder += 360.f;
         }
@@ -117,7 +117,7 @@ public:
     /// @brief Wrap the angle in the range [0, 360]
     /// @return Unsigned angle, wrapped to [0, 360]
     [[nodiscard]] Angle wrapUnsigned() const noexcept {
-        const float remainder = std::fmodf(mValue, 360.F);
+        const float remainder = std::fmod(mValue, 360.F);
         return remainder < 0 ? remainder + 360.F : remainder;
     }
 

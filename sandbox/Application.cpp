@@ -2,7 +2,7 @@
 
 #include <imgui.h>
 
-#include <print>
+#include <spdlog/spdlog.h>
 
 namespace {
 
@@ -99,7 +99,7 @@ bool Application::onInit() {
     glGetShaderiv(mVertexShader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(mVertexShader, 512, nullptr, infoLog);
-        std::println("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n {}\n", infoLog);
+        spdlog::error("SHADER::VERTEX::COMPILATION_FAILED\n {}", infoLog);
     }
 
 
@@ -109,7 +109,7 @@ bool Application::onInit() {
     glGetShaderiv(mFragmentShader, GL_COMPILE_STATUS, &success);
     if (!success) {
         glGetShaderInfoLog(mFragmentShader, 512, nullptr, infoLog);
-        std::println("ERROR::SHADER::PIXEL::COMPILATION_FAILED\n {}\n", infoLog);
+        spdlog::error("SHADER::PIXEL::COMPILATION_FAILED\n {}", infoLog);
     }
 
 
@@ -120,7 +120,7 @@ bool Application::onInit() {
     glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(mShaderProgram, 512, nullptr, infoLog);
-        std::println("ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n {}\n", infoLog);
+        spdlog::error("SHADER::PROGRAM::COMPILATION_FAILED\n {}", infoLog);
     }
     glUseProgram(mShaderProgram);
 
@@ -149,8 +149,6 @@ void Application::onShutdown() {
 }
 
 void Application::onUpdate(float /*deltaTime*/) {
-    //std::println("total {} elapsed {}", mTimer.totalTime(), mTimer.deltaTime());
-
     glClearColor(.2, .2, .2, 1);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -180,8 +178,6 @@ void Application::onUpdate(float /*deltaTime*/) {
 }
 
 void Application::onEvent(const fuse::Event& event) {
-    //std::println("onEvent() {}", event.toString());
-
     fuse::Application::onEvent(event);
 
     if (const auto* resizedEvent = event.getIf<fuse::WindowResizedEvent>()) {
