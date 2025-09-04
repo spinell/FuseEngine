@@ -1,5 +1,7 @@
-#include <FuseCore/math/Vec4.h>
 #include "GtestUtils.h"
+
+#include <FuseCore/math/Vec4.h>
+
 #include <gtest/gtest.h>
 
 using fuse::Vec4;
@@ -36,7 +38,7 @@ TEST(Vec4, ctor_from_components) {
 }
 
 TEST(Vec4, add_vec_and_assign) {
-    Vec4  v(1, 2, 3, 4);
+    Vec4        v(1, 2, 3, 4);
     const Vec4& r = v += Vec4(10, 20, 30, 40);
 
     EXPECT_FLOAT_EQ(v.x, 11.f);
@@ -51,7 +53,7 @@ TEST(Vec4, add_vec_and_assign) {
 }
 
 TEST(Vec4, sub_vec_and_assign) {
-    Vec4  v(1, 2, 3, 4);
+    Vec4        v(1, 2, 3, 4);
     const Vec4& r = v -= Vec4(10, 20, 30, 40);
 
     EXPECT_FLOAT_EQ(v.x, -9.f);
@@ -66,7 +68,7 @@ TEST(Vec4, sub_vec_and_assign) {
 }
 
 TEST(Vec4, mul_scalar_and_assign) {
-    Vec4  v(1, 2, 3, 4);
+    Vec4        v(1, 2, 3, 4);
     const Vec4& r = v *= 2.f;
 
     EXPECT_FLOAT_EQ(v.x, 2.f);
@@ -81,7 +83,7 @@ TEST(Vec4, mul_scalar_and_assign) {
 }
 
 TEST(Vec4, div_scalar_and_assign) {
-    Vec4  v(10, 20, 30, 40);
+    Vec4        v(10, 20, 30, 40);
     const Vec4& r = v /= 2.f;
 
     EXPECT_FLOAT_EQ(v.x, 5.f);
@@ -114,9 +116,7 @@ TEST(Vec4, mul_scalar) {
     EXPECT_EQ(2 * Vec4(1, 2, 3, 4), Vec4(2, 4, 6, 8));
 }
 
-TEST(Vec4, div_scalar) {
-    EXPECT_EQ(Vec4(10, 20, 30, 40) / 2, Vec4(5, 10, 15, 20));
-}
+TEST(Vec4, div_scalar) { EXPECT_EQ(Vec4(10, 20, 30, 40) / 2, Vec4(5, 10, 15, 20)); }
 
 TEST(Vec4, dotProduct) {
     const Vec4 v1(1, 2, 3, 4);

@@ -27,7 +27,6 @@ public:
     /// @brief
     void run();
 
-
     /// @brief
     /// @param deltaTime
     virtual void onUpdate(float /*deltaTime*/) {}

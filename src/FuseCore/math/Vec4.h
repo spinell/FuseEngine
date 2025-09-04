@@ -28,16 +28,33 @@ public:
     [[nodiscard]] constexpr bool operator==(const Vec4& rhs) const noexcept = default;
 
     constexpr Vec4& operator+=(const Vec4& rhs) noexcept { return *this = *this + rhs; }
+
     constexpr Vec4& operator-=(const Vec4& rhs) noexcept { return *this = *this - rhs; }
+
     constexpr Vec4& operator*=(float rhs) noexcept { return *this = *this * rhs; }
+
     constexpr Vec4& operator/=(float rhs) noexcept { return *this = *this / rhs; }
 
-    [[nodiscard]] constexpr Vec4 operator+(const Vec4& rhs) const noexcept { return {x + rhs.x, y + rhs.y, z + rhs.z, w + rhs.w}; }
-    [[nodiscard]] constexpr Vec4 operator-(const Vec4& rhs) const noexcept { return {x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w}; }
-    [[nodiscard]] constexpr Vec4 operator*(float rhs) const noexcept { return {x * rhs, y * rhs, z * rhs, w * rhs}; }
+    [[nodiscard]] constexpr Vec4 operator+(const Vec4& rhs) const noexcept {
+        return {x + rhs.x, y + rhs.y, z + rhs.z, w + rhs.w};
+    }
 
-    [[nodiscard]] constexpr friend Vec4 operator*(float lhs, const Vec4& rhs) noexcept { return rhs * lhs; }
-    [[nodiscard]] constexpr Vec4 operator/(float rhs) const noexcept { const float inv = 1.0F / rhs; return *this * inv; }
+    [[nodiscard]] constexpr Vec4 operator-(const Vec4& rhs) const noexcept {
+        return {x - rhs.x, y - rhs.y, z - rhs.z, w - rhs.w};
+    }
+
+    [[nodiscard]] constexpr Vec4 operator*(float rhs) const noexcept {
+        return {x * rhs, y * rhs, z * rhs, w * rhs};
+    }
+
+    [[nodiscard]] constexpr friend Vec4 operator*(float lhs, const Vec4& rhs) noexcept {
+        return rhs * lhs;
+    }
+
+    [[nodiscard]] constexpr Vec4 operator/(float rhs) const noexcept {
+        const float inv = 1.0F / rhs;
+        return *this * inv;
+    }
 
     /// @brief Calculate the dot product of this vector with another vector.
     [[nodiscard]] constexpr float dotProduct(const Vec4& rhs) const noexcept {

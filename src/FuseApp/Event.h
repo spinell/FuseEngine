@@ -360,9 +360,9 @@ public:
     /// @param  e The event itself.
     template <class T>
     Event(T e)
-        : mData(e){
-            //static_assert(isValidEventType<T>, "T is not defined as a event in std::variant<> list.");
-          }
+        : mData(e) {
+        //static_assert(isValidEventType<T>, "T is not defined as a event in std::variant<> list.");
+    }
 
     /// @brief Check if the underlying event is a specific type.
     /// @tparam T The event type to check.

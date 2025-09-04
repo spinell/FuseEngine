@@ -209,11 +209,12 @@ void Window::setMouseCursor(unsigned width, unsigned height, const unsigned* pix
     const auto pixelFormat =
       SDL_GetPixelFormatForMasks(32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 
-    SDL_Surface* curorSurface = SDL_CreateSurfaceFrom(static_cast<int>(width),
-                                                      static_cast<int>(height),
-                                                      pixelFormat,
-                                                      static_cast<void*>(const_cast<unsigned*>(pixels)),
-                                                      static_cast<int>(width) * 4);
+    SDL_Surface* curorSurface =
+      SDL_CreateSurfaceFrom(static_cast<int>(width),
+                            static_cast<int>(height),
+                            pixelFormat,
+                            static_cast<void*>(const_cast<unsigned*>(pixels)),
+                            static_cast<int>(width) * 4);
 
     mCursor = SDL_CreateColorCursor(curorSurface, 10, 10);
     if (!mCursor) {

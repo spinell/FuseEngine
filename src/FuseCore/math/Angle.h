@@ -158,7 +158,6 @@ inline constexpr Angle Angle::kZero;
 /// @relates Angle
 [[nodiscard]] constexpr Angle operator*(float lhs, Angle rhs) noexcept { return rhs * lhs; }
 
-
 namespace literals {
 
 /// @relates fuse::Angle

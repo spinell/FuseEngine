@@ -6,7 +6,13 @@
 
 namespace {
 
-inline float matMinor(const fuse::Mat4& mat, unsigned r0, unsigned r1, unsigned r2, unsigned c0, unsigned c1, unsigned c2) {
+inline float matMinor(const fuse::Mat4& mat,
+                      unsigned          r0,
+                      unsigned          r1,
+                      unsigned          r2,
+                      unsigned          c0,
+                      unsigned          c1,
+                      unsigned          c2) {
     return mat(r0, c0) * (mat(r1, c1) * mat(r2, c2) - mat(r2, c1) * mat(r1, c2)) -
            mat(r0, c1) * (mat(r1, c0) * mat(r2, c2) - mat(r2, c0) * mat(r1, c2)) +
            mat(r0, c2) * (mat(r1, c0) * mat(r2, c1) - mat(r2, c0) * mat(r1, c1));

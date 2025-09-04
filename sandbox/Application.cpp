@@ -1,7 +1,6 @@
 #include "Application.h"
 
 #include <imgui.h>
-
 #include <spdlog/spdlog.h>
 
 namespace {
@@ -182,7 +181,8 @@ void Application::onEvent(const fuse::Event& event) {
 
     if (const auto* resizedEvent = event.getIf<fuse::WindowResizedEvent>()) {
         glViewport(0, 0, resizedEvent->getWidth(), resizedEvent->getHeight());
-        mCamera.setAspectRatio(static_cast<float>(resizedEvent->getWidth()) / static_cast<float>(resizedEvent->getHeight()));
+        mCamera.setAspectRatio(static_cast<float>(resizedEvent->getWidth()) /
+                               static_cast<float>(resizedEvent->getHeight()));
     } else if (const auto* moveEvent = event.getIf<fuse::MouseMovedEvent>()) {
         // Make each pixel correspond to a 1/8 of a degree.
         auto dx =

@@ -21,7 +21,8 @@ public:
     template <class... Ts>
         requires(std::is_same_v<T, Ts> && ...)
     constexpr EnumFlags(T first, Ts... others) noexcept
-        : mData(static_cast<UnderlyingType>((std::to_underlying(first) | ... | std::to_underlying(others)))) {}
+        : mData(static_cast<UnderlyingType>(
+            (std::to_underlying(first) | ... | std::to_underlying(others)))) {}
 
     /// @brief Flip all the bits.
     /// @return Return the EnumFlags with all bits flipped.

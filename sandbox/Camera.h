@@ -15,7 +15,9 @@ public:
     void setPosition(const fuse::Vec3& position) noexcept { mPosition = position; }
 
     [[nodiscard]] const fuse::Vec3& getRight() const noexcept { return mRight; }
+
     [[nodiscard]] const fuse::Vec3& getDirection() const noexcept { return mDirection; }
+
     [[nodiscard]] const fuse::Vec3& getPosition() const noexcept { return mPosition; }
 
     void setDirection(const fuse::Vec3& direction) noexcept { mDirection = direction; }
