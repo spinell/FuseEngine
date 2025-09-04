@@ -20,7 +20,7 @@ Checks:  clang-analyzer-*,
         -cppcoreguidelines-avoid-c-arrays,
         -cppcoreguidelines-avoid-const-or-ref-data-members,
         -cppcoreguidelines-pro-bounds-constant-array-index,
-        -cppcoreguidelines-pro-bounds-pointer-arithmetic,               
+        -cppcoreguidelines-pro-bounds-pointer-arithmetic,
         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
         -cppcoreguidelines-pro-type-reinterpret-cast,
          performance-*,
@@ -29,8 +29,7 @@ Checks:  clang-analyzer-*,
         -misc-non-private-member-variables-in-classes,
          concurrency-*,
          bugprone-*,
-        -bugprone-easily-swappable-parameters,
-        -bugprone-exception-escape
+        -bugprone-easily-swappable-parameters
 
 
 CheckOptions:
@@ -50,7 +49,8 @@ CheckOptions:
   - { key: readability-identifier-naming.StaticConstantPrefix,     value: k }
   - { key: readability-identifier-naming.ProtectedMemberPrefix,    value: m }
   - { key: readability-identifier-naming.PrivateMemberPrefix,      value: m }
-  - { key: readability-identifier-naming.ScopedEnumConstantPrefix, value: '' } # override EnumConstantPrefix
+  - { key: readability-identifier-naming.ScopedEnumConstantCase,   value: CamelCase } # override EnumConstantCase
+  - { key: readability-identifier-naming.ScopedEnumConstantPrefix, value: '' }        # override EnumConstantPrefix
 
 
 UseColor: true
