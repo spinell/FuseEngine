@@ -15,6 +15,7 @@ using namespace testing;
 
 namespace {
 
+// NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members)
 MATCHER_P(almostEquals, rhs, "") { return arg.isAlmostEquals(rhs); }
 
 } // namespace

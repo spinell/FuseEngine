@@ -337,7 +337,7 @@ public:
     [[nodiscard]] std::string toString() const;
 
 private:
-    const char* const mText{};
+    const char* mText{};
 };
 
 template <typename... Ts>
