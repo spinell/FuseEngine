@@ -1,6 +1,7 @@
 #include "Timer.h"
 
 #include <SDL3/SDL.h>
+#include <algorithm>
 
 namespace fuse {
 
@@ -92,9 +93,7 @@ void GameTimer::tick() noexcept {
     // Force nonnegative.  The DXSDK's CDXUTTimer mentions that if the
     // processor goes into a power save mode or we get shuffled to another
     // processor, then mDeltaTime can be negative.
-    if (mDeltaTime < 0.0) {
-        mDeltaTime = 0.0;
-    }
+    mDeltaTime = std::max(mDeltaTime, 0.0);
 }
 
 } // namespace fuse
