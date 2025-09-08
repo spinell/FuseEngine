@@ -455,155 +455,180 @@ namespace fuse::sdl3 {
 }
 
 [[nodiscard]] std::optional<Event> ConvertEvent(const SDL_Event& event) {
-    // NOLINTBEGIN(bugprone-branch-clone)
 
-    // process windows event
+    //
+    // Windows event
+    //
     if (event.type >= SDL_EVENT_WINDOW_FIRST && event.type <= SDL_EVENT_WINDOW_LAST) {
         return ConvertEvent(event.window);
     }
-    ///
-    /// Keyboard Events
-    ///
-    else if (event.type == SDL_EVENT_KEYBOARD_ADDED) {
+    //
+    // Keyboard Events
+    //
+    if (event.type == SDL_EVENT_KEYBOARD_ADDED) {
         //spdlog::info("[KeyBoard added] ID : {}", event.which);
-    } else if (event.type == SDL_EVENT_KEYBOARD_REMOVED) {
+    }
+    if (event.type == SDL_EVENT_KEYBOARD_REMOVED) {
         //spdlog::info("[KeyBoard removed] ID : {}", event.which);
-    } else if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
+    }
+    if (event.type == SDL_EVENT_KEY_DOWN || event.type == SDL_EVENT_KEY_UP) {
         const SDL_KeyboardEvent& keyEvent = event.key;
         return ConvertEvent(keyEvent);
     }
-    ///
-    /// Text Input Event
-    ///
-    else if (event.type == SDL_EVENT_TEXT_INPUT) {
+    //
+    // Text Input Event
+    //
+    if (event.type == SDL_EVENT_TEXT_INPUT) {
         const SDL_TextInputEvent& textEvent = event.text;
         return TextInputEvent(textEvent.text);
-    } else if (event.type == SDL_EVENT_TEXT_EDITING) {
+    }
+    if (event.type == SDL_EVENT_TEXT_EDITING) {
         ///
         /// Keyboard text editing (composition)
         //
-    } else if (event.type == SDL_EVENT_KEYMAP_CHANGED) {
+    }
+    if (event.type == SDL_EVENT_KEYMAP_CHANGED) {
         ///
         /// The keymap has changed
         ///
-    } else if (event.type == SDL_EVENT_TEXT_EDITING_CANDIDATES) {
+    }
+    if (event.type == SDL_EVENT_TEXT_EDITING_CANDIDATES) {
         ///
         /// Keyboard text editing candidates
         ///
     }
-    ///
-    /// Mouse Event
-    ///
-    else if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
+    //
+    // Mouse Event
+    //
+    if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN || event.type == SDL_EVENT_MOUSE_BUTTON_UP) {
         return ConvertEvent(event.button);
-    } else if (event.type == SDL_EVENT_MOUSE_MOTION) {
+    }
+    if (event.type == SDL_EVENT_MOUSE_MOTION) {
         return ConvertEvent(event.motion);
-    } else if (event.type == SDL_EVENT_MOUSE_WHEEL) {
+    }
+    if (event.type == SDL_EVENT_MOUSE_WHEEL) {
         return ConvertEvent(event.wheel);
     }
-    ///
-    /// Joystick Event
-    ///
-    else if (event.type == SDL_EVENT_JOYSTICK_ADDED) {
+    //
+    // Joystick Event
+    //
+    if (event.type == SDL_EVENT_JOYSTICK_ADDED) {
         const SDL_JoyDeviceEvent& deviceEvent = event.jdevice;
         spdlog::info("[JoyStick added] ID : {}", deviceEvent.which);
-    } else if (event.type == SDL_EVENT_JOYSTICK_REMOVED) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_REMOVED) {
         const SDL_JoyDeviceEvent& deviceEvent = event.jdevice;
         spdlog::info("[JoyStick removed] ID : {}", deviceEvent.which);
-    } else if (event.type == SDL_EVENT_JOYSTICK_BATTERY_UPDATED) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_BATTERY_UPDATED) {
 
-    } else if (event.type == SDL_EVENT_JOYSTICK_UPDATE_COMPLETE) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_UPDATE_COMPLETE) {
         // https://github.com/libsdl-org/SDL/commit/4c9fb3e16902607d978a2c2f9ade777ad232b628
         // This allows the application to tell when a joystick polling cycle is complete and can process state changes as a single atomic update.
         // It is disabled by default, at least for now.
         // spdlog::info("[JoyStick update] ID : {}", event.which);
-    } else if (event.type == SDL_EVENT_JOYSTICK_AXIS_MOTION) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_AXIS_MOTION) {
         //const SDL_JoyAxisEvent& axisEvent = event.jaxis;
         //spdlog::info("[JoyStick axis motion] id {}, axis {}, value {}",
         //             axisEvent.which,
         //             axisEvent.axis,
         //             axisEvent.value);
-    } else if (event.type == SDL_EVENT_JOYSTICK_BALL_MOTION) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_BALL_MOTION) {
         const SDL_JoyBallEvent& ballEvent = event.jball;
         spdlog::info("[JoyStick ball motion] id {}, ball {}, xrel {}, yrel {}",
                      ballEvent.which,
                      ballEvent.ball,
                      ballEvent.xrel,
                      ballEvent.yrel);
-    } else if (event.type == SDL_EVENT_JOYSTICK_HAT_MOTION) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_HAT_MOTION) {
         const SDL_JoyHatEvent& hatEvent = event.jhat;
         spdlog::info("[JoyStick hat motion] id {}, hat {}, value {}",
                      hatEvent.which,
                      hatEvent.hat,
                      hatEvent.value);
-    } else if (event.type == SDL_EVENT_JOYSTICK_BUTTON_DOWN) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_BUTTON_DOWN) {
         //const SDL_JoyButtonEvent& buttonEvent = event.jbutton;
         //spdlog::info("[JButtonDown] id {}, button {}", buttonEvent.which, buttonEvent.button);
-    } else if (event.type == SDL_EVENT_JOYSTICK_BUTTON_UP) {
+    }
+    if (event.type == SDL_EVENT_JOYSTICK_BUTTON_UP) {
         //const SDL_JoyButtonEvent& buttonEvent = event.jbutton;
         //spdlog::info("[JButtonUp] id {}, button {}", buttonEvent.which, buttonEvent.button);
     }
-    ///
-    /// Gamepad Event
-    ///
-    else if (event.type == SDL_EVENT_GAMEPAD_ADDED) {
+    //
+    // Gamepad Event
+    //
+    if (event.type == SDL_EVENT_GAMEPAD_ADDED) {
         const SDL_GamepadDeviceEvent& gdevice = event.gdevice;
         spdlog::info("[GamePad added] ID : {}", gdevice.which);
-    } else if (event.type == SDL_EVENT_GAMEPAD_REMOVED) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_REMOVED) {
         const SDL_GamepadDeviceEvent& gdevice = event.gdevice;
         spdlog::info("[GamePad removed] ID : {}", gdevice.which);
-    } else if (event.type == SDL_EVENT_GAMEPAD_REMAPPED) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_REMAPPED) {
         const SDL_GamepadDeviceEvent& gdevice = event.gdevice;
         spdlog::info("[GamePad remapped] ID : {}", gdevice.which);
-    } else if (event.type == SDL_EVENT_GAMEPAD_UPDATE_COMPLETE) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_UPDATE_COMPLETE) {
         // https://github.com/libsdl-org/SDL/commit/4c9fb3e16902607d978a2c2f9ade777ad232b628
         // This allows the application to tell when a joystick polling cycle is complete and can process state changes as a single atomic update.
         // It is disabled by default, at least for now.
         // spdlog::info("[GamePad update] ID : {}", event.which);
-    } else if (event.type == SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_STEAM_HANDLE_UPDATED) {
         ///
         ///
         ///
         const SDL_GamepadButtonEvent& gbe = event.gbutton;
         spdlog::info("[GamePad steam update] ID : {}", gbe.which);
-    } else if (event.type == SDL_EVENT_GAMEPAD_AXIS_MOTION) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_AXIS_MOTION) {
         const SDL_GamepadAxisEvent& axisEvent = event.gaxis;
         const auto                  axis      = static_cast<SDL_GamepadAxis>(axisEvent.axis);
         spdlog::info("[gamepad axis motion] id {}, axis {}, value {}",
                      axisEvent.which,
                      SDL_GetGamepadStringForAxis(axis),
                      axisEvent.value);
-    } else if (event.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN) {
         const SDL_GamepadButtonEvent& gbe    = event.gbutton;
         const auto                    button = static_cast<SDL_GamepadButton>(gbe.button);
         spdlog::info("[gamepad button pressed] id {}, button {}",
                      gbe.which,
                      SDL_GetGamepadStringForButton(button));
-    } else if (event.type == SDL_EVENT_GAMEPAD_BUTTON_UP) {
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_BUTTON_UP) {
         const SDL_GamepadButtonEvent& gbe    = event.gbutton;
         const auto                    button = static_cast<SDL_GamepadButton>(gbe.button);
         spdlog::info("[gamepad button release] id {}, button {}",
                      gbe.which,
                      SDL_GetGamepadStringForButton(button));
-    } else if (event.type == SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN) {
-        ///
-        ///
-        ///
-    } else if (event.type == SDL_EVENT_GAMEPAD_TOUCHPAD_UP) {
-        ///
-        ///
-        ///
-    } else if (event.type == SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION) {
-        ///
-        ///
-        ///
-    } else if (event.type == SDL_EVENT_GAMEPAD_SENSOR_UPDATE) {
-        ///
-        ///
-        ///
     }
-
-    // NOLINTEND(bugprone-branch-clone)
+    if (event.type == SDL_EVENT_GAMEPAD_TOUCHPAD_DOWN) {
+        //
+        //
+        //
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_TOUCHPAD_UP) {
+        //
+        //
+        //
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_TOUCHPAD_MOTION) {
+        //
+        //
+        //
+    }
+    if (event.type == SDL_EVENT_GAMEPAD_SENSOR_UPDATE) {
+        //
+        //
+        //
+    }
 
     return {};
 }

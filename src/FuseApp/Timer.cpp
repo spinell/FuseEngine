@@ -24,19 +24,18 @@ float GameTimer::totalTime() const noexcept {
     if (mStopped) {
         return static_cast<float>(static_cast<double>(mStopTime - mPausedTime - mBaseTime) *
                                   mSecondsPerCount);
-    } else {
-        // The distance mCurrTime - mBaseTime includes paused time,
-        // which we do not want to count.  To correct this, we can subtract
-        // the paused time from mCurrTime:
-        //
-        //  (mCurrTime - mPausedTime) - mBaseTime
-        //
-        //                     |<--paused time-->|
-        // ----*---------------*-----------------*------------*------> time
-        //  mBaseTime       mStopTime        startTime     mCurrTime
-        return static_cast<float>(static_cast<double>(mCurrTime - mPausedTime - mBaseTime) *
-                                  mSecondsPerCount);
     }
+    // The distance mCurrTime - mBaseTime includes paused time,
+    // which we do not want to count.  To correct this, we can subtract
+    // the paused time from mCurrTime:
+    //
+    //  (mCurrTime - mPausedTime) - mBaseTime
+    //
+    //                     |<--paused time-->|
+    // ----*---------------*-----------------*------------*------> time
+    //  mBaseTime       mStopTime        startTime     mCurrTime
+    return static_cast<float>(static_cast<double>(mCurrTime - mPausedTime - mBaseTime) *
+                                mSecondsPerCount);
 }
 
 float GameTimer::deltaTime() const noexcept { return static_cast<float>(mDeltaTime); }

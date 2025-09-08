@@ -11,9 +11,8 @@ std::string MouseButtonEvent::toString() const {
                            mMouseX,
                            mMouseY,
                            mClick);
-    } else {
-        return std::format("ButtonReleased: {} ({},{})", fuse::toString(mButton), mMouseX, mMouseY);
     }
+    return std::format("ButtonReleased: {} ({},{})", fuse::toString(mButton), mMouseX, mMouseY);
 }
 
 std::string MouseMovedEvent::toString() const {
@@ -22,10 +21,8 @@ std::string MouseMovedEvent::toString() const {
 
     if (mButtonState.isAnySet()) {
         return std::format("{} [{}]", str, fuse::toString(mButtonState));
-
-    } else {
-        return str;
     }
+    return str;
 }
 
 std::string MouseScrolledEvent::toString() const {

@@ -26,12 +26,11 @@ constexpr auto getEnumName() noexcept {
 #else
 #error "Unknown compiler."
 #endif
-    if (const auto newStart = paramName.rfind("::"); newStart == std::string_view::npos) {
-        return paramName;
-    } else {
+    if (const auto newStart = paramName.rfind("::"); newStart != std::string_view::npos) {
         // extract fromthe last :: to  the end
         return std::string_view{paramName.data() + newStart + 2, paramName.size() - newStart - 2};
     }
+    return paramName;
 }
 
 } // namespace fuse
