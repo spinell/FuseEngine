@@ -31,9 +31,9 @@ cmake_dependent_option(FUSE_BUILD_DOC     "Build doxygen documentation" ON PROJE
 cmake_dependent_option(FUSE_ENABLE_CLANG_TIDY "Enable clang-tidy cmake integration." OFF PROJECT_IS_TOP_LEVEL OFF)
 
 if(FUSE_ENABLE_CLANG_TIDY)
-    # TODO: find minimal clang-tidy supported version (19)
-    set(CMAKE_CXX_CLANG_TIDY clang-tidy)
-    set(CMAKE_C_CLANG_TIDY   clang-tidy)
+    include(FindClangTidy)
+    set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY_EXECUTABLE})
+    set(CMAKE_C_CLANG_TIDY   ${CLANG_TIDY_EXECUTABLE})
 endif()
 
 add_subdirectory(src)
