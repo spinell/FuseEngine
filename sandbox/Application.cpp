@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include <FuseCore/scene/Components.h>
+
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
@@ -75,21 +77,45 @@ constexpr const char* kFragmentShaderSource = R"(
     #version 330 core
     in  vec4 outColor;
 
+    uniform vec4 color;
+
     out vec4 FragColor;
     void main()
     {
         //FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
-        FragColor = outColor;
+        FragColor = color * outColor;
     }
 )";
 
+fuse::Entity entityToDestroy;
+
+
+fuse::Entity createCube(fuse::Scene& scene, const fuse::Vec3& position,
+                        const fuse::Vec4& color = fuse::Vec4{1.f, 1.f, 1.f, 1.f}) {
+    fuse::Entity entity = scene.createEntity();
+
+    auto& transform    = entity.addComponent<fuse::CTransform>();
+    transform.position = position;
+
+    auto& mesh = entity.addComponent<fuse::CMesh>();
+    mesh.color = color;
+
+    return entity;
+}
+
+
 } // namespace
+
+
 
 Application::Application() = default;
 
 Application::~Application() = default;
 
 bool Application::onInit() {
+    createCube(mScene, {0, 0, -11}).addComponent<fuse::CRotator>();
+    createCube(mScene,{-11, 0, -11});
+
     mVertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(mVertexShader, 1, &kVertexShaderSource, nullptr);
     glCompileShader(mVertexShader);
@@ -147,11 +173,12 @@ void Application::onShutdown() {
     glDeleteBuffers(1, &mVbo);
 }
 
-void Application::onUpdate(float /*deltaTime*/) {
+void Application::onUpdate(float deltaTime) {
     glClearColor(.2f, .2f, .2f, 1.f);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+#if 0
     const fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
     const fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
     const fuse::Mat4 rotation =
@@ -159,7 +186,7 @@ void Application::onUpdate(float /*deltaTime*/) {
     fuse::Mat4  transform    = translation * rotation * scale;
     const GLint transformLoc = glGetUniformLocation(mShaderProgram, "transform");
     glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
-
+#endif
     //
     // update camera
     //
@@ -171,9 +198,41 @@ void Application::onUpdate(float /*deltaTime*/) {
     const GLint projLoc = glGetUniformLocation(mShaderProgram, "proj");
     glUniformMatrix4fv(projLoc, 1, GL_TRUE /*transpose*/, proj.ptr());
 
-    glUseProgram(mShaderProgram);
-    glBindVertexArray(mVao);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+
+    for (auto&& [entity, transform, mesh] :
+         mScene.getRegistry().view<fuse::CTransform, fuse::CMesh>().each()) {
+
+        const auto translationMat = fuse::Mat4::CreateTranslation(transform.position);
+        const auto scaleMat       = fuse::Mat4::CreateScaling(transform.scale);
+        auto       rotationMat    = fuse::Mat4::kIdentity;
+
+        if (auto* translator = mScene.getRegistry().try_get<fuse::CTranslator>(entity)) {
+            if (translator->duration > 0) {
+                transform.position += translator->direction * deltaTime;
+                translator->duration -= deltaTime;
+            } else {
+                mScene.getRegistry().remove<fuse::CTranslator>(entity);
+            }
+        }
+
+        if (mScene.getRegistry().try_get<fuse::CRotator>(entity)) {
+            rotationMat = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * mTimer.totalTime(),
+                                                     fuse::Vec3(1, 1, 0));
+        }
+
+
+        const auto transformMat = translationMat * rotationMat * scaleMat;
+
+        const GLint transformLoc = glGetUniformLocation(mShaderProgram, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transformMat.ptr());
+
+        const GLint colorLoc = glGetUniformLocation(mShaderProgram, "color");
+        glUniform4f(colorLoc, mesh.color.x, mesh.color.y, mesh.color.z, mesh.color.w);
+
+        glUseProgram(mShaderProgram);
+        glBindVertexArray(mVao);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 }
 
 void Application::onEvent(const fuse::Event& event) {
@@ -222,7 +281,34 @@ void Application::onEvent(const fuse::Event& event) {
             pos += fuse::Vec3::kAxisYNeg;
             mCamera.setPosition(pos);
         }
+        if (keyEvent->getScanCode() == fuse::ScanCode::Z) {
+            entityToDestroy                                   = createCube(mScene, {0, 0, 0});
+            entityToDestroy.getComponent<fuse::CMesh>().color = {0.5f, 0.5f, 0.5f, 1.0f};
+            entityToDestroy.addComponent<fuse::CTranslator>(fuse::Vec3{1, 0, 0}, 2.0f);
+        }
+        if (keyEvent->getScanCode() == fuse::ScanCode::X) {
+            entityToDestroy.destroy();
+        }
+        if (keyEvent->getScanCode() == fuse::ScanCode::C) {
+            auto newEnt = mScene.duplicateEntity(entityToDestroy);
+            newEnt.getOrAddComponent<fuse::CTranslator>(fuse::Vec3{0, 1, 0}, 2.0f);
+        }
     }
 }
 
-void Application::onImGui() { ImGui::ShowDemoWindow(); }
+void Application::onImGui() {
+    ImGui::ShowDemoWindow();
+
+    if (ImGui::Begin("Entities")) {
+        for (auto entity : mScene.getRegistry().view<entt::entity>()) {
+            ImGui::Text("%s id=%d",
+                        mScene.getRegistry().get<fuse::NameComponent>(entity).name.c_str(),
+                        mScene.getRegistry().get<fuse::IDComponent>(entity).mId);
+
+            if (mScene.getRegistry().try_get<fuse::CTranslator>(entity)) {
+                ImGui::Text("Translator");
+            }
+        }
+    }
+    ImGui::End();
+}

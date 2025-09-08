@@ -132,7 +132,7 @@ TEST(getTypeName, Static) {
     EXPECT_EQ(fuse::getTypeName<int>(), "int"sv);
     EXPECT_EQ(fuse::getTypeName<unsigned>(), "unsigned int"sv);
 
-#if defined(__clang_)
+#if defined(__clang__)
     EXPECT_EQ(fuse::getTypeName<long>(), "long"sv);
 #elif defined(__GNU__)
     EXPECT_EQ(fuse::getTypeName<short>(), "short int"sv);
@@ -147,7 +147,7 @@ TEST(getTypeName, Static) {
     EXPECT_EQ(fuse::getTypeName<float>(), "float"sv);
     EXPECT_EQ(fuse::getTypeName<double>(), "double"sv);
 
-#if defined(__GNUC__) || defined(__clang_)
+#if defined(__GNUC__) || defined(__clang__)
     EXPECT_EQ(fuse::getTypeName<Toto>(), "Toto"sv);
     EXPECT_EQ(fuse::getTypeName<ns::Toto>(), "ns::Toto"sv);
     EXPECT_EQ(fuse::getTypeName<Foo>(), "Foo"sv);
@@ -166,7 +166,7 @@ TEST(getTypeName, Static) {
     //
     // qualifier
     //
-#if defined(__GNUC__) || defined(__clang_)
+#if defined(__GNUC__) || defined(__clang__)
     EXPECT_EQ(fuse::getTypeName<const Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<volatile Foo>(), "Foo"sv);
     EXPECT_EQ(fuse::getTypeName<const volatile Foo>(), "Foo"sv);
