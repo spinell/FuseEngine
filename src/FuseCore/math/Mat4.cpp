@@ -31,10 +31,12 @@ float Mat4::determinant() const noexcept {
 
 Mat4 Mat4::inversed() const noexcept {
     // just define some shorcut
+    // NOLINTBEGIN(readability-isolate-declaration)
     const float m00 = mData[0][0], m01 = mData[0][1], m02 = mData[0][2], m03 = mData[0][3];
     const float m10 = mData[1][0], m11 = mData[1][1], m12 = mData[1][2], m13 = mData[1][3];
     const float m20 = mData[2][0], m21 = mData[2][1], m22 = mData[2][2], m23 = mData[2][3];
     const float m30 = mData[3][0], m31 = mData[3][1], m32 = mData[3][2], m33 = mData[3][3];
+    // NOLINTEND(readability-isolate-declaration)
 
     float v0 = m20 * m31 - m21 * m30;
     float v1 = m20 * m32 - m22 * m30;
