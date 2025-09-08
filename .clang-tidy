@@ -19,6 +19,7 @@ Checks:  clang-analyzer-*,
         -cppcoreguidelines-avoid-magic-numbers,
         -cppcoreguidelines-avoid-c-arrays,
         -cppcoreguidelines-avoid-const-or-ref-data-members,
+        -cppcoreguidelines-pro-type-const-cast,
         -cppcoreguidelines-pro-bounds-constant-array-index,
         -cppcoreguidelines-pro-bounds-pointer-arithmetic,
         -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
@@ -52,6 +53,8 @@ CheckOptions:
   - { key: readability-identifier-naming.ScopedEnumConstantCase,   value: CamelCase } # override EnumConstantCase
   - { key: readability-identifier-naming.ScopedEnumConstantPrefix, value: '' }        # override EnumConstantPrefix
 
+  - key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage      # this option is available since clang-tidy 19
+    value: true
 
 UseColor: true
 FormatStyle: 'file'

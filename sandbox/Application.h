@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "FuseApp/Application.h"
 
+#include <FuseCore/scene/Scene.h>
+
 /// @brief Base class for fuse application.
 class Application : public fuse::Application {
 public:
@@ -29,4 +31,5 @@ private:
     unsigned int mVao            = 0;
     unsigned int mVbo            = 0;
     Camera       mCamera;
+    fuse::Scene  mScene;
 };

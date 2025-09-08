@@ -10,6 +10,8 @@ add_executable(TestFuseCore
     TestEnumFlags.cpp
     TestEnum.cpp
     TestGetTypeName.cpp
+    TestScene.cpp
+    TestEntity.cpp
 )
 
 fuse_set_compiler_warnings(TestFuseCore)
