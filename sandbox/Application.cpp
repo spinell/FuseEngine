@@ -122,7 +122,7 @@ bool Application::onInit() {
     int  success{};
     char infoLog[512];
     glGetShaderiv(mVertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
+    if (success == GL_FALSE) {
         glGetShaderInfoLog(mVertexShader, 512, nullptr, infoLog);
         spdlog::error("SHADER::VERTEX::COMPILATION_FAILED\n {}", infoLog);
     }
@@ -132,7 +132,7 @@ bool Application::onInit() {
     glShaderSource(mFragmentShader, 1, &kFragmentShaderSource, nullptr);
     glCompileShader(mFragmentShader);
     glGetShaderiv(mFragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
+    if (success == GL_FALSE) {
         glGetShaderInfoLog(mFragmentShader, 512, nullptr, infoLog);
         spdlog::error("SHADER::PIXEL::COMPILATION_FAILED\n {}", infoLog);
     }
@@ -143,7 +143,7 @@ bool Application::onInit() {
     glAttachShader(mShaderProgram, mFragmentShader);
     glLinkProgram(mShaderProgram);
     glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &success);
-    if (!success) {
+    if (success  == GL_FALSE) {
         glGetProgramInfoLog(mShaderProgram, 512, nullptr, infoLog);
         spdlog::error("SHADER::PROGRAM::COMPILATION_FAILED\n {}", infoLog);
     }

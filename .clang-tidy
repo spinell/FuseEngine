@@ -8,7 +8,6 @@ Checks:  clang-analyzer-*,
         -readability-avoid-unconditional-preprocessor-if,
         -readability-magic-numbers,
         -readability-isolate-declaration,
-        -readability-implicit-bool-conversion,
         -readability-use-std-min-max,
         -readability-function-cognitive-complexity,
          modernize-*,
@@ -51,7 +50,8 @@ CheckOptions:
   - { key: readability-identifier-naming.PrivateMemberPrefix,      value: m }
   - { key: readability-identifier-naming.ScopedEnumConstantCase,   value: CamelCase } # override EnumConstantCase
   - { key: readability-identifier-naming.ScopedEnumConstantPrefix, value: '' }        # override EnumConstantPrefix
-
+  - key: readability-implicit-bool-conversion.AllowPointerConditions
+    value: true
   - key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage      # this option is available since clang-tidy 19
     value: true
 

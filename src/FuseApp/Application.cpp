@@ -103,7 +103,7 @@ bool Application::init() {
     }
 
     // Load GL extensions using glad
-    if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress))) {
+    if (gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress)) == 0) {
         spdlog::error("Failed to initialize the OpenGL context.\n");
         return false;
     }
@@ -191,7 +191,8 @@ void Application::run() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         // Update and Render additional Platform Windows
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        if ((io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) ==
+            ImGuiConfigFlags_ViewportsEnable) {
             SDL_Window*   backupCurrentWindow  = SDL_GL_GetCurrentWindow();
             SDL_GLContext backupCurrentContext = SDL_GL_GetCurrentContext();
 

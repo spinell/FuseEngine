@@ -87,11 +87,11 @@ void Window::minimize() noexcept {
 }
 
 bool Window::isMaximized() const noexcept {
-    return SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MINIMIZED;
+    return (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MINIMIZED) == SDL_WINDOW_MINIMIZED;
 }
 
 bool Window::isMinimized() const noexcept {
-    return SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MINIMIZED;
+    return (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MINIMIZED) == SDL_WINDOW_MINIMIZED;
 }
 
 void Window::restore() noexcept {
@@ -134,7 +134,7 @@ void Window::setResizable(bool resizable) noexcept {
 }
 
 bool Window::isResizable() const noexcept {
-    return SDL_GetWindowFlags(mWindow) & SDL_WINDOW_RESIZABLE;
+    return (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_RESIZABLE) == SDL_WINDOW_RESIZABLE;
 }
 
 void Window::setPosition(int x, int y) noexcept {
@@ -173,7 +173,8 @@ void Window::setVisible(bool visible) noexcept {
 }
 
 bool Window::isVisible() const noexcept {
-    return !(SDL_GetWindowFlags(mWindow) & SDL_WINDOW_HIDDEN);
+    const bool isHidden = (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_HIDDEN) == SDL_WINDOW_HIDDEN;
+    return !isHidden;
 }
 
 void Window::setIcon(unsigned width, unsigned height, const unsigned* pixels) noexcept {
@@ -229,7 +230,7 @@ void Window::setMouseCursor(unsigned width, unsigned height, const unsigned* pix
 }
 
 bool Window::hasFocus() const noexcept {
-    return SDL_GetWindowFlags(mWindow) & SDL_WINDOW_INPUT_FOCUS;
+    return (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_INPUT_FOCUS) == SDL_WINDOW_INPUT_FOCUS;
 }
 
 void Window::requestFocus() noexcept {
