@@ -81,12 +81,12 @@ public:
     /// @brief Strict comparion between this matrix and another matrix.
     [[nodiscard]] constexpr bool operator==(const Mat4&) const noexcept = default;
 
+#ifdef ENABLE_OPERATOR_ARRAY // disable
     /// @brief Direct access matrix element by row and column
     /// @pre @b row and @b col must be between <b>[0,3]</b>
     /// @param row The row index.
     /// @param col The col index.
     /// @return Return the matrix element at <b>(row,col)</b>
-#if 0
     constexpr float& operator[](unsigned row, unsigned col) noexcept {
         assert(row < kNbRow);
         assert(col < kNbCol);
@@ -100,6 +100,7 @@ public:
         return mData[row][col];
     }
 #endif
+
     /// @see operator()
     [[nodiscard]] constexpr float& operator()(unsigned row, unsigned col) noexcept {
         assert(row < kNbRow);

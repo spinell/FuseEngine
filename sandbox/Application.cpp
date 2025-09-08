@@ -178,15 +178,6 @@ void Application::onUpdate(float deltaTime) {
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-#if 0
-    const fuse::Mat4 translation = fuse::Mat4::CreateTranslation({0, 0, -11});
-    const fuse::Mat4 scale       = fuse::Mat4::CreateScaling({1, 1, 1});
-    const fuse::Mat4 rotation =
-      fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * mTimer.totalTime(), fuse::Vec3(1, 1, 0));
-    fuse::Mat4  transform    = translation * rotation * scale;
-    const GLint transformLoc = glGetUniformLocation(mShaderProgram, "transform");
-    glUniformMatrix4fv(transformLoc, 1, GL_TRUE /*transpose*/, transform.ptr());
-#endif
     //
     // update camera
     //

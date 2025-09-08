@@ -53,42 +53,6 @@ std::string toString(MouseButtonMask mask) {
         appendStr("X8");
     }
     return str;
-#if 0
-    using Type                     = std::underlying_type_t<MouseButtonFlag>;
-    Type        underlyingTypeFlag = static_cast<Type>(flag);
-    std::string str;
-
-    Type index = 0;
-    while (underlyingTypeFlag) {
-        if (underlyingTypeFlag & 1) {
-            if (!str.empty()) {
-                str.append("|");
-            }
-
-            const auto flagToTest = static_cast<MouseButtonFlag>(1U << index);
-            if (flagToTest & MouseButtonFlag::Left) {
-                str += "Left";
-            } else if (flagToTest & MouseButtonFlag::Right) {
-                str += "Right";
-            } else if (flagToTest & MouseButtonFlag::Middle) {
-                str += "Middle";
-            } else if (flagToTest & MouseButtonFlag::X4) {
-                str += "X4";
-            } else if (flagToTest & MouseButtonFlag::X5) {
-                str += "X5";
-            } else if (flagToTest & MouseButtonFlag::X6) {
-                str += "X6";
-            } else if (flagToTest & MouseButtonFlag::X7) {
-                str += "X7";
-            } else if (flagToTest & MouseButtonFlag::X8) {
-                str += "X8";
-            }
-        }
-        ++index;
-        underlyingTypeFlag >>= 1;
-    }
-    return str;
-#endif
 }
 
 std::string toString(KeyModMask flags) {
@@ -133,48 +97,6 @@ std::string toString(KeyModMask flags) {
     if (flags.isSet(KeyModFlag::Scroll)) {
         appendStr("Scroll");
     }
-#if 0
-    using Type                     = std::underlying_type_t<KeyModFlag>;
-    Type        underlyingTypeFlag = static_cast<Type>(flag);
-    std::string str;
-
-    Type index = 0;
-    while (underlyingTypeFlag) {
-        if (underlyingTypeFlag & 1) {
-            if (!str.empty()) {
-                str.append("|");
-            }
-
-            const auto flagToTest = static_cast<KeyModFlag>(1U << index);
-            if (flagToTest & KeyModFlag::LeftShift) {
-                str += "LeftShift";
-            } else if (flagToTest & KeyModFlag::RightShift) {
-                str += "RightShift";
-            } else if (flagToTest & KeyModFlag::LeftCtrl) {
-                str += "LeftCtrl";
-            } else if (flagToTest & KeyModFlag::RightCtrl) {
-                str += "RightCtrl";
-            } else if (flagToTest & KeyModFlag::LeftAlt) {
-                str += "LeftAlt";
-            } else if (flagToTest & KeyModFlag::RightAlt) {
-                str += "RightAlt";
-            } else if (flagToTest & KeyModFlag::LeftGUI) {
-                str += "LeftGUI";
-            } else if (flagToTest & KeyModFlag::RightGUI) {
-                str += "RightGUI";
-            } else if (flagToTest & KeyModFlag::NumLock) {
-                str += "NumLock";
-            } else if (flagToTest & KeyModFlag::CapsLock) {
-                str += "CapsLock";
-            } else if (flagToTest & KeyModFlag::Scroll) {
-                str += "Scroll";
-            }
-        }
-        ++index;
-        underlyingTypeFlag >>= 1;
-    }
-    return str;
-#endif
     return str;
 }
 
