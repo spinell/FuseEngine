@@ -207,7 +207,7 @@ void Application::onUpdate(float deltaTime) {
         }
 
         if (mScene.getRegistry().try_get<fuse::CRotator>(entity)) {
-            rotationMat = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * mTimer.totalTime(),
+            rotationMat = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * getGameTimer().totalTime(),
                                                      fuse::Vec3(1, 1, 0));
         }
 

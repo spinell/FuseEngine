@@ -21,7 +21,6 @@ Checks:  clang-analyzer-*,
          performance-*,
          misc-*,
         -misc-include-cleaner,
-        -misc-non-private-member-variables-in-classes,
          concurrency-*,
          bugprone-*,
         -bugprone-easily-swappable-parameters
@@ -50,6 +49,9 @@ CheckOptions:
     value: true
   - key: cppcoreguidelines-avoid-non-const-global-variables.AllowInternalLinkage      # this option is available since clang-tidy 19
     value: true
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: true
+
 
 UseColor: true
 FormatStyle: 'file'

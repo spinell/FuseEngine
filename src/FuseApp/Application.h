@@ -37,6 +37,8 @@ public:
     /// @brief
     virtual void onImGui() {}
 
+    [[nodiscard]] const GameTimer& getGameTimer() const { return mTimer; }
+
 protected:
     /// @brief
     /// @return
@@ -44,8 +46,6 @@ protected:
 
     /// @brief
     virtual void onShutdown() {}
-
-    GameTimer mTimer; // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
 private:
     /// @brief
@@ -59,6 +59,7 @@ private:
     std::unique_ptr<Window> mMainWindow;
     std::unique_ptr<Window> mMainWindow2;
     bool                    mIsRunning = true;
+    GameTimer               mTimer;
 };
 
 } // namespace fuse
