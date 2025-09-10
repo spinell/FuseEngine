@@ -175,6 +175,7 @@ Mat4 Mat4::CreateRotation(Angle angle, const Vec3& aaxis) noexcept {
 Mat4 Mat4::CreateViewLookAt(const Vec3& position,
                             const Vec3& target,
                             const Vec3& upVector) noexcept {
+    assert(target != position);
     // View matrix
     //   Rx  Ry  Rz -Tx
     //   Ux  Uy  Uz -Ty
@@ -189,7 +190,7 @@ Mat4 Mat4::CreateViewLookAt(const Vec3& position,
     //
     const auto zAxis = (target - position).normalized();
     const auto xAxis = zAxis.crossRH(upVector).normalize();
-    const auto yAxis = zAxis.crossRH(xAxis).normalize();
+    const auto yAxis = xAxis.crossRH(zAxis).normalize();
 
     const auto tx = -xAxis.dot(position);
     const auto ty = -yAxis.dot(position);
@@ -242,10 +243,10 @@ Mat4 Mat4::CreateViewLookTo(const Vec3& position,
     //
     Mat4 matrix;
     // clang-format off
-    matrix(0, 0) = right.x;      matrix(0, 1) = right.y;      matrix(0, 2) = right.z;      matrix(0, 3) = tx;
-    matrix(1, 0) = up.x;         matrix(1, 1) = up.y;         matrix(1, 2) = up.z;         matrix(1, 3) = ty;
-    matrix(2, 0) = -direction.x; matrix(2, 1) = -direction.y; matrix(2, 2) = -direction.z; matrix(2, 3) = tz;
-    matrix(3, 0) = 0.0f;         matrix(3, 1) = 0.0f;         matrix(3, 2) = 0.0f;         matrix(3, 3) = 1.0f;
+    matrix(0, 0) = right.x;          matrix(0, 1) = right.y;          matrix(0, 2) = right.z;          matrix(0, 3) = tx;
+    matrix(1, 0) = up.x;             matrix(1, 1) = up.y;             matrix(1, 2) = up.z;             matrix(1, 3) = ty;
+    matrix(2, 0) = -directionNorm.x; matrix(2, 1) = -directionNorm.y; matrix(2, 2) = -directionNorm.z; matrix(2, 3) = tz;
+    matrix(3, 0) = 0.0f;             matrix(3, 1) = 0.0f;             matrix(3, 2) = 0.0f;             matrix(3, 3) = 1.0f;
     // clang-format on
     return matrix;
 }

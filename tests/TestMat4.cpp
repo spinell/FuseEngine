@@ -339,14 +339,36 @@ TEST(Mat4, createScaling) {
 //  0     0          0         1
 //
 TEST(Mat4, CreateRotationX) {
-    const auto  angle    = fuse::degrees(45.f);
-    const float sinAngle = std::sin(angle);
-    const float cosAngle = std::cos(angle);
-    const auto  rot      = Mat4::CreateRotationX(angle);
-    EXPECT_EQ(rot.getCol(0), Vec4(1, 0, 0, 0));
-    EXPECT_EQ(rot.getCol(1), Vec4(0, cosAngle, sinAngle, 0));
-    EXPECT_EQ(rot.getCol(2), Vec4(0, -sinAngle, cosAngle, 0));
-    EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+    {
+        const auto  angle    = fuse::degrees(45.f);
+        const float sinAngle = std::sin(angle);
+        const float cosAngle = std::cos(angle);
+        const auto  rot      = Mat4::CreateRotationX(angle);
+        EXPECT_EQ(rot.getCol(0), Vec4(1, 0, 0, 0));
+        EXPECT_EQ(rot.getCol(1), Vec4(0, cosAngle, sinAngle, 0));
+        EXPECT_EQ(rot.getCol(2), Vec4(0, -sinAngle, cosAngle, 0));
+        EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+    }
+
+    // [0,0,-1] should become [0,1,0]
+    {
+        const auto rot    = Mat4::CreateRotationX(fuse::degrees(90.f));
+        const auto result = rot * Vec4(0, 0, -1, 1);
+        EXPECT_FLOAT_EQ(result.x, 0.0f);
+        EXPECT_FLOAT_EQ(result.y, 1.0f);
+        EXPECT_NEAR(result.z, 0.0f, std::numeric_limits<float>::epsilon());
+        EXPECT_FLOAT_EQ(result.w, 1.0f);
+    }
+
+    // [0,1,0] should become [0,0,1]
+    {
+        const auto rot    = Mat4::CreateRotationX(fuse::degrees(90.f));
+        const auto result = rot * Vec4(0, 1, 0, 1);
+        EXPECT_FLOAT_EQ(result.x, 0.0f);
+        EXPECT_NEAR(result.y, 0.0f, std::numeric_limits<float>::epsilon());
+        EXPECT_FLOAT_EQ(result.z, 1.0f);
+        EXPECT_FLOAT_EQ(result.w, 1.0f);
+    }
 }
 
 //
@@ -360,14 +382,26 @@ TEST(Mat4, CreateRotationX) {
 //      0          0        0       1
 //
 TEST(Mat4, CreateRotationY) {
-    const auto  angle    = fuse::degrees(45.f);
-    const float sinAngle = std::sin(angle);
-    const float cosAngle = std::cos(angle);
-    const auto  rot      = Mat4::CreateRotationY(angle);
-    EXPECT_EQ(rot.getCol(0), Vec4(cosAngle, 0, -sinAngle, 0));
-    EXPECT_EQ(rot.getCol(1), Vec4(0, 1, 0, 0));
-    EXPECT_EQ(rot.getCol(2), Vec4(sinAngle, 0, cosAngle, 0));
-    EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+    {
+        const auto  angle    = fuse::degrees(45.f);
+        const float sinAngle = std::sin(angle);
+        const float cosAngle = std::cos(angle);
+        const auto  rot      = Mat4::CreateRotationY(angle);
+        EXPECT_EQ(rot.getCol(0), Vec4(cosAngle, 0, -sinAngle, 0));
+        EXPECT_EQ(rot.getCol(1), Vec4(0, 1, 0, 0));
+        EXPECT_EQ(rot.getCol(2), Vec4(sinAngle, 0, cosAngle, 0));
+        EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+    }
+
+    // [0,0,-1] should become [-1,0,0]
+    {
+        const auto rot    = Mat4::CreateRotationY(fuse::degrees(90.f));
+        const auto result = rot * Vec4(0, 0, -1, 1);
+        EXPECT_FLOAT_EQ(result.x, -1.0f);
+        EXPECT_FLOAT_EQ(result.y, 0.0f);
+        EXPECT_NEAR(result.z, 0.0f, std::numeric_limits<float>::epsilon());
+        EXPECT_FLOAT_EQ(result.w, 1.0f);
+    }
 }
 
 //
@@ -381,14 +415,26 @@ TEST(Mat4, CreateRotationY) {
 //      0          0        0   1
 //
 TEST(Mat4, CreateRotationZ) {
-    const auto  angle    = fuse::degrees(45.f);
-    const float sinAngle = std::sin(angle);
-    const float cosAngle = std::cos(angle);
-    const auto  rot      = Mat4::CreateRotationZ(angle);
-    EXPECT_EQ(rot.getCol(0), Vec4(cosAngle, sinAngle, 0, 0));
-    EXPECT_EQ(rot.getCol(1), Vec4(-sinAngle, cosAngle, 0, 0));
-    EXPECT_EQ(rot.getCol(2), Vec4(0, 0, 1, 0));
-    EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+    {
+        const auto  angle    = fuse::degrees(45.f);
+        const float sinAngle = std::sin(angle);
+        const float cosAngle = std::cos(angle);
+        const auto  rot      = Mat4::CreateRotationZ(angle);
+        EXPECT_EQ(rot.getCol(0), Vec4(cosAngle, sinAngle, 0, 0));
+        EXPECT_EQ(rot.getCol(1), Vec4(-sinAngle, cosAngle, 0, 0));
+        EXPECT_EQ(rot.getCol(2), Vec4(0, 0, 1, 0));
+        EXPECT_EQ(rot.getCol(3), Vec4(0, 0, 0, 1));
+    }
+
+    // [1,0,0] should become [0,1,0]
+    {
+        const auto rot    = Mat4::CreateRotationZ(fuse::degrees(90.f));
+        const auto result = rot * Vec4(1, 0, 0, 1);
+        EXPECT_NEAR(result.x, 0.0f, std::numeric_limits<float>::epsilon());
+        EXPECT_FLOAT_EQ(result.y, 1.0f);
+        EXPECT_FLOAT_EQ(result.z, 0.0f);
+        EXPECT_FLOAT_EQ(result.w, 1.0f);
+    }
 }
 
 TEST(Mat4, CreateRotation_angleAxis) {
@@ -423,6 +469,147 @@ TEST(Mat4, CreateRotation_angleAxis) {
         const auto result = Mat4::CreateRotationZ(angle);
         const auto rot    = Mat4::CreateRotation(angle, Vec3::kAxisZ);
         EXPECT_TRUE(rot == result);
+    }
+}
+
+/// ===================================================
+///                    View
+/// ===================================================
+TEST(Mat4, CreateViewLookAt) {
+
+    // Test without translation and without rotation
+    // camera at [0,0,0] looking in front at point [0,0,-1]
+    // Every point should remain the same
+    {
+        const auto view = Mat4::CreateViewLookAt({0, 0, 0}, {0, 0, -1}, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0, 0,  0, 1), Vec4( 0,  0,  0, 1));
+        EXPECT_EQ(view * Vec4(10, 0, 10, 1), Vec4(10,  0, 10, 1));
+        EXPECT_EQ(view * Vec4(0, 10, 10, 1), Vec4( 0, 10, 10, 1));
+        EXPECT_EQ(view * Vec4(0,  0, 10, 1), Vec4( 0,  0, 10, 1));
+        // clang-format on
+    }
+
+    // Test translation on x-axis
+    // camera at [10,0,0] looking in front at point [10,0,-1]
+    // Every point should been translated by [-10,0,0]
+    {
+        const auto view = Mat4::CreateViewLookAt({10, 0, 0}, {10, 0, -1}, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0,  0,  0, 1), Vec4(-10,  0,   0, 1));
+        EXPECT_EQ(view * Vec4(10,  0, 10, 1), Vec4( -0,  0,  10, 1));
+        EXPECT_EQ(view * Vec4( 0, 10, 10, 1), Vec4(-10, 10,  10, 1));
+        EXPECT_EQ(view * Vec4( 0,  0, 10, 1), Vec4(-10,  0,  10, 1));
+        // clang-format on
+    }
+
+    // Test translation on y-axis
+    // camera at [0,10,0] looking in front at point [0,10,-1]
+    // Every point should been translated by [0,-10,0]
+    {
+        const auto view = Mat4::CreateViewLookAt({0, 10, 0}, {0, 10, -1}, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0,  0,  0, 1), Vec4(  0, -10,  0, 1));
+        EXPECT_EQ(view * Vec4(10,  0, 10, 1), Vec4( 10, -10, 10, 1));
+        EXPECT_EQ(view * Vec4( 0, 10, 10, 1), Vec4(  0,   0, 10, 1));
+        EXPECT_EQ(view * Vec4( 0,  0, 10, 1), Vec4(  0, -10, 10, 1));
+        // clang-format on
+    }
+
+    // Test translation on z-axis
+    // camera at [0,0,10] looking in front at point [0,0,0]
+    // Every point should been translated by [0,0,-10]
+    {
+        const auto view = Mat4::CreateViewLookAt({0, 0, 10}, Vec3::kZero, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0, 0,  0, 1), Vec4( 0,  0, -10, 1));
+        EXPECT_EQ(view * Vec4(10, 0, 10, 1), Vec4(10,  0,   0, 1));
+        EXPECT_EQ(view * Vec4(0, 10, 10, 1), Vec4( 0, 10,   0, 1));
+        EXPECT_EQ(view * Vec4(0,  0, 10, 1), Vec4( 0,  0,   0, 1));
+        // clang-format on
+    }
+
+    // Test rotation around y-axis
+    // camera at [0,0,0] looking in front at point [-1,0,0]
+    // Every point should been rotated by 90 degrees clockwise around y-axis
+    {
+        const auto view = Mat4::CreateViewLookAt({0, 0, 0}, {-1, 0, 0}, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0, 0,  0, 1), Vec4( 0, 0,  0, 1));
+        EXPECT_EQ(view * Vec4( 0, 0,-10, 1), Vec4(10, 0,  0, 1));
+        EXPECT_EQ(view * Vec4(10, 0,  0, 1), Vec4( 0, 0, 10, 1));
+        // clang-format on
+    }
+}
+
+TEST(Mat4, CreateViewLookTo) {
+
+    // normalized direction should be the same as non normalized direction
+    EXPECT_EQ(Mat4::CreateViewLookTo({0, 0, 0}, {0,0,-1}, Vec3::kAxisY),
+              Mat4::CreateViewLookTo({0, 0, 0}, {0,0,-10}, Vec3::kAxisY));
+
+    // Test without translation and without rotation
+    // camera at [0,0,0] looking at direction [0,0,-1]
+    // Every point should remain the same
+    {
+        const auto view = Mat4::CreateViewLookTo({0, 0, 0}, Vec3::kAxisZNeg, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0, 0,  0, 1), Vec4( 0,  0,  0, 1));
+        EXPECT_EQ(view * Vec4(10, 0, 10, 1), Vec4(10,  0, 10, 1));
+        EXPECT_EQ(view * Vec4(0, 10, 10, 1), Vec4( 0, 10, 10, 1));
+        EXPECT_EQ(view * Vec4(0,  0, 10, 1), Vec4( 0,  0, 10, 1));
+        // clang-format on
+    }
+
+    // Test translation on x-axis
+    // camera at [10,0,0] looking at direction [0,0,-1]
+    // Every point should been translated by [-10,0,0]
+    {
+        const auto view = Mat4::CreateViewLookTo({10, 0, 0}, Vec3::kAxisZNeg, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0,  0,  0, 1), Vec4(-10,  0,   0, 1));
+        EXPECT_EQ(view * Vec4(10,  0, 10, 1), Vec4( -0,  0,  10, 1));
+        EXPECT_EQ(view * Vec4( 0, 10, 10, 1), Vec4(-10, 10,  10, 1));
+        EXPECT_EQ(view * Vec4( 0,  0, 10, 1), Vec4(-10,  0,  10, 1));
+        // clang-format on
+    }
+
+    // Test translation on y-axis
+    // camera at [0,10,0] looking at direction [0,0,-1]
+    // Every point should been translated by [0,-10,0]
+    {
+        const auto view = Mat4::CreateViewLookTo({0, 10, 0}, Vec3::kAxisZNeg, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0,  0,  0, 1), Vec4(  0, -10,  0, 1));
+        EXPECT_EQ(view * Vec4(10,  0, 10, 1), Vec4( 10, -10, 10, 1));
+        EXPECT_EQ(view * Vec4( 0, 10, 10, 1), Vec4(  0,   0, 10, 1));
+        EXPECT_EQ(view * Vec4( 0,  0, 10, 1), Vec4(  0, -10, 10, 1));
+        // clang-format on
+    }
+
+    // Test translation on z-axis
+    // camera at [0,0,10] looking at direction [0,0,-1]
+    // Every point should been translated by [0,0,-10]
+    {
+        const auto view = Mat4::CreateViewLookTo({0, 0, 10}, Vec3::kAxisZNeg, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0, 0,  0, 1), Vec4( 0,  0, -10, 1));
+        EXPECT_EQ(view * Vec4(10, 0, 10, 1), Vec4(10,  0,   0, 1));
+        EXPECT_EQ(view * Vec4(0, 10, 10, 1), Vec4( 0, 10,   0, 1));
+        EXPECT_EQ(view * Vec4(0,  0, 10, 1), Vec4( 0,  0,   0, 1));
+        // clang-format on
+    }
+
+    // Test rotation around y-axis
+    // camera at [0,0,0] looking at direction [-1,0,0]
+    // Every point should been rotated by 90 degrees clockwise around y-axis
+    {
+        const auto view = Mat4::CreateViewLookTo({0, 0, 0}, Vec3::kAxisXNeg, Vec3::kAxisY);
+        // clang-format off
+        EXPECT_EQ(view * Vec4( 0, 0,  0, 1), Vec4( 0, 0,  0, 1));
+        EXPECT_EQ(view * Vec4( 0, 0,-10, 1), Vec4(10, 0,  0, 1));
+        EXPECT_EQ(view * Vec4(10, 0,  0, 1), Vec4( 0, 0, 10, 1));
+        // clang-format on
     }
 }
 

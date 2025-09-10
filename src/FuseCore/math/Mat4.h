@@ -218,6 +218,7 @@ public:
     /// Builds a view matrix for a right-handed coordinate system using a camera position,
     /// an up direction, and a reference point to look at.
     ///
+    /// @pre The @b position and @b target must not be the same.
     /// @pre The <b>upVector</b> vector must not be parallel to the line of sight from the
     ///       camera position to the reference point.
     /// @param [in] position Position of the camera.
