@@ -13,7 +13,7 @@ Scene& Scene::getRegistryAsScene(const entt::registry& registry) {
     return const_cast<Scene&>(*scene);
 }
 
-[[nodiscard]] Entity Scene::createEntity(std::string name) {
+Entity Scene::createEntity(std::string name) {
     entt::handle handle = {mRegistry, mRegistry.create()};
 
     if (name.empty()) {

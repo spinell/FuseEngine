@@ -49,7 +49,7 @@ public:
     /// @brief Create a new entity.
     /// @param name The name of the entity.
     /// @return The new created entity.
-    [[nodiscard]] Entity createEntity(std::string name = {});
+    Entity createEntity(std::string name = {});
 
     /// @brief Delete a entity and it component from the scene.
     /// @param entity The entity to delete.
