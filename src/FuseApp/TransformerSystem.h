@@ -6,7 +6,7 @@ namespace fuse {
 
 class TransformerSystem {
 public:
-    TransformerSystem() = default;
+    TransformerSystem()  = default;
     ~TransformerSystem() = default;
 
     TransformerSystem(const TransformerSystem&) = delete;

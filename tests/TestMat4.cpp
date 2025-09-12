@@ -545,8 +545,8 @@ TEST(Mat4, CreateViewLookAt) {
 TEST(Mat4, CreateViewLookTo) {
 
     // normalized direction should be the same as non normalized direction
-    EXPECT_EQ(Mat4::CreateViewLookTo({0, 0, 0}, {0,0,-1}, Vec3::kAxisY),
-              Mat4::CreateViewLookTo({0, 0, 0}, {0,0,-10}, Vec3::kAxisY));
+    EXPECT_EQ(Mat4::CreateViewLookTo({0, 0, 0}, {0, 0, -1}, Vec3::kAxisY),
+              Mat4::CreateViewLookTo({0, 0, 0}, {0, 0, -10}, Vec3::kAxisY));
 
     // Test without translation and without rotation
     // camera at [0,0,0] looking at direction [0,0,-1]

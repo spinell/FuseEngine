@@ -1,4 +1,5 @@
 #include "EditorApplication.h"
+
 #include <memory>
 
 int main() {

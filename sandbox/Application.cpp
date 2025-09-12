@@ -1,6 +1,7 @@
 #include "Application.h"
-#include <FuseApp/TransformerSystem.h>
+
 #include <FuseApp/ImGui/Widget.h>
+#include <FuseApp/TransformerSystem.h>
 #include <FuseCore/scene/Components.h>
 
 #include <imgui.h>
@@ -32,7 +33,7 @@ Application::Application() = default;
 Application::~Application() = default;
 
 bool Application::onInit() {
-    auto e = createCube(mScene, {0, 0, -11});
+    auto  e = createCube(mScene, {0, 0, -11});
     auto& r = e.addComponent<fuse::CRotator>();
     r.angle = fuse::degrees(10);
 
@@ -41,9 +42,7 @@ bool Application::onInit() {
     return true;
 }
 
-void Application::onShutdown() {
-    mSceneRenderer.reset();
-}
+void Application::onShutdown() { mSceneRenderer.reset(); }
 
 void Application::onUpdate(float deltaTime) {
     fuse::TransformerSystem transformerSystem;
