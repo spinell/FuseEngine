@@ -1,3 +1,4 @@
+#include <FuseCore/scene/Components.h>
 #include <FuseCore/scene/Scene.h>
 
 #include <gtest/gtest.h>
@@ -6,7 +7,7 @@
 
 namespace {
 
-    struct TestComponent {
+struct TestComponent {
     int value = 0;
 };
 

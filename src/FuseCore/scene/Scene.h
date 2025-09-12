@@ -8,23 +8,6 @@
 
 namespace fuse {
 
-struct NameComponent {
-    std::string name;
-
-    auto operator<=>(const NameComponent&) const = default;
-};
-
-struct IDComponent {
-    IDComponent() {
-        static unsigned id = 0;
-        mId                = id++;
-    }
-
-    auto operator<=>(const IDComponent&) const = default;
-
-    unsigned mId;
-};
-
 class Scene {
 public:
     /// @brief Default constructor. Create a empty scene.

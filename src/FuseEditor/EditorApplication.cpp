@@ -1,6 +1,7 @@
 #include "EditorApplication.h"
 
 #include "FuseCore/scene/Scene.h"
+#include "panel/InspectorPanel.h"
 #include "panel/SceneHierachyPanel.h"
 
 #include <imgui.h>
@@ -14,16 +15,13 @@ bool showIDStackToolWindow = false;
 
 namespace fuse {
 
-EditorApplication::EditorApplication()
-    : fuse::Application() {
-    mScene              = new Scene();
-    mSceneHierachyPanel = new SceneHierachyPanel();
+EditorApplication::EditorApplication() {
+    mScene              = std::make_unique<Scene>();
+    mSceneHierachyPanel = std::make_unique<SceneHierachyPanel>();
+    mInspectorPanel     = std::make_unique<InspectorPanel>();
 }
 
-EditorApplication::~EditorApplication() {
-    delete mScene;
-    delete mSceneHierachyPanel;
-}
+EditorApplication::~EditorApplication() = default;
 
 void EditorApplication::onUpdate(float /*deltaTime*/) {
     // TODO: clear should go in base class
@@ -35,9 +33,9 @@ void EditorApplication::onUpdate(float /*deltaTime*/) {
 void EditorApplication::onEvent(const Event& /*event*/) {}
 
 void EditorApplication::onImGui() {
-    //imguiDrawMainMenuBar();
+    imguiDrawMainMenuBar();
 
-    if (true /*showDemoWindow*/) {
+    if (showDemoWindow) {
         ImGui::ShowDemoWindow(&showDemoWindow);
     }
     if (showMetricsWindow) {
@@ -51,10 +49,14 @@ void EditorApplication::onImGui() {
     }
 
     mSceneHierachyPanel->onImGui();
+    mInspectorPanel->onImGui();
 }
 
 bool EditorApplication::onInit() {
-    mSceneHierachyPanel->setScene(mScene);
+    mSceneHierachyPanel->setScene(mScene.get());
+    mSceneHierachyPanel->setSelectionCallback(
+      [&](Entity entity) { mInspectorPanel->setEntity(entity); });
+
     return true;
 }
 

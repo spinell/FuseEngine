@@ -46,7 +46,7 @@ public:
         mEntity = {};
     }
 
-    unsigned getId() const { return entt::to_integral(mEntity.entity()); }
+    [[nodiscard]] unsigned getId() const { return entt::to_integral(mEntity.entity()); }
 
     /// @brief Add a new component to this entity.
     ///

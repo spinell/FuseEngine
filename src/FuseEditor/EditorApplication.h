@@ -2,14 +2,22 @@
 
 #include "FuseApp/Application.h"
 
+#include <memory>
+
 namespace fuse {
 class Scene;
 class SceneHierachyPanel;
+class InspectorPanel;
 
 class EditorApplication : public fuse::Application {
 public:
     EditorApplication();
     ~EditorApplication() override;
+
+    EditorApplication(const EditorApplication&)             = delete;
+    EditorApplication(const EditorApplication&&)            = delete;
+    EditorApplication& operator=(const EditorApplication&)  = delete;
+    EditorApplication& operator=(const EditorApplication&&) = delete;
 
 private:
     void onUpdate(float /*deltaTime*/) override;
@@ -20,8 +28,9 @@ private:
 
     void imguiDrawMainMenuBar();
 
-    Scene* mScene{};
-    SceneHierachyPanel* mSceneHierachyPanel{};
+    std::unique_ptr<Scene>              mScene;
+    std::unique_ptr<SceneHierachyPanel> mSceneHierachyPanel;
+    std::unique_ptr<InspectorPanel>     mInspectorPanel;
 };
 
 } // namespace fuse

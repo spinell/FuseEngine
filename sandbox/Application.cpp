@@ -1,5 +1,6 @@
 #include "Application.h"
 
+#include <FuseApp/ImGui/Widget.h>
 #include <FuseCore/scene/Components.h>
 
 #include <imgui.h>
@@ -89,13 +90,13 @@ constexpr const char* kFragmentShaderSource = R"(
 
 fuse::Entity entityToDestroy;
 
-
-fuse::Entity createCube(fuse::Scene& scene, const fuse::Vec3& position,
+fuse::Entity createCube(fuse::Scene&      scene,
+                        const fuse::Vec3& position,
                         const fuse::Vec4& color = fuse::Vec4{1.f, 1.f, 1.f, 1.f}) {
     fuse::Entity entity = scene.createEntity();
 
-    auto& transform    = entity.addComponent<fuse::CTransform>();
-    transform.position = position;
+    auto& transform       = entity.addComponent<fuse::CTransform>();
+    transform.translation = position;
 
     auto& mesh = entity.addComponent<fuse::CMesh>();
     mesh.color = color;
@@ -106,15 +107,13 @@ fuse::Entity createCube(fuse::Scene& scene, const fuse::Vec3& position,
 
 } // namespace
 
-
-
 Application::Application() = default;
 
 Application::~Application() = default;
 
 bool Application::onInit() {
     createCube(mScene, {0, 0, -11}).addComponent<fuse::CRotator>();
-    createCube(mScene,{-11, 0, -11});
+    createCube(mScene, {-11, 0, -11});
 
     mVertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(mVertexShader, 1, &kVertexShaderSource, nullptr);
@@ -143,7 +142,7 @@ bool Application::onInit() {
     glAttachShader(mShaderProgram, mFragmentShader);
     glLinkProgram(mShaderProgram);
     glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &success);
-    if (success  == GL_FALSE) {
+    if (success == GL_FALSE) {
         glGetProgramInfoLog(mShaderProgram, 512, nullptr, infoLog);
         spdlog::error("SHADER::PROGRAM::COMPILATION_FAILED\n {}", infoLog);
     }
@@ -193,13 +192,13 @@ void Application::onUpdate(float deltaTime) {
     for (auto&& [entity, transform, mesh] :
          mScene.getRegistry().view<fuse::CTransform, fuse::CMesh>().each()) {
 
-        const auto translationMat = fuse::Mat4::CreateTranslation(transform.position);
+        const auto translationMat = fuse::Mat4::CreateTranslation(transform.translation);
         const auto scaleMat       = fuse::Mat4::CreateScaling(transform.scale);
         auto       rotationMat    = fuse::Mat4::kIdentity;
 
         if (auto* translator = mScene.getRegistry().try_get<fuse::CTranslator>(entity)) {
             if (translator->duration > 0) {
-                transform.position += translator->direction * deltaTime;
+                transform.translation += translator->direction * deltaTime;
                 translator->duration -= deltaTime;
             } else {
                 mScene.getRegistry().remove<fuse::CTranslator>(entity);
@@ -207,8 +206,9 @@ void Application::onUpdate(float deltaTime) {
         }
 
         if (mScene.getRegistry().try_get<fuse::CRotator>(entity)) {
-            rotationMat = fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * getGameTimer().totalTime(),
-                                                     fuse::Vec3(1, 1, 0));
+            rotationMat =
+              fuse::Mat4::CreateRotation(fuse::degrees(10.0f) * getGameTimer().totalTime(),
+                                         fuse::Vec3(1, 1, 0));
         }
 
 
@@ -292,12 +292,13 @@ void Application::onImGui() {
 
     if (ImGui::Begin("Entities")) {
         for (auto entity : mScene.getRegistry().view<entt::entity>()) {
-            ImGui::Text("%s id=%d",
-                        mScene.getRegistry().get<fuse::NameComponent>(entity).name.c_str(),
-                        mScene.getRegistry().get<fuse::IDComponent>(entity).mId);
+
+            fuse::ImGuiTextFmt("{} id={}",
+                               mScene.getRegistry().get<fuse::NameComponent>(entity).name.c_str(),
+                               mScene.getRegistry().get<fuse::IDComponent>(entity).id);
 
             if (mScene.getRegistry().try_get<fuse::CTranslator>(entity)) {
-                ImGui::Text("Translator");
+                ImGui::TextUnformatted("Translator");
             }
         }
     }
