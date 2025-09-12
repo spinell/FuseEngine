@@ -13,13 +13,13 @@ const char* panelName = "Hierachy";
 
 namespace fuse {
 
-SceneHierachyPanel::SceneHierachyPanel() = default;
+SceneHierarchyPanel::SceneHierarchyPanel() = default;
 
-SceneHierachyPanel::~SceneHierachyPanel() = default;
+SceneHierarchyPanel::~SceneHierarchyPanel() = default;
 
-void SceneHierachyPanel::setScene(Scene* scene) { mScene = scene; }
+void SceneHierarchyPanel::setScene(Scene* scene) { mScene = scene; }
 
-void SceneHierachyPanel::onImGui() {
+void SceneHierarchyPanel::onImGui() {
     if (!mScene) {
         return;
     }
@@ -65,7 +65,7 @@ void SceneHierachyPanel::onImGui() {
     ImGui::End();
 }
 
-void SceneHierachyPanel::drawEntityNode(Entity entity, const std::string& name) {
+void SceneHierarchyPanel::drawEntityNode(Entity entity, const std::string& name) {
 
     ImGuiTreeNodeFlags nodeFlags = ImGuiTreeNodeFlags_None;
     nodeFlags |= ImGuiTreeNodeFlags_OpenOnArrow;
@@ -119,7 +119,7 @@ void SceneHierachyPanel::drawEntityNode(Entity entity, const std::string& name) 
     ImGui::PopID();
 }
 
-void SceneHierachyPanel::drawMenuEntity3d() {
+void SceneHierarchyPanel::drawMenuEntity3d() {
     if (ImGui::BeginMenu("3D Object")) {
         if (ImGui::MenuItem("Cube")) {
             Entity entity = mScene->createEntity("Cube");

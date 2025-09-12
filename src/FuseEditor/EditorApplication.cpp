@@ -1,5 +1,6 @@
 #include "EditorApplication.h"
 
+#include "FuseCore/scene/Components.h"
 #include "FuseCore/scene/Scene.h"
 #include "panel/InspectorPanel.h"
 #include "panel/SceneHierachyPanel.h"
@@ -17,26 +18,44 @@ namespace fuse {
 
 EditorApplication::EditorApplication() {
     mScene              = std::make_unique<Scene>();
-    mSceneHierachyPanel = std::make_unique<SceneHierachyPanel>();
+    mSceneHierarchyPanel = std::make_unique<SceneHierarchyPanel>();
     mInspectorPanel     = std::make_unique<InspectorPanel>();
+
+    mEditorCamera.setPosition({0, 0, 10});
+    {
+        auto e = mScene->createEntity("Floor");
+        e.addComponent<CTransform>(Vec3{0, -10, 0}, Vec3{0, 0, 0}, Vec3{100, 0, 100});
+        e.addComponent<CMesh>(Vec4{0.5f, 0.5f, 0.5f, 1.f});
+    }
+    {
+        auto e = mScene->createEntity("Cube");
+        e.addComponent<CTransform>(Vec3{0, 0, 0}, Vec3{0, 45, 0}, Vec3{1, 1, 1});
+        e.addComponent<CMesh>(Vec4{1.f, 1.f, 1.f, 1.f});
+    }
 }
 
 EditorApplication::~EditorApplication() = default;
 
-void EditorApplication::onUpdate(float /*deltaTime*/) {
+void EditorApplication::onUpdate(float deltaTime) {
     // TODO: clear should go in base class
     glClearColor(1.0f, .2f, .2f, 1.f);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    const auto proj = Mat4::CreateProjectionPerspectiveFOVY(degrees(45), 4.f / 3.f, 0.1f, 1000.f);
-    //const auto proj = Mat4::CreateProjectionOrthographicOffCenter(-20, 20, -20, 20, 0.1, 1000.f);
-    const auto view = Mat4::CreateViewLookTo({0, 0, 10}, {0, 0, -10}, Vec3::kAxisY);
-    //const auto view = Mat4::CreateViewLookAt({0, 0, 10}, {0, 0, 0}, Vec3::kAxisY);
+    mEditorCamera.update(deltaTime);
+
+    const auto proj = mEditorCamera.getProjMatrix();
+    const auto view = mEditorCamera.getViewMatrix();
     mSceneRenderer->renderScene(*mScene, proj, view);
 }
 
-void EditorApplication::onEvent(const Event& /*event*/) {}
+void EditorApplication::onEvent(const Event& event) {
+    if (const auto* e = event.getIf<WindowResizedEvent>()) {
+        glViewport(0, 0, e->getWidth(), e->getHeight());
+        mEditorCamera.setAspectRatio(static_cast<float>(e->getWidth()) /
+                                     static_cast<float>(e->getHeight()));
+    }
+}
 
 void EditorApplication::onImGui() {
     imguiDrawMainMenuBar();
@@ -54,13 +73,13 @@ void EditorApplication::onImGui() {
         ImGui::ShowIDStackToolWindow(&showIDStackToolWindow);
     }
 
-    mSceneHierachyPanel->onImGui();
+    mSceneHierarchyPanel->onImGui();
     mInspectorPanel->onImGui();
 }
 
 bool EditorApplication::onInit() {
-    mSceneHierachyPanel->setScene(mScene.get());
-    mSceneHierachyPanel->setSelectionCallback(
+    mSceneHierarchyPanel->setScene(mScene.get());
+    mSceneHierarchyPanel->setSelectionCallback(
       [&](Entity entity) { mInspectorPanel->setEntity(entity); });
 
 

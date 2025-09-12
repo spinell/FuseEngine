@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EditorCamera.h"
 #include "FuseApp/Application.h"
 #include "FuseApp/SceneRenderer.h"
 
@@ -7,7 +8,7 @@
 
 namespace fuse {
 class Scene;
-class SceneHierachyPanel;
+class SceneHierarchyPanel;
 class InspectorPanel;
 
 class EditorApplication : public fuse::Application {
@@ -29,10 +30,11 @@ private:
 
     void imguiDrawMainMenuBar();
 
-    std::unique_ptr<Scene>              mScene;
-    std::unique_ptr<SceneHierachyPanel> mSceneHierachyPanel;
-    std::unique_ptr<InspectorPanel>     mInspectorPanel;
-    std::unique_ptr<SceneRenderer>      mSceneRenderer;
+    std::unique_ptr<Scene>               mScene;
+    std::unique_ptr<SceneHierarchyPanel> mSceneHierarchyPanel;
+    std::unique_ptr<InspectorPanel>      mInspectorPanel;
+    std::unique_ptr<SceneRenderer>       mSceneRenderer;
+    EditorCamera                         mEditorCamera;
 };
 
 } // namespace fuse

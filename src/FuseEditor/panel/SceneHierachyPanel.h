@@ -10,15 +10,15 @@ namespace fuse {
 class Scene;
 
 /// @brief ImGui panel to display entity inthe a scene.
-class SceneHierachyPanel {
+class SceneHierarchyPanel {
 public:
-    SceneHierachyPanel();
-    ~SceneHierachyPanel();
+    SceneHierarchyPanel();
+    ~SceneHierarchyPanel();
 
-    SceneHierachyPanel(const SceneHierachyPanel&)            = delete;
-    SceneHierachyPanel(SceneHierachyPanel&&)                 = delete;
-    SceneHierachyPanel& operator=(const SceneHierachyPanel&) = delete;
-    SceneHierachyPanel& operator=(SceneHierachyPanel&&)      = delete;
+    SceneHierarchyPanel(const SceneHierarchyPanel&)            = delete;
+    SceneHierarchyPanel(SceneHierarchyPanel&&)                 = delete;
+    SceneHierarchyPanel& operator=(const SceneHierarchyPanel&) = delete;
+    SceneHierarchyPanel& operator=(SceneHierarchyPanel&&)      = delete;
 
     /// @brief Set the scene used by the panel to display entity.
     /// @param scene The scene to used.

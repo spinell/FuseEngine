@@ -7,6 +7,8 @@ target_sources(FuseEditor
         main.cpp
         EditorApplication.h
         EditorApplication.cpp
+        EditorCamera.h
+        EditorCamera.cpp
         panel/InspectorPanel.h
         panel/InspectorPanel.cpp
         panel/SceneHierachyPanel.h
