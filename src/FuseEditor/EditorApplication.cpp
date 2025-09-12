@@ -28,6 +28,12 @@ void EditorApplication::onUpdate(float /*deltaTime*/) {
     glClearColor(1.0f, .2f, .2f, 1.f);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    const auto proj = Mat4::CreateProjectionPerspectiveFOVY(degrees(45), 4.f / 3.f, 0.1f, 1000.f);
+    //const auto proj = Mat4::CreateProjectionOrthographicOffCenter(-20, 20, -20, 20, 0.1, 1000.f);
+    const auto view = Mat4::CreateViewLookTo({0, 0, 10}, {0, 0, -10}, Vec3::kAxisY);
+    //const auto view = Mat4::CreateViewLookAt({0, 0, 10}, {0, 0, 0}, Vec3::kAxisY);
+    mSceneRenderer->renderScene(*mScene, proj, view);
 }
 
 void EditorApplication::onEvent(const Event& /*event*/) {}
@@ -57,10 +63,13 @@ bool EditorApplication::onInit() {
     mSceneHierachyPanel->setSelectionCallback(
       [&](Entity entity) { mInspectorPanel->setEntity(entity); });
 
+
+    mSceneRenderer = std::make_unique<SceneRenderer>();
+
     return true;
 }
 
-void EditorApplication::onShutdown() {}
+void EditorApplication::onShutdown() { mSceneRenderer.reset(); }
 
 void EditorApplication::imguiDrawMainMenuBar() {
     const bool isMainMenuBarVisible = ImGui::BeginMainMenuBar();

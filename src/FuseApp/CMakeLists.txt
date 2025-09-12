@@ -20,6 +20,10 @@ target_sources(FuseApp
         Timer.h
         Window.h
         Window.cpp
+        SceneRenderer.h
+        SceneRenderer.cpp
+        TransformerSystem.h
+        TransformerSystem.cpp
         ImGui/Widget.h
         SDL3/SDL3Error.h
         SDL3/SDL3Error.cpp

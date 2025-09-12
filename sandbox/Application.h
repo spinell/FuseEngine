@@ -2,7 +2,10 @@
 #include "Camera.h"
 #include "FuseApp/Application.h"
 
+#include <FuseApp/SceneRenderer.h>
 #include <FuseCore/scene/Scene.h>
+
+#include <memory>
 
 /// @brief Base class for fuse application.
 class Application : public fuse::Application {
@@ -25,11 +28,7 @@ public:
     void onImGui() override;
 
 private:
-    unsigned int mVertexShader   = 0;
-    unsigned int mFragmentShader = 0;
-    unsigned int mShaderProgram  = 0;
-    unsigned int mVao            = 0;
-    unsigned int mVbo            = 0;
-    Camera       mCamera;
-    fuse::Scene  mScene;
+    std::unique_ptr<fuse::SceneRenderer> mSceneRenderer;
+    Camera                               mCamera;
+    fuse::Scene                          mScene;
 };

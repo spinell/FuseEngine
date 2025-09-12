@@ -122,12 +122,14 @@ void SceneHierachyPanel::drawEntityNode(Entity entity, const std::string& name) 
 void SceneHierachyPanel::drawMenuEntity3d() {
     if (ImGui::BeginMenu("3D Object")) {
         if (ImGui::MenuItem("Cube")) {
-            mScene->createEntity("Cube");
-        } else if (ImGui::MenuItem("Sphere")) {
+            Entity entity = mScene->createEntity("Cube");
+            entity.addComponent<CTransform>();
+            entity.addComponent<CMesh>();
+        } else if (ImGui::MenuItem("Sphere", nullptr, nullptr, false)) {
             mScene->createEntity("Sphere");
-        } else if (ImGui::MenuItem("Plane")) {
+        } else if (ImGui::MenuItem("Plane", nullptr, nullptr, false)) {
             mScene->createEntity("Plane");
-        } else if (ImGui::MenuItem("Cylinder")) {
+        } else if (ImGui::MenuItem("Cylinder", nullptr, nullptr, false)) {
             mScene->createEntity("Cylinder");
         }
         ImGui::EndMenu();

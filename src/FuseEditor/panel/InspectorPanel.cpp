@@ -200,9 +200,9 @@ InspectorPanel::InspectorPanel() = default;
 void InspectorPanel::setEntity(Entity entity) { mEntity = entity; }
 
 void InspectorPanel::onImGui() {
-    if (!mIsVisible) {
-        return;
-    }
+    //if (!mIsVisible) {
+    //    return;
+    //}
 
     const ImGuiWindowFlags windowFlags = ImGuiWindowFlags_None;
     mIsVisible                         = ImGui::Begin(panelName, nullptr, windowFlags);

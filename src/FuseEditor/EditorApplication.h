@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FuseApp/Application.h"
+#include "FuseApp/SceneRenderer.h"
 
 #include <memory>
 
@@ -31,6 +32,7 @@ private:
     std::unique_ptr<Scene>              mScene;
     std::unique_ptr<SceneHierachyPanel> mSceneHierachyPanel;
     std::unique_ptr<InspectorPanel>     mInspectorPanel;
+    std::unique_ptr<SceneRenderer>      mSceneRenderer;
 };
 
 } // namespace fuse
