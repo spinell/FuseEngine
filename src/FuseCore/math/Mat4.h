@@ -25,7 +25,7 @@ public:
 
     Mat4() noexcept = default;
 
-    /// @brief Construct a 4x4 matrix by spefified which values.
+    /// @brief Construct a 4x4 matrix by specified which values.
     // clang-format off
     constexpr Mat4(float m00, float m01, float m02, float m03,
                    float m10, float m11, float m12, float m13,
@@ -78,7 +78,7 @@ public:
         // clang-format on
     }
 
-    /// @brief Strict comparion between this matrix and another matrix.
+    /// @brief Strict comparison between this matrix and another matrix.
     [[nodiscard]] constexpr bool operator==(const Mat4&) const noexcept = default;
 
 #ifdef ENABLE_OPERATOR_ARRAY // disable
@@ -179,7 +179,7 @@ public:
     /// @brief Transpose this matrix in-place.
     constexpr Mat4& transpose() noexcept;
 
-    /// @brief Return the tranpose of this matrix.
+    /// @brief Return the transpose of this matrix.
     [[nodiscard]] constexpr Mat4 transposed() const noexcept;
 
     [[nodiscard]] float* ptr() noexcept { return reinterpret_cast<float*>(mData); }
@@ -194,7 +194,7 @@ public:
     /// @brief Create a 4x4 translation matrix.
     [[nodiscard]] static Mat4 CreateTranslation(const Vec3& translation) noexcept;
 
-    /// @brief Create a 4x4 sclaing matrix.
+    /// @brief Create a 4x4 scaling matrix.
     [[nodiscard]] static Mat4 CreateScaling(const Vec3& scale) noexcept;
 
     /// @brief Create a 4x4 rotation matrix around x-axis.
@@ -284,7 +284,7 @@ public:
     /// @param [in] left   The x-coordinate of the left side of the clipping frustum at the near clipping plane.
     /// @param [in] right  The x-coordinate of the right side of the clipping frustum at the near clipping plane.
     /// @param [in] bottom The y-coordinate of the bottom side of the clipping frustum at the near clipping plane.
-    /// @param [in] top    The y-coordinate of the top side of the clipping frustum at the nearclipping plane.
+    /// @param [in] top    The y-coordinate of the top side of the clipping frustum at the near clipping plane.
     /// @param [in] zNear  Distance to the near clipping plane. Must be greater than zero.
     /// @param [in] zFar   Distance to the far clipping plane. Must be greater than zero.
     /// @return Returns the custom perspective projection matrix.

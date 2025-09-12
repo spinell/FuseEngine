@@ -221,10 +221,10 @@ void Application::onEvent(const Event& event) {
             mTimer.reset();
         }
         if (keyEvent->getScanCode() == fuse::ScanCode::F1) {
-            //mMainWindow->toogleGrabInput();
+            //mMainWindow->toggleGrabInput();
         }
         if (keyEvent->getScanCode() == fuse::ScanCode::F2) {
-            mMainWindow->toogleMouseRelative();
+            mMainWindow->toggleMouseRelative();
         }
     }
 }

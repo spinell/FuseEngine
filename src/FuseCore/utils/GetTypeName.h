@@ -5,7 +5,7 @@
 namespace fuse {
 
 
-/// @brief Retrive the name of type.
+/// @brief Retrieve the name of type.
 ///
 /// This function return the name of a template paramater type with qualifier.
 ///
@@ -18,13 +18,13 @@ namespace fuse {
 /// getTypeName<Foo*>();       // return Foo*
 /// @endcode
 ///
-/// @tparam T The type to retrive the name.
+/// @tparam T The type to retrieve the name.
 /// @return The name of the type.
 /// @note With MSVC this function keep the class/struct/union/enum keyword.
 template <class T>
 constexpr auto getTypeFullName() noexcept;
 
-/// @brief Retrive the name of type.
+/// @brief Retrieve the name of type.
 ///
 /// This function return the name of a template paramater type without qualifier.
 ///
@@ -37,7 +37,7 @@ constexpr auto getTypeFullName() noexcept;
 /// getTypeName<Foo*>();       // return Foo
 /// @endcode
 ///
-/// @tparam T The type to retrive the name.
+/// @tparam T The type to retrieve the name.
 /// @return The name of the type.
 /// @note With MSVC this function keep the class/struct/union/enum keyword.
 template <class T>

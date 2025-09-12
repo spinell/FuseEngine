@@ -5,7 +5,7 @@
 
 namespace fuse {
 
-/// @brief Vector in 3 dimentions space.
+/// @brief Vector in 3 dimensions space.
 struct Vec3 {
 public:
     static const Vec3 kZero;     ///< The zero vector (0, 0, 0)
@@ -55,7 +55,7 @@ public:
     /// \text{angle}(a, b) = \arccos\left(\frac{a \cdot b}{|a| |b|}\right)
     /// \f]
     ///
-    /// \warning Both vector must have a lenght > 0.
+    /// \warning Both vector must have a length > 0.
     /// @param other The other vector to calculate the angle with.
     /// @return The angle between the two vectors.
     [[nodiscard]] Angle angleBetween(const Vec3& other) const noexcept {
@@ -72,7 +72,7 @@ public:
     ///  \text{cross}(a, b) = (a.y \cdot b.z - a.z \cdot b.y, a.z \cdot b.x - a.x \cdot b.z, a.x \cdot b.y - a.y \cdot b.x)
     ///  \f]
     ///
-    /// @warning Cross product between 2 vectors are not cumutative.
+    /// @warning Cross product between 2 vectors are not commutative.
     ///
     ///     Which means, a x b != b x a.
     ///     In fact, a x b = -(b x a)
@@ -87,14 +87,14 @@ public:
     ///        - The cross product of two parallel vectors is zero.
     ///          - If the vectors are parallel, the cross product is zero.
     ///          - If the vectors are anti-parallel (pointing in opposite directions), the cross product is also zero.
-    ///        - If both vectors are normalized, the cross product result will be a normalized perpenticular vector.
+    ///        - If both vectors are normalized, the cross product result will be a normalized perpendicular vector.
     /// @remarks This function use the right-hand rule.
     ///       The direction of the resulting vector is determined by the right-hand rule.
-    ///       Assuming, positive X is right and possitive Y is up,
+    ///       Assuming, positive X is right and positive Y is up,
     ///       positive Z go away from the screen and negative Z go into the screen.
     ///       - (1,0,0) x (0,1,0) = (0,0,1)
     ///       - (0,1,0) x (1,0,0) = (0,0,-1)
-    /// @pre  The lenght of either, this vector and @p other must not be 0.
+    /// @pre  The length of either, this vector and @p other must not be 0.
     /// @param other The other vector to calculate the cross product with.
     /// @return The cross product of the two vectors.
     [[nodiscard]] Vec3 crossRH(const Vec3& other) const noexcept {
@@ -149,34 +149,34 @@ public:
     ///                 -  a dot b  : The dot product of a and b.
     ///                 - |a|     : The length of vector a
     ///                 - |b|     : The length of vector b
-    ///                 - cos(a)  : The cosinus of the angle between vector a and b.
+    ///                 - cos(a)  : The cosine of the angle between vector a and b.
     /// @return      The dot product of the two vectors.
     [[nodiscard]] float dot(const Vec3& other) const noexcept {
         return x * other.x + y * other.y + z * other.z;
     }
 
-    /// \brief Compute the lenght (magnitude) of this vector.
+    /// \brief Compute the length (magnitude) of this vector.
     ///
     ///	\warning This operation requires a square root and is expensive in
     ///			 terms of CPU operations. If you don't need to know the exact
     ///			 length (e.g. for just comparing lengths) use lengthSq()
     ///			 instead.
     ///
-    /// \return Returns the lenght of this vector.
+    /// \return Returns the length of this vector.
     [[nodiscard]] float length() const noexcept { return std::sqrt(dot(*this)); }
 
-    /// \brief Compute the square lenght (magnitude) of this vector.
+    /// \brief Compute the square length (magnitude) of this vector.
     ///
     ///	\remarks
     ///		This method is for efficiency - calculating the actual
-    ///		lenght of a vector requires a square root, which is
+    ///		length of a vector requires a square root, which is
     ///		expensive in terms of the operations required. This method
-    ///		returns the square of the lenght, i.e.
-    ///		the same as the lenght but before the square root is taken.
-    ///		Use this if you want to find the longest / shortest lenght
+    ///		returns the square of the length, i.e.
+    ///		the same as the length but before the square root is taken.
+    ///		Use this if you want to find the longest / shortest length
     ///		without incurring the square root.
     ///
-    /// \return Returns the square lenght of this vector.
+    /// \return Returns the square length of this vector.
     [[nodiscard]] float lengthSq() const noexcept { return dot(*this); }
 
     /// @brief Normalize this vector.
@@ -189,7 +189,7 @@ public:
 
     /// Compute the normalized vector of this vector.
     ///
-    /// @remarks This method normalises the vector such that it's
+    /// @remarks This method normalizes the vector such that it's
     ///          length / magnitude is 1. The result is called a unit vector.
     ///
     /// @pre @c *this is no zero vector.
@@ -222,16 +222,16 @@ public:
     /// @f]
     /// @warning If the @p other vector is a zero vector, the projection is undefined.
     /// @pre    @p other must not have length zero.
-    /// @note    The @p other vector does not need to be normalized (The lenght of @p other vector does not affect the projection).
+    /// @note    The @p other vector does not need to be normalized (The length of @p other vector does not affect the projection).
     /// @note    The direction of @p other vector does not matter. [1,0,0] and [-1,0,0] will yield the same projection.
     /// @remarks If the projection is zero, the two vectors are orthogonal (perpendicular)
     /// @param  other Vector being projected onto. Need not be normalized.
     /// @return  The projection of this vector into vector @p other.
-    [[nodiscard]] Vec3 projecteTo(const Vec3& other) const noexcept;
+    [[nodiscard]] Vec3 projectTo(const Vec3& other) const noexcept;
 
-    /// @brief Compute the perpenticular projection of this vector onto another vector.
+    /// @brief Compute the perpendicular projection of this vector onto another vector.
     ///
-    ///  The perpenticular vector is a vector that is orthogonal (perpendicular) to the other
+    ///  The perpendicular vector is a vector that is orthogonal (perpendicular) to the other
     ///  vector and lies in the plane defined by this vector and the other vector.
     ///
     ///  It is calculated as the difference between this vector and its projection onto the other vector.
@@ -240,16 +240,16 @@ public:
     ///  \f]
     ///
     /// @note
-    ///  The perpenticular vector is orthogonal (perpendicular) to the other vector.
+    ///  The perpendicular vector is orthogonal (perpendicular) to the other vector.
     ///  It lies in the plane defined by this vector and the other vector.
-    ///  The perpenticular vector is the component of this vector that is orthogonal to
+    ///  The perpendicular vector is the component of this vector that is orthogonal to
     ///  the other vector.
     ///  It is the vector that is left after removing the projection of this vector onto the
     ///  other vector.
     /// @pre  The @p other vector must not be a zero vector.
     /// @param  other Vector being projected onto. Need not be normalized.
     /// @return
-    [[nodiscard]] Vec3 perpenticularTo(const Vec3& other) const noexcept;
+    [[nodiscard]] Vec3 perpendicularTo(const Vec3& other) const noexcept;
 
     /// @brief Returns a pointer to the underlying data of the vector.
     /// @return A pointer to the first element of the vector's data.
@@ -364,16 +364,16 @@ inline float Vec3::distanceSquared(const Vec3& rhs) const noexcept {
     return (*this - rhs).lengthSq();
 }
 
-inline Vec3 Vec3::projecteTo(const Vec3& other) const noexcept {
+inline Vec3 Vec3::projectTo(const Vec3& other) const noexcept {
     assert(other != Vec3::kZero);
     // proj = (a dot b / b dot b) * b
     return dot(other) / other.dot(other) * other;
 }
 
-inline Vec3 Vec3::perpenticularTo(const Vec3& other) const noexcept {
+inline Vec3 Vec3::perpendicularTo(const Vec3& other) const noexcept {
     assert(other != Vec3::kZero);
     // perp = a - proj
-    return *this - projecteTo(other);
+    return *this - projectTo(other);
 }
 
 } // namespace fuse

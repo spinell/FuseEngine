@@ -44,18 +44,18 @@ std::string WindowMovedEvent::toString() const {
 std::string KeyPressedEvent::toString() const {
     const std::string modFormat = mModifier.isAnySet() ? fuse::toString(mModifier) : "";
 
-    return std::format("KeyPressed: key={} scannCode={} repeated={} [{}]",
+    return std::format("KeyPressed: key={} scanCode={} repeated={} [{}]",
                        static_cast<unsigned>(mKeyCode),
-                       static_cast<unsigned>(mScannCode),
+                       static_cast<unsigned>(mScanCode),
                        mIsRepeated,
                        modFormat);
 }
 
 std::string KeyReleasedEvent::toString() const {
     const std::string modFormat = mModifier.isAnySet() ? fuse::toString(mModifier) : "";
-    return std::format("KeyRelesed: key={} scannCode={} [{}]",
+    return std::format("KeyReleased: key={} scanCode={} [{}]",
                        static_cast<unsigned>(mKeyCode),
-                       static_cast<unsigned>(mScannCode),
+                       static_cast<unsigned>(mScanCode),
                        modFormat);
 }
 

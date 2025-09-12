@@ -10,7 +10,7 @@ public:
     static const Vec4 kAxisY; ///< The unit Y vector (0, 1, 0, 0), usually facing up
     static const Vec4 kAxisZ; ///< The unit Z vector (0, 0, 1, 0), usually facing away the screen
 
-    /// @brief Default constructor (Does not inisialize members).
+    /// @brief Default constructor (Does not initialize members).
     constexpr Vec4() = default;
 
     /// @brief Construct the vector from its coordinates

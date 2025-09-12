@@ -201,8 +201,8 @@ TEST(Vec3, angleBetween) {
     EXPECT_EQ(Vec3::kAxisXNeg.angleBetween(Vec3::kAxisXNeg), 0_deg);
     EXPECT_EQ(Vec3::kAxisYNeg.angleBetween(Vec3::kAxisYNeg), 0_deg);
     EXPECT_EQ(Vec3::kAxisZNeg.angleBetween(Vec3::kAxisZNeg), 0_deg);
-    //EXPECT_EQ(Vec3(1, 1, 0).angleBetween(Vec3(1, 1, 0)), 0._deg); // FIXME: fail weird value Angle(degress=0.01978234, radians=0.00034526698)
-    //EXPECT_EQ(Vec3(1, 1, 1).angleBetween(Vec3(1, 1, 1)), 0._deg); // FIXME: fail weird value Angle(degress=0.01978234, radians=0.00034526698)
+    //EXPECT_EQ(Vec3(1, 1, 0).angleBetween(Vec3(1, 1, 0)), 0._deg); // FIXME: fail weird value Angle(degrees=0.01978234, radians=0.00034526698)
+    //EXPECT_EQ(Vec3(1, 1, 1).angleBetween(Vec3(1, 1, 1)), 0._deg); // FIXME: fail weird value Angle(degrees=0.01978234, radians=0.00034526698)
 
     // parallel (opposite direction) vectors should have 180 degree angle
     EXPECT_EQ(Vec3::kAxisX.angleBetween(Vec3::kAxisXNeg), 180_deg);
@@ -211,8 +211,8 @@ TEST(Vec3, angleBetween) {
     EXPECT_EQ(Vec3::kAxisXNeg.angleBetween(Vec3::kAxisX), 180_deg);
     EXPECT_EQ(Vec3::kAxisYNeg.angleBetween(Vec3::kAxisY), 180_deg);
     EXPECT_EQ(Vec3::kAxisZNeg.angleBetween(Vec3::kAxisZ), 180_deg);
-    EXPECT_EQ(Vec3(1, 1, 1).angleBetween(Vec3(-1, -1, -1)), 179.98021_deg); // fail presision issue
-    EXPECT_EQ(Vec3(-1, -1, -1).angleBetween(Vec3(1, 1, 1)), 179.98021_deg); // fail presision issue
+    EXPECT_EQ(Vec3(1, 1, 1).angleBetween(Vec3(-1, -1, -1)), 179.98021_deg); // fail precision issue
+    EXPECT_EQ(Vec3(-1, -1, -1).angleBetween(Vec3(1, 1, 1)), 179.98021_deg); // fail precision issue
 
     // Test with standard axis that have 90 degree angle
     EXPECT_EQ(Vec3::kAxisX.angleBetween(Vec3::kAxisY), 90_deg);    // x <->  y = 90 degree
@@ -240,8 +240,8 @@ TEST(Vec3, angleBetween) {
         EXPECT_EQ(Vec3::kAxisY.angleBetween(vector), 135_deg);
         EXPECT_EQ(vector.angleBetween(Vec3::kAxisY), 135_deg);
 
-        //EXPECT_EQ(vector.angleBetween({-1, 1, 0}), 180_deg);    // FIXME: fail presision issue  Angle(degress=179.98021, radians=3.1412473)
-        //EXPECT_EQ(Vec3(-1, 1, 0).angleBetween(vector), 180_deg);// FIXME: fail presision issue  Angle(degress=179.98021, radians=3.1412473)
+        //EXPECT_EQ(vector.angleBetween({-1, 1, 0}), 180_deg);    // FIXME: fail precision issue  Angle(degrees=179.98021, radians=3.1412473)
+        //EXPECT_EQ(Vec3(-1, 1, 0).angleBetween(vector), 180_deg);// FIXME: fail precision issue  Angle(degrees=179.98021, radians=3.1412473)
 
         EXPECT_EQ(Vec3::kAxisXNeg.angleBetween(vector), 135_deg);
         EXPECT_EQ(vector.angleBetween(Vec3::kAxisXNeg), 135_deg);
@@ -419,52 +419,52 @@ TEST(Vec3, normalized) {
     EXPECT_EQ(Vec3(-1, -2, -3).normalized(), Vec3(-0.26726124F, -0.53452247F, -0.80178368F));
 }
 
-TEST(Vec3, projecteOnto) {
+TEST(Vec3, projectTo) {
     {
         const Vec3 v(3, 4, 5);
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisX), Vec3(3, 0, 0));    // projection onto  x axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisXNeg), Vec3(3, 0, 0)); // projection onto -x axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisY), Vec3(0, 4, 0));    // projection onto  y axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisYNeg), Vec3(0, 4, 0)); // projection onto -y axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisZ), Vec3(0, 0, 5));    // projection onto  z axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisZNeg), Vec3(0, 0, 5)); // projection onto -z axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisX), Vec3(3, 0, 0));    // projection onto  x axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisXNeg), Vec3(3, 0, 0)); // projection onto -x axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisY), Vec3(0, 4, 0));    // projection onto  y axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisYNeg), Vec3(0, 4, 0)); // projection onto -y axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisZ), Vec3(0, 0, 5));    // projection onto  z axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisZNeg), Vec3(0, 0, 5)); // projection onto -z axis
     }
 
     {
         const Vec3 v(-3, -4, -5);
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisX), Vec3(-3, 0, 0));    // projection onto  x axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisXNeg), Vec3(-3, 0, 0)); // projection onto -x axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisY), Vec3(0, -4, 0));    // projection onto  y axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisYNeg), Vec3(0, -4, 0)); // projection onto -y axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisZ), Vec3(0, 0, -5));    // projection onto  z axis
-        EXPECT_EQ(v.projecteTo(Vec3::kAxisZNeg), Vec3(0, 0, -5)); // projection onto -z axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisX), Vec3(-3, 0, 0));    // projection onto  x axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisXNeg), Vec3(-3, 0, 0)); // projection onto -x axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisY), Vec3(0, -4, 0));    // projection onto  y axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisYNeg), Vec3(0, -4, 0)); // projection onto -y axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisZ), Vec3(0, 0, -5));    // projection onto  z axis
+        EXPECT_EQ(v.projectTo(Vec3::kAxisZNeg), Vec3(0, 0, -5)); // projection onto -z axis
     }
 }
 
-TEST(Vec3, perpenticularOnto) {
+TEST(Vec3, perpendicularOnto) {
     {
         const Vec3 v(3, 4, 5);
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisX), Vec3(0, 4, 5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisY), Vec3(3, 0, 5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisZ), Vec3(3, 4, 0));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisXNeg), Vec3(0, 4, 5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisYNeg), Vec3(3, 0, 5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisZNeg), Vec3(3, 4, 0));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisX), Vec3(0, 4, 5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisY), Vec3(3, 0, 5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisZ), Vec3(3, 4, 0));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisXNeg), Vec3(0, 4, 5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisYNeg), Vec3(3, 0, 5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisZNeg), Vec3(3, 4, 0));
     }
 
     {
         const Vec3 v(-3, -4, -5);
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisX), Vec3(0, -4, -5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisY), Vec3(-3, 0, -5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisZ), Vec3(-3, -4, 0));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisXNeg), Vec3(0, -4, -5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisYNeg), Vec3(-3, 0, -5));
-        EXPECT_EQ(v.perpenticularTo(Vec3::kAxisZNeg), Vec3(-3, -4, 0));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisX), Vec3(0, -4, -5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisY), Vec3(-3, 0, -5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisZ), Vec3(-3, -4, 0));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisXNeg), Vec3(0, -4, -5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisYNeg), Vec3(-3, 0, -5));
+        EXPECT_EQ(v.perpendicularTo(Vec3::kAxisZNeg), Vec3(-3, -4, 0));
     }
 
 
-    EXPECT_EQ(Vec3(1, 1, 0).perpenticularTo(Vec3::kAxisX), Vec3(0, 1, 0));
-    EXPECT_EQ(Vec3(1, 2, 0).perpenticularTo(Vec3(1, 1, 0)), Vec3(-0.5, 0.5, 0));
+    EXPECT_EQ(Vec3(1, 1, 0).perpendicularTo(Vec3::kAxisX), Vec3(0, 1, 0));
+    EXPECT_EQ(Vec3(1, 2, 0).perpendicularTo(Vec3(1, 1, 0)), Vec3(-0.5, 0.5, 0));
 }
 
 TEST(Vec3, ptr) {

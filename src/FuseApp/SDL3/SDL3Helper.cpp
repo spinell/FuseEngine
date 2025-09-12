@@ -420,7 +420,7 @@ namespace fuse::sdl3 {
         //
         // ENGINE_CORE_DEBUG("[Window {}] SDL_EVENT_WINDOW_ICCPROF_CHANGED", windowEvent.windowID);
     } else if (event.type == SDL_EVENT_WINDOW_DISPLAY_CHANGED) {
-        return WindowDisplaydChangedEvent(/*event.data1*/);
+        return WindowDisplayChangedEvent(/*event.data1*/);
     } else if (event.type == SDL_EVENT_WINDOW_DISPLAY_SCALE_CHANGED) {
         //
         // Do we need this ?

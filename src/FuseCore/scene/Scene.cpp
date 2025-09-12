@@ -69,11 +69,11 @@ Entity Scene::duplicateEntity(const Entity& entity) {
                      storage.type().name(),
                      storage.type().hash(),
                      storage.type().index());
-        // only copy component if the source entity containts this component.
+        // only copy component if the source entity contains this component.
         if (storage.contains(entity.mEntity)) {
-            // Calling storage.push() with data will call the copy contructor.
+            // Calling storage.push() with data will call the copy constructor.
             // Without data, it will call the default constructor.
-            // For the IDComponent, we don't want to copy the ID and end up with 2 entity withthe same id.
+            // For the IDComponent, we don't want to copy the ID and end up with 2 entity with the same id.
             if (id == entt::type_hash<IDComponent>()) {
                 [[maybe_unused]] const auto it = storage.push(newEntity);
                 assert(it != storage.end());

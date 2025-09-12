@@ -20,10 +20,10 @@ struct WindowCloseEvent {
 };
 
 /// @brief
-struct WindowDisplaydChangedEvent {
+struct WindowDisplayChangedEvent {
     [[nodiscard]] std::string toString() // NOLINT(readability-convert-member-functions-to-static)
       const {
-        return "WindowDisplaydChangedEvent";
+        return "WindowDisplayChangedEvent";
     }
 };
 
@@ -188,7 +188,7 @@ private:
 /// @brief Event triggered when the mouse has moved.
 class MouseMovedEvent {
 public:
-    /// @brief Contruct a MouseMovedEvent.
+    /// @brief Construct a MouseMovedEvent.
     /// @param x The X coordinate, relative to window.
     /// @param y The Y coordinate, relative to window.
     /// @param deltaX The relative motion in the X direction.
@@ -222,7 +222,7 @@ private:
 /// @brief Event triggered when the mouse wheel has moved.
 class MouseScrolledEvent {
 public:
-    /// @brief  Contruct a MouseScrolledEvent.
+    /// @brief  Construct a MouseScrolledEvent.
     /// @param deltaX The amount of horizontally scroll.
     /// @param deltaY The amount of vertical scroll.
     /// @param mouseX The mouse X coordinate, relative to window.
@@ -265,13 +265,13 @@ class KeyPressedEvent {
 public:
     KeyPressedEvent(ScanCode scancode, KeyCode key, bool isRepeated, KeyModMask modifier)
         : mKeyCode(key)
-        , mScannCode(scancode)
+        , mScanCode(scancode)
         , mIsRepeated{isRepeated}
         , mModifier{modifier} {}
 
     [[nodiscard]] KeyCode getKeyCode() const noexcept { return mKeyCode; }
 
-    [[nodiscard]] ScanCode getScanCode() const noexcept { return mScannCode; }
+    [[nodiscard]] ScanCode getScanCode() const noexcept { return mScanCode; }
 
     [[nodiscard]] bool isRepeated() const noexcept { return mIsRepeated; }
 
@@ -291,7 +291,7 @@ public:
 
 private:
     KeyCode    mKeyCode{};
-    ScanCode   mScannCode{};
+    ScanCode   mScanCode{};
     bool       mIsRepeated{};
     KeyModMask mModifier;
 };
@@ -301,12 +301,12 @@ class KeyReleasedEvent {
 public:
     KeyReleasedEvent(ScanCode scancode, KeyCode key, KeyModMask modifier)
         : mKeyCode(key)
-        , mScannCode(scancode)
+        , mScanCode(scancode)
         , mModifier{modifier} {}
 
     [[nodiscard]] KeyCode getKeyCode() const noexcept { return mKeyCode; }
 
-    [[nodiscard]] ScanCode getScanCode() const noexcept { return mScannCode; }
+    [[nodiscard]] ScanCode getScanCode() const noexcept { return mScanCode; }
 
     [[nodiscard]] bool isShift() const noexcept {
         return mModifier.isAnySet(KeyModFlag::LeftShift, KeyModFlag::RightShift);
@@ -324,7 +324,7 @@ public:
 
 private:
     KeyCode    mKeyCode{};
-    ScanCode   mScannCode{};
+    ScanCode   mScanCode{};
     KeyModMask mModifier;
 };
 
@@ -354,7 +354,7 @@ concept EventRequirement = requires(T t) {
 /// @brief
 class Event {
 public:
-    /// @brief Contruct a event from the real event type.
+    /// @brief Construct a event from the real event type.
     ///
     /// @tparam T The type of the event.
     /// @param  e The event itself.
@@ -375,7 +375,7 @@ public:
 
     /// @brief Return the underlying event.
     /// @tparam T The event type to return.
-    /// @return Return a pointer on the underlying event or null ifthe event type is not \p T.
+    /// @return Return a pointer on the underlying event or null if the event type is not \p T.
     template <EventRequirement T>
     [[nodiscard]] const T* getIf() const {
         //static_assert(isValidEventType<T>, "T is not defined as a event in std::variant<> list.");
@@ -401,7 +401,7 @@ public:
         visit(overloadSet);
     }
 
-    /// @brief Return a string that represente the event (Usefull for debugging).
+    /// @brief Return a string that represent the event (Usefull for debugging).
     [[nodiscard]] std::string toString() const {
         auto visitor = []<typename T>(const T& event) { return event.toString(); };
         return std::visit(visitor, mData);
@@ -411,7 +411,7 @@ private:
     std::variant<
       // Windows event
       WindowCloseEvent,
-      WindowDisplaydChangedEvent,
+      WindowDisplayChangedEvent,
       WindowMouseEnterEvent,
       WindowMouseLeaveEvent,
       WindowFocusGainEvent,

@@ -210,19 +210,19 @@ void Window::setMouseCursor(unsigned width, unsigned height, const unsigned* pix
     const auto pixelFormat =
       SDL_GetPixelFormatForMasks(32, 0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 
-    SDL_Surface* curorSurface =
+    SDL_Surface* cursorSurface =
       SDL_CreateSurfaceFrom(static_cast<int>(width),
                             static_cast<int>(height),
                             pixelFormat,
                             static_cast<void*>(const_cast<unsigned*>(pixels)),
                             static_cast<int>(width) * 4);
 
-    mCursor = SDL_CreateColorCursor(curorSurface, 10, 10);
+    mCursor = SDL_CreateColorCursor(cursorSurface, 10, 10);
     if (!mCursor) {
         fuse::sdl3::CheckSDLError("SDL_SetCursor");
     }
 
-    SDL_DestroySurface(curorSurface);
+    SDL_DestroySurface(cursorSurface);
 
     if (!SDL_SetCursor(mCursor)) {
         fuse::sdl3::CheckSDLError("SDL_SetCursor");
@@ -239,7 +239,7 @@ void Window::requestFocus() noexcept {
     }
 }
 
-void Window::toogleMouseRelative() noexcept {
+void Window::toggleMouseRelative() noexcept {
     const bool isRelative = SDL_GetWindowRelativeMouseMode(mWindow);
     setMouseRelative(!isRelative);
 }

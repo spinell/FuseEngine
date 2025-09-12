@@ -46,7 +46,7 @@ public:
     /// @brief Constant for angle with value 0.
     static const Angle kZero;
 
-    /// @brief Default contructor.
+    /// @brief Default constructor.
     /// Create a angle of 0 degree.
     constexpr Angle() = default;
 
@@ -99,8 +99,8 @@ public:
         return mValue / 180.F * std::numbers::pi_v<float>;
     }
 
-    /// @brief Wrap the angle in the range [-359, 359] degress.
-    /// @return Unsigned angle, wrapped to [-359, 359] degress.
+    /// @brief Wrap the angle in the range [-359, 359] degrees.
+    /// @return Unsigned angle, wrapped to [-359, 359] degrees.
     [[nodiscard]] Angle wrap() const noexcept { return std::fmod(mValue, 360.F); }
 
     /// @brief Wrap the angle in the range [-180, 180]
@@ -125,7 +125,7 @@ private:
     friend constexpr Angle degrees(float degree) noexcept;
     friend constexpr Angle radians(float radian) noexcept;
 
-    /// @brief Contruct a new Angle from a value (degrees).
+    /// @brief Construct a new Angle from a value (degrees).
     ///
     /// @param radian The value in degrees used to create the angle.
     ///

@@ -7,13 +7,13 @@
 
 namespace fuse {
 
-/// @brief Entity represente an object into a scene.
+/// @brief Entity represents an object into a scene.
 /// @todo implement erase_if
 /// @todo insert in
 /// @todo add component concept
 class Entity final {
 public:
-    /// @brief Default contructor. Create a invalid entity.
+    /// @brief Default constructor. Create a invalid entity.
     Entity() noexcept = default;
 
     ~Entity() noexcept                               = default;

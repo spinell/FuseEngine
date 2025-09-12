@@ -30,7 +30,7 @@ float Mat4::determinant() const noexcept {
 }
 
 Mat4 Mat4::inversed() const noexcept {
-    // just define some shorcut
+    // just define some shortcut
     // NOLINTBEGIN(readability-isolate-declaration)
     const float m00 = mData[0][0], m01 = mData[0][1], m02 = mData[0][2], m03 = mData[0][3];
     const float m10 = mData[1][0], m11 = mData[1][1], m12 = mData[1][2], m13 = mData[1][3];
@@ -216,13 +216,13 @@ Mat4 Mat4::CreateViewLookTo(const Vec3& position,
     const auto right = directionNorm.crossRH(upVector).normalized();
 
     // compute the new up vector (view y-axis) of the view matrix.
-    // we can't use the pUpVector here because we need a up vector that is perpandicular to
+    // we can't use the pUpVector here because we need a up vector that is perpendicular to
     // direction and right.
     //
     // Note: direction and right are already normalized, so don't need to normalize up.
     const Vec3 up = right.crossRH(directionNorm);
 
-    // conpute the translation
+    // compute the translation
     const auto tx = -right.dot(position);
     const auto ty = -up.dot(position);
     const auto tz = directionNorm.dot(position);
@@ -397,7 +397,7 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVX(const Angle& fovx,
     //      n => distance of the near plane
     //      a => half fov x
     //
-    // By definition tan(x) = opposite / adjancent
+    // By definition tan(x) = opposite / adjacent
     //  tan(a) = w / n => w = n * tan(a)
     //
     // =====================================
@@ -433,7 +433,7 @@ Mat4 Mat4::CreateProjectionPerspectiveFOVY(const Angle& fovY,
     //      n => distance of the near plane
     //      a => half fov y
     //
-    // By definition tan(x) = opposite / adjancent so,
+    // By definition tan(x) = opposite / adjacent so,
     //  tan(a) = h / n => h = n * tan(a)
     // =====================================
     const float nearHalfHeight = zNear * std::tan(fovY * 0.5f);

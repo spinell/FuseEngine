@@ -11,7 +11,7 @@ struct SDL_GLContextState;
 namespace fuse {
 
 
-/// @brief Struct which hold windows create paramaters
+/// @brief Struct which hold windows create parameters
 struct WindowCreateInfo {
     std::string title     = "FuseEngine"; ///< The window title.
     int         width     = 1600;         ///< The window width.
@@ -21,15 +21,15 @@ struct WindowCreateInfo {
 
 /// @brief Platform independent window
 ///
-/// @todo void setKeyRepeateEnable(bool)
+/// @todo void setKeyRepeatEnable(bool)
 /// @todo void requestAttention()
 class Window {
 public:
-    /// @brief Create a invalide window.
+    /// @brief Create a invalid window.
     Window() = default;
 
-    /// @brief Construct a new winodws.
-    /// @param info The window create info paramaters.
+    /// @brief Construct a new windows.
+    /// @param info The window create info parameters.
     Window(const WindowCreateInfo& info);
 
     Window(const Window&)            = delete;
@@ -39,7 +39,7 @@ public:
     /// @todo  std::exchange
     Window(Window&&) noexcept;
 
-    /// @brief Move assignement.
+    /// @brief Move assignment.
     /// @return
     /// @todo  std::exchange
     Window& operator=(Window&&) noexcept;
@@ -49,8 +49,8 @@ public:
     virtual ~Window();
 
     /// @brief Create or recreate the window.
-    /// @param info The window create info paramaters.
-    /// @return true if the window has been created oterwise, return false.
+    /// @param info The window create info parameters.
+    /// @return true if the window has been created otherwise, return false.
     /// @warning This function should only be called on the main thread.
     [[nodiscard]] bool create(const WindowCreateInfo& info = WindowCreateInfo());
 
@@ -69,7 +69,7 @@ public:
     void maximize() noexcept;
 
     /// @brief Query if the window is maximized.
-    /// @return ture if the window is maximized otherwise, return false.
+    /// @return true if the window is maximized otherwise, return false.
     /// @warning This function should only be called on the main thread.
     [[nodiscard]] bool isMaximized() const noexcept;
 
@@ -79,7 +79,7 @@ public:
     void minimize() noexcept;
 
     /// @brief Query if the window is minimized.
-    /// @return ture if the window is minimized otherwise, return false.
+    /// @return true if the window is minimized otherwise, return false.
     /// @warning This function should only be called on the main thread.
     [[nodiscard]] bool isMinimized() const noexcept;
 
@@ -148,14 +148,14 @@ public:
 
     /// @brief Set the maximum size of a window's client area.
     /// @param maxWidth the minimum width of the window, or 0 for no limit.
-    /// @param maxHeight the minimum height of the window, or 0 for no limi
+    /// @param maxHeight the minimum height of the window, or 0 for no limit.
     /// @warning This function should only be called on the main thread.
     /// @todo add more doc
     void setMaximumSize(int maxWidth, int maxHeight) noexcept;
 
     /// @brief Set the minimum size of a window's client area.
     /// @param minWidth the minimum width of the window, or 0 for no limit.
-    /// @param minHitdh the minimum height of the window, or 0 for no limit.
+    /// @param minHeight the minimum height of the window, or 0 for no limit.
     /// @warning This function should only be called on the main thread.
     /// @todo add more doc
     void setMinimalSize(int minWidth, int minHeight) noexcept;
@@ -200,7 +200,7 @@ public:
 
     //void               setMouseVisible(bool visible);
     //[[nodiscard]] bool isMouseVisible() const;
-    //[[nodiscard]] bool toogleMouseVisiblolity();
+    //[[nodiscard]] bool toggleMouseVisiblity();
 
     /// @}
 
@@ -209,7 +209,7 @@ public:
 
     //void captureMouse(bool capture);
     //void isMouseCaptured() const noexcept;
-    //void toogleCaptureMouse();
+    //void toggleCaptureMouse();
     //void setMouseCaptureRect();
     //void getMouseCaptureRect() const noexcept;
 
@@ -236,7 +236,7 @@ public:
 
     /// @brief Toggle relative mouse mode.
     /// @warning This function should only be called on the main thread.
-    void toogleMouseRelative() noexcept;
+    void toggleMouseRelative() noexcept;
 
     /// @}
 
@@ -253,7 +253,7 @@ public:
 
     [[nodiscard]] SDL_GLContextState* getGLContext() const noexcept { return mGLContext; }
 
-    /// @brief Retive a window from it's id.
+    /// @brief Retrieve a window from it's id.
     /// @param windowId The window id.
     /// @return A pointer to the window if found, otherwise return nullptr.
     [[nodiscard]] static std::optional<Window*> getWindowFromID(unsigned windowId);
@@ -266,29 +266,3 @@ private:
 };
 
 } // namespace fuse
-
-
-#ifdef TODO
-/// @brief Get the windows which currently have input focus.
-std::optional<Window> getFocusWindow();
-std::vector<Window>   getAllWindows();
-
-std::optional<Event> pollEvent();
-std::optional<Event> waitEvent();
-std::optional<Event> peekEvent();
-
-std::vectov<Monitor> getMonitors();
-Monitor              getPrimaryMonitor();
-
-struct VideoMode {
-    int width;
-    int height;
-    int refreshRate;
-};
-
-struct Monitor {
-    VideoMode              getCurrentVideoMode() const;
-    std::vector<VideoMode> getSupportedVideoMode() const;
-    std::string            getName() const;
-}
-#endif

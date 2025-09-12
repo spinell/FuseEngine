@@ -108,13 +108,3 @@ TEST(Scene, duplicateEntity) {
     // component ID should be different
     ASSERT_NE(entity1.getComponent<fuse::IDComponent>(), entity2.getComponent<fuse::IDComponent>());
 }
-
-// entt::to_integral  -> wtf
-// entt::to_entity    -> get versionpart
-// entt::to_version   -> get versionpart
-// entt::to_entity    -> get entity from component instance
-// entt::to_address() ->
-// entt::registry::erase()    Erases the given elements from an entity.
-// entt::registry::erase_if   with callback
-// entt::registry::remove()
-// entt::registry::owned()   Checks whether the given elements belong to any group.
