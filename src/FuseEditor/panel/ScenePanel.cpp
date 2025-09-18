@@ -21,8 +21,8 @@ void ScenePanel::onImGui(bool& isOpen) {
 
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 1));
     if (ImGui::Begin("Viewport", &isOpen)) {
-        createOrResizeFBO(static_cast<unsigned>(ImGui::GetContentRegionAvail().x),
-                          static_cast<unsigned>(ImGui::GetContentRegionAvail().y));
+        createOrResizeFBO(static_cast<int>(ImGui::GetContentRegionAvail().x),
+                          static_cast<int>(ImGui::GetContentRegionAvail().y));
 
         mEditorCamera.update(ImGui::GetIO().DeltaTime);
 
@@ -71,7 +71,7 @@ void ScenePanel::onImGui(bool& isOpen) {
     ImGui::End();
 }
 
-void ScenePanel::createOrResizeFBO(unsigned width, unsigned height) {
+void ScenePanel::createOrResizeFBO(int width, int height) {
     if (mWidth == width && mHeight == height) {
         return;
     }

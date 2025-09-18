@@ -25,13 +25,13 @@ public:
     void setScene(Scene* scene) { mScene = scene; }
 
 private:
-    void                           createOrResizeFBO(unsigned width, unsigned height);
+    void                           createOrResizeFBO(int width, int height);
     Scene*                         mScene{};
     GLuint                         mFbo            = 0;
     GLuint                         mTexColorBuffer = 0;
     GLuint                         mTexDepthBuffer = 0;
-    unsigned                       mWidth          = 0;
-    unsigned                       mHeight         = 0;
+    int                            mWidth          = 0;
+    int                            mHeight         = 0;
     std::unique_ptr<SceneRenderer> mSceneRenderer;
     EditorCamera                   mEditorCamera;
 };
