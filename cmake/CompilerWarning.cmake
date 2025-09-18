@@ -79,6 +79,7 @@ function(fuse_set_compiler_warnings target)
                 -Wswitch-default
                 -Wswitch-enum
                 -Wundef
+                -Wextra-semi             # warn about redundant semicolons
                 -Wsuggest-override       # warn about overriding virtual functions that are not marked with the override keyword.
         )
 
@@ -97,7 +98,6 @@ function(fuse_set_compiler_warnings target)
             target_compile_options(
                 ${target}
                 PRIVATE
-                    -Wextra-semi
                     -Wextra-semi-stmt
                     -Wunreachable-code
                     #-Weverything
