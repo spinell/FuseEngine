@@ -57,8 +57,11 @@ bool drawInputText(const std::string& label, std::string& text) {
     // TODO: FIXME
     char buffer[256]{};
     assert(text.size() < 256);
+#ifdef _WIN32
+    strncpy_s(buffer, sizeof(buffer), text.c_str(), text.size());
+#else
     strncpy(buffer, text.c_str(), std::min(text.size(), sizeof(buffer)));
-
+#endif
     ImGui::PushID(label.c_str());
 
     ImGui::Columns(2);
