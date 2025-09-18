@@ -1,4 +1,6 @@
 #pragma once
+#include "EditorPanel.h"
+
 #include <FuseCore/scene/Entity.h>
 
 #include <entt/entity/entity.hpp>
@@ -9,8 +11,8 @@
 namespace fuse {
 class Scene;
 
-/// @brief ImGui panel to display entity inthe a scene.
-class SceneHierarchyPanel {
+/// @brief ImGui panel to display entity in the a scene.
+class SceneHierarchyPanel : public EditorPanel {
 public:
     SceneHierarchyPanel();
     ~SceneHierarchyPanel();
@@ -28,7 +30,7 @@ public:
         mOnSelectionCallback = std::move(callback);
     }
 
-    void onImGui();
+    void onImGui(bool& isOpen);
 
 private:
     void drawEntityNode(Entity entity, const std::string& name);

@@ -39,7 +39,7 @@ public:
 
     [[nodiscard]] const GameTimer& getGameTimer() const { return mTimer; }
 
-    void quit() { mIsRunning = false; };
+    void quit() { mIsRunning = false; }
 
 protected:
     /// @brief

@@ -93,6 +93,8 @@ namespace fuse {
 
 SceneRenderer::SceneRenderer() {
     mVertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glObjectLabel(GL_SHADER, mVertexShader, -1, "VertexShader");
+
     glShaderSource(mVertexShader, 1, &kVertexShaderSource, nullptr);
     glCompileShader(mVertexShader);
     int  success{};
@@ -105,6 +107,7 @@ SceneRenderer::SceneRenderer() {
 
 
     mFragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glObjectLabel(GL_SHADER, mFragmentShader, -1, "PixelShader");
     glShaderSource(mFragmentShader, 1, &kFragmentShaderSource, nullptr);
     glCompileShader(mFragmentShader);
     glGetShaderiv(mFragmentShader, GL_COMPILE_STATUS, &success);
@@ -115,6 +118,7 @@ SceneRenderer::SceneRenderer() {
 
 
     mShaderProgram = glCreateProgram();
+    glObjectLabel(GL_PROGRAM, mShaderProgram, -1, "ShaderProgram");
     glAttachShader(mShaderProgram, mVertexShader);
     glAttachShader(mShaderProgram, mFragmentShader);
     glLinkProgram(mShaderProgram);
@@ -124,20 +128,44 @@ SceneRenderer::SceneRenderer() {
         spdlog::error("SHADER::PROGRAM::COMPILATION_FAILED\n {}", infoLog);
     }
 
-    glUseProgram(mShaderProgram);
+#define USE_DSA
+#ifdef USE_DSA
+    // create the vertex buffer
+    glCreateBuffers(1, &mVbo);
+    glObjectLabel(GL_BUFFER, mVbo, -1, "CubeVBO");
+    glNamedBufferData(mVbo, sizeof(kVertices), kVertices, GL_STATIC_DRAW);
 
+    // create the vertex array object
+    glCreateVertexArrays(1, &mVao);
+    glObjectLabel(GL_VERTEX_ARRAY, mVao, -1, "CubeVAO");
 
+    glEnableVertexArrayAttrib(mVao, 0/*attribindex*/);
+    glVertexArrayAttribFormat(mVao, 0/*attribindex*/, 3, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribBinding(mVao, 0/*attribindex*/, 0/*bindingindex*/);
+
+    glEnableVertexArrayAttrib(mVao, 1/*attribindex*/);
+    glVertexArrayAttribFormat(mVao, 1/*attribindex*/, 4, GL_FLOAT, GL_FALSE, 20);
+    glVertexArrayAttribBinding(mVao, 1/*attribindex*/, 0/*bindingindex*/);
+
+    glVertexArrayVertexBuffer(mVao, 0/*bindingindex*/, mVbo, 0/*offset*/, 9 * sizeof(float));
+#else
+    glGenVertexArrays(1, &mVao);
     glGenBuffers(1, &mVbo);
 
-
-    glGenVertexArrays(1, &mVao);
     glBindVertexArray(mVao);
     glBindBuffer(GL_ARRAY_BUFFER, mVbo);
+
+    glObjectLabel(GL_BUFFER, mVbo, -1, "CubeVBO");
+    glObjectLabel(GL_VERTEX_ARRAY, mVao, -1, "CubeVAO");
+
     glBufferData(GL_ARRAY_BUFFER, sizeof(kVertices), kVertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(20));
+
     glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), nullptr);
+
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), reinterpret_cast<void*>(20));
+#endif
 }
 
 SceneRenderer::~SceneRenderer() {
@@ -151,10 +179,9 @@ SceneRenderer::~SceneRenderer() {
 void SceneRenderer::renderScene(const Scene&      scene,
                                 const fuse::Mat4& proj,
                                 const fuse::Mat4& view) {
-    glClearColor(.2f, .2f, .2f, 1.f);
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+    glUseProgram(mShaderProgram);
     const GLint viewLoc = glGetUniformLocation(mShaderProgram, "view");
     const GLint projLoc = glGetUniformLocation(mShaderProgram, "proj");
     glUniformMatrix4fv(viewLoc, 1, GL_TRUE /*transpose*/, view.ptr());
@@ -176,7 +203,6 @@ void SceneRenderer::renderScene(const Scene&      scene,
         const GLint colorLoc = glGetUniformLocation(mShaderProgram, "color");
         glUniform4f(colorLoc, mesh.color.x, mesh.color.y, mesh.color.z, mesh.color.w);
 
-        glUseProgram(mShaderProgram);
         glBindVertexArray(mVao);
         glDrawArrays(GL_TRIANGLES, 0, 36);
     }

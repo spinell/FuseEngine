@@ -8,7 +8,7 @@
 #include <spdlog/spdlog.h>
 
 namespace {
-const char* panelName = "Hierachy";
+const char* panelName = "Hierarchy";
 }
 
 namespace fuse {
@@ -19,13 +19,17 @@ SceneHierarchyPanel::~SceneHierarchyPanel() = default;
 
 void SceneHierarchyPanel::setScene(Scene* scene) { mScene = scene; }
 
-void SceneHierarchyPanel::onImGui() {
+void SceneHierarchyPanel::onImGui(bool& isOpen) {
+    if (!isOpen) {
+        return;
+    }
+
     if (!mScene) {
         return;
     }
 
     const ImGuiWindowFlags windowFlags = 0;
-    mIsVisible                         = ImGui::Begin(panelName, nullptr, windowFlags);
+    mIsVisible                         = ImGui::Begin(panelName, &isOpen, windowFlags);
     if (mIsVisible) {
         auto& registry   = mScene->getRegistry();
         auto  entityView = registry.view<NameComponent>();

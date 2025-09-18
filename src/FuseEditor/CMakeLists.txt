@@ -9,14 +9,26 @@ target_sources(FuseEditor
         EditorApplication.cpp
         EditorCamera.h
         EditorCamera.cpp
+        panel/EditorPanel.h
+        panel/LogPanel.h
+        panel/LogPanel.cpp
         panel/InspectorPanel.h
         panel/InspectorPanel.cpp
         panel/SceneHierachyPanel.h
         panel/SceneHierachyPanel.cpp
+        panel/ScenePanel.cpp
+        panel/ScenePanel.h
 )
 
 target_link_libraries(
     FuseEditor
     PUBLIC
         Fuse::App
+)
+
+target_compile_definitions(FuseEditor
+    PRIVATE
+        $<$<CXX_COMPILER_ID:MSVC>:WIN32_LEAN_AND_MEAN>
+        $<$<CXX_COMPILER_ID:MSVC>:NOMINMAX>
+        IMGUI_DEFINE_MATH_OPERATORS
 )

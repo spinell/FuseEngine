@@ -1,8 +1,6 @@
 #pragma once
 
-#include "EditorCamera.h"
 #include "FuseApp/Application.h"
-#include "FuseApp/SceneRenderer.h"
 
 #include <memory>
 
@@ -10,6 +8,8 @@ namespace fuse {
 class Scene;
 class SceneHierarchyPanel;
 class InspectorPanel;
+class LogPanel;
+class ScenePanel;
 
 class EditorApplication : public fuse::Application {
 public:
@@ -33,8 +33,8 @@ private:
     std::unique_ptr<Scene>               mScene;
     std::unique_ptr<SceneHierarchyPanel> mSceneHierarchyPanel;
     std::unique_ptr<InspectorPanel>      mInspectorPanel;
-    std::unique_ptr<SceneRenderer>       mSceneRenderer;
-    EditorCamera                         mEditorCamera;
+    std::unique_ptr<LogPanel>            mLogPanel;
+    std::unique_ptr<ScenePanel>          mScenePanel;
 };
 
 } // namespace fuse

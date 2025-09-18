@@ -199,13 +199,13 @@ InspectorPanel::InspectorPanel() = default;
 
 void InspectorPanel::setEntity(Entity entity) { mEntity = entity; }
 
-void InspectorPanel::onImGui() {
-    //if (!mIsVisible) {
-    //    return;
-    //}
+void InspectorPanel::onImGui(bool& isOpen) {
+    if (!isOpen) {
+        return;
+    }
 
     const ImGuiWindowFlags windowFlags = ImGuiWindowFlags_None;
-    mIsVisible                         = ImGui::Begin(panelName, nullptr, windowFlags);
+    mIsVisible                         = ImGui::Begin(panelName, &isOpen, windowFlags);
     if (mIsVisible && mEntity.isValid()) {
         if (mEntity.hasComponents<NameComponent>()) {
             auto name = mEntity.getComponent<NameComponent>().name;

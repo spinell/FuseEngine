@@ -10,6 +10,90 @@
 #include <SDL3/SDL_opengl.h>
 #include <spdlog/spdlog.h>
 
+namespace {
+void GLAPIENTRY MessageCallback(GLenum source,
+                                GLenum type,
+                                GLuint id,
+                                GLenum severity,
+                                GLsizei /*length*/,
+                                const GLchar* message,
+                                const void* /*userParam*/) {
+    std::string_view sourceToString = [](GLenum source) {
+        switch (source) {
+                // clang-format off
+            case GL_DEBUG_SOURCE_API:             return "GL_DEBUG_SOURCE_API";
+            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   return "GL_DEBUG_SOURCE_WINDOW_SYSTEM";
+            case GL_DEBUG_SOURCE_SHADER_COMPILER: return "GL_DEBUG_SOURCE_SHADER_COMPILER";
+            case GL_DEBUG_SOURCE_THIRD_PARTY:     return "GL_DEBUG_SOURCE_THIRD_PARTY";
+            case GL_DEBUG_SOURCE_APPLICATION:     return "GL_DEBUG_SOURCE_APPLICATION";
+            case GL_DEBUG_SOURCE_OTHER:           return "GL_DEBUG_SOURCE_OTHER";
+            default: return "Unknown";
+                // clang-format on
+        }
+    }(source);
+    std::string_view typeToString = [](GLenum type) {
+        switch (type) {
+                // clang-format off
+            case GL_DEBUG_TYPE_ERROR:              return "GL_DEBUG_TYPE_ERROR";
+            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:return "GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR";
+            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: return "GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR";
+            case GL_DEBUG_TYPE_PORTABILITY:        return "GL_DEBUG_TYPE_PORTABILITY";
+            case GL_DEBUG_TYPE_PERFORMANCE:        return "GL_DEBUG_TYPE_PERFORMANCE";
+            case GL_DEBUG_TYPE_MARKER:             return "GL_DEBUG_TYPE_MARKER";
+            case GL_DEBUG_TYPE_PUSH_GROUP:         return "GL_DEBUG_TYPE_PUSH_GROUP";
+            case GL_DEBUG_TYPE_POP_GROUP:          return "GL_DEBUG_TYPE_POP_GROUP";
+            case GL_DEBUG_TYPE_OTHER:              return "GL_DEBUG_TYPE_OTHER";
+            default: return "Unknown";
+                // clang-format on
+        }
+    }(type);
+
+    std::string_view severityToString = [](GLenum severity) {
+        switch (severity) {
+                // clang-format off
+            case GL_DEBUG_SEVERITY_HIGH:        return "GL_DEBUG_SEVERITY_HIGH";
+            case GL_DEBUG_SEVERITY_MEDIUM:      return "GL_DEBUG_SEVERITY_MEDIUM";
+            case GL_DEBUG_SEVERITY_LOW:         return "GL_DEBUG_SEVERITY_LOW";
+            case GL_DEBUG_SEVERITY_NOTIFICATION:return "GL_DEBUG_SEVERITY_NOTIFICATION";
+            default: return "Unknown";
+                // clang-format on
+        }
+    }(severity);
+
+    switch (type) {
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+        case GL_DEBUG_TYPE_ERROR:
+            spdlog::error("[{}] [{}] ({}) {}",
+                          sourceToString,
+                          severityToString,
+                          id,
+                          message);
+            break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+        case GL_DEBUG_TYPE_PORTABILITY:
+        case GL_DEBUG_TYPE_PERFORMANCE:
+            spdlog::warn("[{}] [{}] ({}) {}",
+                          sourceToString,
+                          severityToString,
+                          id,
+                          message);
+            break;
+        case GL_DEBUG_TYPE_MARKER:
+        case GL_DEBUG_TYPE_PUSH_GROUP:
+        case GL_DEBUG_TYPE_POP_GROUP:
+        case GL_DEBUG_TYPE_OTHER:
+        default:
+            spdlog::info("[{}] [{}] ({}) {}",
+                          sourceToString,
+                          severityToString,
+                          id,
+                          message);
+            break;
+    }
+}
+
+} // namespace
+
 namespace fuse {
 
 Application::Application() = default;
@@ -107,6 +191,22 @@ bool Application::init() {
         spdlog::error("Failed to initialize the OpenGL context.\n");
         return false;
     }
+
+    GLint major{};
+    GLint minor{};
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    spdlog::info("Using OpenGL: {}.{}", major, minor);
+    spdlog::info(" - Vendor:         {}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+    spdlog::info(" - Renderer:       {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+    spdlog::info(" - Shader version: {}", reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+
+
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(MessageCallback, nullptr /*userdata*/);
+    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();

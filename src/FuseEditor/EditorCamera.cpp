@@ -6,8 +6,8 @@ namespace fuse {
 
 
 void EditorCamera::update(float deltaTime) {
-    if(ImGui::GetIO().WantCaptureMouse) {
-        return;
+    if (ImGui::GetIO().WantCaptureMouse) {
+        //return;
     }
 
     if (ImGui::IsMouseDown(ImGuiMouseButton_Right)) {

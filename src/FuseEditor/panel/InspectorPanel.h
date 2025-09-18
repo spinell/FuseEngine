@@ -1,10 +1,12 @@
 #pragma once
+#include "EditorPanel.h"
+
 #include <FuseCore/scene/Entity.h>
 
 namespace fuse {
 
 /// @brief ImGui panel to display entity properties.
-class InspectorPanel {
+class InspectorPanel : public EditorPanel {
 public:
     InspectorPanel();
     ~InspectorPanel() = default;
@@ -18,7 +20,7 @@ public:
     /// @param entity The entity to used.
     void setEntity(Entity entity);
 
-    void onImGui();
+    void onImGui(bool& isOpen);
 
 private:
     bool   mIsVisible{true};
