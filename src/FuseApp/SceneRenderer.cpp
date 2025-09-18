@@ -139,15 +139,15 @@ SceneRenderer::SceneRenderer() {
     glCreateVertexArrays(1, &mVao);
     glObjectLabel(GL_VERTEX_ARRAY, mVao, -1, "CubeVAO");
 
-    glEnableVertexArrayAttrib(mVao, 0/*attribindex*/);
-    glVertexArrayAttribFormat(mVao, 0/*attribindex*/, 3, GL_FLOAT, GL_FALSE, 0);
-    glVertexArrayAttribBinding(mVao, 0/*attribindex*/, 0/*bindingindex*/);
+    glEnableVertexArrayAttrib(mVao, 0 /*attribindex*/);
+    glVertexArrayAttribFormat(mVao, 0 /*attribindex*/, 3, GL_FLOAT, GL_FALSE, 0);
+    glVertexArrayAttribBinding(mVao, 0 /*attribindex*/, 0 /*bindingindex*/);
 
-    glEnableVertexArrayAttrib(mVao, 1/*attribindex*/);
-    glVertexArrayAttribFormat(mVao, 1/*attribindex*/, 4, GL_FLOAT, GL_FALSE, 20);
-    glVertexArrayAttribBinding(mVao, 1/*attribindex*/, 0/*bindingindex*/);
+    glEnableVertexArrayAttrib(mVao, 1 /*attribindex*/);
+    glVertexArrayAttribFormat(mVao, 1 /*attribindex*/, 4, GL_FLOAT, GL_FALSE, 20);
+    glVertexArrayAttribBinding(mVao, 1 /*attribindex*/, 0 /*bindingindex*/);
 
-    glVertexArrayVertexBuffer(mVao, 0/*bindingindex*/, mVbo, 0/*offset*/, 9 * sizeof(float));
+    glVertexArrayVertexBuffer(mVao, 0 /*bindingindex*/, mVbo, 0 /*offset*/, 9 * sizeof(float));
 #else
     glGenVertexArrays(1, &mVao);
     glGenBuffers(1, &mVbo);

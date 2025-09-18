@@ -6,7 +6,6 @@
 
 #include <imgui.h>
 
-
 namespace {
 const char* panelName = "Inspector";
 

@@ -47,31 +47,19 @@ void GLAPIENTRY MessageCallback(GLenum source,
     switch (type) {
         case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
         case GL_DEBUG_TYPE_ERROR:
-            spdlog::error("[{}] [{}] ({}) {}",
-                          sourceToString,
-                          severityToString,
-                          id,
-                          message);
+            spdlog::error("[{}] [{}] ({}) {}", sourceToString, severityToString, id, message);
             break;
         case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
         case GL_DEBUG_TYPE_PORTABILITY:
         case GL_DEBUG_TYPE_PERFORMANCE:
-            spdlog::warn("[{}] [{}] ({}) {}",
-                          sourceToString,
-                          severityToString,
-                          id,
-                          message);
+            spdlog::warn("[{}] [{}] ({}) {}", sourceToString, severityToString, id, message);
             break;
         case GL_DEBUG_TYPE_MARKER:
         case GL_DEBUG_TYPE_PUSH_GROUP:
         case GL_DEBUG_TYPE_POP_GROUP:
         case GL_DEBUG_TYPE_OTHER:
         default:
-            spdlog::info("[{}] [{}] ({}) {}",
-                          sourceToString,
-                          severityToString,
-                          id,
-                          message);
+            spdlog::info("[{}] [{}] ({}) {}", sourceToString, severityToString, id, message);
             break;
     }
 }
@@ -183,14 +171,19 @@ bool Application::init() {
     spdlog::info("Using OpenGL: {}.{}", major, minor);
     spdlog::info(" - Vendor:         {}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
     spdlog::info(" - Renderer:       {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
-    spdlog::info(" - Shader version: {}", reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
-
+    spdlog::info(" - Shader version: {}",
+                 reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
 
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(MessageCallback, nullptr /*userdata*/);
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, GL_FALSE);
+    glDebugMessageControl(GL_DONT_CARE,
+                          GL_DONT_CARE,
+                          GL_DEBUG_SEVERITY_NOTIFICATION,
+                          0,
+                          nullptr,
+                          GL_FALSE);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
