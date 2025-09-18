@@ -8,7 +8,7 @@ namespace fuse {
 class LogPanel : public EditorPanel {
 public:
     LogPanel();
-    ~LogPanel() = default;
+    ~LogPanel() override = default;
 
     LogPanel(const LogPanel&)              = delete;
     LogPanel& operator=(const LogPanel&)   = delete;

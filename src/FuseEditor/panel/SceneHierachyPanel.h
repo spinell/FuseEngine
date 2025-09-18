@@ -15,7 +15,7 @@ class Scene;
 class SceneHierarchyPanel : public EditorPanel {
 public:
     SceneHierarchyPanel();
-    ~SceneHierarchyPanel();
+    ~SceneHierarchyPanel() override;
 
     SceneHierarchyPanel(const SceneHierarchyPanel&)            = delete;
     SceneHierarchyPanel(SceneHierarchyPanel&&)                 = delete;

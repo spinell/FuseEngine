@@ -9,7 +9,7 @@ namespace fuse {
 class InspectorPanel : public EditorPanel {
 public:
     InspectorPanel();
-    ~InspectorPanel() = default;
+    ~InspectorPanel() override = default;
 
     InspectorPanel(const InspectorPanel&)            = delete;
     InspectorPanel(InspectorPanel&&)                 = delete;
