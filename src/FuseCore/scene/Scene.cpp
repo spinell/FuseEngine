@@ -43,7 +43,7 @@ void Scene::clear() noexcept { mRegistry.clear(); }
 
 std::size_t Scene::getEntityComponentCount(const Entity& entity) const noexcept {
     std::size_t nbComponent = 0;
-    for (const auto& [id, storage] : mRegistry.storage()) {
+    for (const auto [id, storage] : mRegistry.storage()) {
         if (storage.contains(entity.mEntity)) {
             nbComponent++;
         }
@@ -65,7 +65,7 @@ Entity Scene::duplicateEntity(const Entity& entity) {
 
     entt::handle newEntity = {mRegistry, mRegistry.create()};
 
-    for (const auto& [id, storage] : mRegistry.storage()) {
+    for (const auto [id, storage] : mRegistry.storage()) {
         std::println("storageId={} name={} hash={} index={}",
                      id,
                      storage.type().name(),

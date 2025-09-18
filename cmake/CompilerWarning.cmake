@@ -103,6 +103,7 @@ function(fuse_set_compiler_warnings target)
                     -Wsuggest-destructor-override
                     -Winconsistent-missing-override            # is this necessary (Wsuggest-override is enable)
                     -Winconsistent-missing-destructor-override # is this necessary (Wsuggest-destructor-override is enable)
+                    -Wrange-loop-bind-reference
                     #-Weverything
                     #-Wno-padded
                     #-Wno-unsafe-buffer-usage
@@ -116,7 +117,6 @@ function(fuse_set_compiler_warnings target)
                     #-Wno-global-constructors
                     #-Wno-shadow-uncaptured-local
                     #-Wno-weak-vtables
-                    #-Wno-range-loop-bind-reference
             )
         endif()
 
