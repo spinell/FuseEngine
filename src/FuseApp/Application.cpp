@@ -31,22 +31,6 @@ void GLAPIENTRY MessageCallback(GLenum source,
                 // clang-format on
         }
     }(source);
-    std::string_view typeToString = [](GLenum type) {
-        switch (type) {
-                // clang-format off
-            case GL_DEBUG_TYPE_ERROR:              return "GL_DEBUG_TYPE_ERROR";
-            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:return "GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR";
-            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: return "GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR";
-            case GL_DEBUG_TYPE_PORTABILITY:        return "GL_DEBUG_TYPE_PORTABILITY";
-            case GL_DEBUG_TYPE_PERFORMANCE:        return "GL_DEBUG_TYPE_PERFORMANCE";
-            case GL_DEBUG_TYPE_MARKER:             return "GL_DEBUG_TYPE_MARKER";
-            case GL_DEBUG_TYPE_PUSH_GROUP:         return "GL_DEBUG_TYPE_PUSH_GROUP";
-            case GL_DEBUG_TYPE_POP_GROUP:          return "GL_DEBUG_TYPE_POP_GROUP";
-            case GL_DEBUG_TYPE_OTHER:              return "GL_DEBUG_TYPE_OTHER";
-            default: return "Unknown";
-                // clang-format on
-        }
-    }(type);
 
     std::string_view severityToString = [](GLenum severity) {
         switch (severity) {
