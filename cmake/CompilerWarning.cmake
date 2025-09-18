@@ -55,14 +55,15 @@ function(fuse_set_compiler_warnings target)
             PRIVATE
                 # Clang-CL specific
                 # With clang-cl, don't enable -Wall because it will  map to -Weverything
-                $<$<AND:$<CXX_COMPILER_FRONTEND_VARIANT:MSVC>,$<CXX_COMPILER_ID:Clang>>:-W4> # Enable -Wall and -Wextra
+                # Instead, enable -W4 witch map to -Wall and -Wextra
+                $<$<AND:$<CXX_COMPILER_FRONTEND_VARIANT:MSVC>,$<CXX_COMPILER_ID:Clang>>:-W4>
                 # GCC & Clang (GNU) specific
                 $<$<AND:$<CXX_COMPILER_FRONTEND_VARIANT:GNU>,$<CXX_COMPILER_ID:GNU,Clang>>:-Wall>
                 $<$<AND:$<CXX_COMPILER_FRONTEND_VARIANT:GNU>,$<CXX_COMPILER_ID:GNU,Clang>>:-Wextra>
                 -Wpedantic
                 -Wno-comment             # this will trigger warning on doxygen comments which use latex matrix
                 -Wnon-virtual-dtor       # warn the user if a class with virtual functions has a non-virtual destructor.
-                #-Wshadow                 # warn the user if a variable declaration shadows one from a parent context
+                #-Wshadow                # warn the user if a variable declaration shadows one from a parent context
                 -Wold-style-cast         # warn for c-style casts
                 -Wcast-align             # warn for potential performance problem casts
                 -Wunused                 # warn on anything being unused
@@ -78,6 +79,7 @@ function(fuse_set_compiler_warnings target)
                 -Wswitch-default
                 -Wswitch-enum
                 -Wundef
+                -Wsuggest-override       # warn about overriding virtual functions that are not marked with the override keyword.
         )
 
         if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -108,6 +110,12 @@ function(fuse_set_compiler_warnings target)
                     #-Wno-cast-function-type-strict
                     #-Wno-c++98-compat
                     #-Wno-c++98-compat-pedantic
+                    #-Wno-global-constructors
+                    #-Wno-shadow-uncaptured-local
+                    #-Wno-suggest-destructor-override              # ???
+                    #-Wno-inconsistent-missing-destructor-override # ???
+                    #-Wno-weak-vtables
+                    #-Wno-range-loop-bind-reference
             )
         endif()
 

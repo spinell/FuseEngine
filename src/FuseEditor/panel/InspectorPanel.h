@@ -20,7 +20,7 @@ public:
     /// @param entity The entity to used.
     void setEntity(Entity entity);
 
-    void onImGui(bool& isOpen);
+    void onImGui(bool& isOpen) override;
 
 private:
     bool   mIsVisible{true};

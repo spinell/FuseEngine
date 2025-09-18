@@ -30,7 +30,7 @@ public:
         mOnSelectionCallback = std::move(callback);
     }
 
-    void onImGui(bool& isOpen);
+    void onImGui(bool& isOpen) override;
 
 private:
     void drawEntityNode(Entity entity, const std::string& name);

@@ -6,6 +6,7 @@
 
 #include <imgui.h>
 
+
 namespace {
 const char* panelName = "Inspector";
 
@@ -55,7 +56,8 @@ void drawComponent(const char* label, fuse::Entity entity, Callback callback) {
 bool drawInputText(const std::string& label, std::string& text) {
     // TODO: FIXME
     char buffer[256]{};
-    strncpy_s(buffer, sizeof(buffer), text.c_str(), text.size());
+    assert(text.size() < 256);
+    strncpy(buffer, text.c_str(), std::min(text.size(), sizeof(buffer)));
 
     ImGui::PushID(label.c_str());
 
