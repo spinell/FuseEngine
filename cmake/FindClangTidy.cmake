@@ -12,7 +12,7 @@ endif()
 if(NOT DEFINED CLANG_TIDY_EXECUTABLE)
     find_program(CLANG_TIDY_EXECUTABLE
         NAMES
-            clang-tidy-${CLANG_FORMAT_VERSION_REQUIRED}
+            clang-tidy-${CLANG_TIDY_VERSION_REQUIRED}
             clang-tidy
     )
     if(CLANG_TIDY_EXECUTABLE-NOTFOUND)

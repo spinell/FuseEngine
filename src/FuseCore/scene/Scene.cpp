@@ -1,7 +1,9 @@
 #include "Scene.h"
 
+#include "Components.h"
+
 #include <algorithm>
-#include <print>
+#include <format>
 
 namespace fuse {
 
@@ -13,7 +15,7 @@ Scene& Scene::getRegistryAsScene(const entt::registry& registry) {
     return const_cast<Scene&>(*scene);
 }
 
-[[nodiscard]] Entity Scene::createEntity(std::string name) {
+Entity Scene::createEntity(std::string name) {
     entt::handle handle = {mRegistry, mRegistry.create()};
 
     if (name.empty()) {
@@ -41,7 +43,7 @@ void Scene::clear() noexcept { mRegistry.clear(); }
 
 std::size_t Scene::getEntityComponentCount(const Entity& entity) const noexcept {
     std::size_t nbComponent = 0;
-    for (const auto& [id, storage] : mRegistry.storage()) {
+    for (const auto [id, storage] : mRegistry.storage()) {
         if (storage.contains(entity.mEntity)) {
             nbComponent++;
         }
@@ -63,12 +65,7 @@ Entity Scene::duplicateEntity(const Entity& entity) {
 
     entt::handle newEntity = {mRegistry, mRegistry.create()};
 
-    for (const auto& [id, storage] : mRegistry.storage()) {
-        std::println("storageId={} name={} hash={} index={}",
-                     id,
-                     storage.type().name(),
-                     storage.type().hash(),
-                     storage.type().index());
+    for (const auto [id, storage] : mRegistry.storage()) {
         // only copy component if the source entity contains this component.
         if (storage.contains(entity.mEntity)) {
             // Calling storage.push() with data will call the copy constructor.

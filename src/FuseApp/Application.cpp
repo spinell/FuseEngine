@@ -3,12 +3,70 @@
 #include "SDL3/SDL3Helper.h"
 #include "Window.h"
 
+#include <FuseCore/fileSystem/FileSystem.h>
+
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl3.h>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_opengl.h>
 #include <spdlog/spdlog.h>
+
+namespace {
+void GLAPIENTRY MessageCallback(GLenum source,
+                                GLenum type,
+                                GLuint id,
+                                GLenum severity,
+                                GLsizei /*length*/,
+                                const GLchar* message,
+                                const void* /*userParam*/) {
+    std::string_view sourceToString = [](GLenum source) {
+        switch (source) {
+                // clang-format off
+            case GL_DEBUG_SOURCE_API:             return "GL_DEBUG_SOURCE_API";
+            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:   return "GL_DEBUG_SOURCE_WINDOW_SYSTEM";
+            case GL_DEBUG_SOURCE_SHADER_COMPILER: return "GL_DEBUG_SOURCE_SHADER_COMPILER";
+            case GL_DEBUG_SOURCE_THIRD_PARTY:     return "GL_DEBUG_SOURCE_THIRD_PARTY";
+            case GL_DEBUG_SOURCE_APPLICATION:     return "GL_DEBUG_SOURCE_APPLICATION";
+            case GL_DEBUG_SOURCE_OTHER:           return "GL_DEBUG_SOURCE_OTHER";
+            default: return "Unknown";
+                // clang-format on
+        }
+    }(source);
+
+    std::string_view severityToString = [](GLenum severity) {
+        switch (severity) {
+                // clang-format off
+            case GL_DEBUG_SEVERITY_HIGH:        return "GL_DEBUG_SEVERITY_HIGH";
+            case GL_DEBUG_SEVERITY_MEDIUM:      return "GL_DEBUG_SEVERITY_MEDIUM";
+            case GL_DEBUG_SEVERITY_LOW:         return "GL_DEBUG_SEVERITY_LOW";
+            case GL_DEBUG_SEVERITY_NOTIFICATION:return "GL_DEBUG_SEVERITY_NOTIFICATION";
+            default: return "Unknown";
+                // clang-format on
+        }
+    }(severity);
+
+    switch (type) {
+        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+        case GL_DEBUG_TYPE_ERROR:
+            spdlog::error("[{}] [{}] ({}) {}", sourceToString, severityToString, id, message);
+            break;
+        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+        case GL_DEBUG_TYPE_PORTABILITY:
+        case GL_DEBUG_TYPE_PERFORMANCE:
+            spdlog::warn("[{}] [{}] ({}) {}", sourceToString, severityToString, id, message);
+            break;
+        case GL_DEBUG_TYPE_MARKER:
+        case GL_DEBUG_TYPE_PUSH_GROUP:
+        case GL_DEBUG_TYPE_POP_GROUP:
+        case GL_DEBUG_TYPE_OTHER:
+        default:
+            spdlog::info("[{}] [{}] ({}) {}", sourceToString, severityToString, id, message);
+            break;
+    }
+}
+
+} // namespace
 
 namespace fuse {
 
@@ -108,6 +166,27 @@ bool Application::init() {
         return false;
     }
 
+    GLint major{};
+    GLint minor{};
+    glGetIntegerv(GL_MAJOR_VERSION, &major);
+    glGetIntegerv(GL_MINOR_VERSION, &minor);
+    spdlog::info("Using OpenGL: {}.{}", major, minor);
+    spdlog::info(" - Vendor:         {}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+    spdlog::info(" - Renderer:       {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+    spdlog::info(" - Shader version: {}",
+                 reinterpret_cast<const char*>(glGetString(GL_SHADING_LANGUAGE_VERSION)));
+
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glDebugMessageCallback(MessageCallback, nullptr /*userdata*/);
+    glDebugMessageControl(GL_DONT_CARE,
+                          GL_DONT_CARE,
+                          GL_DEBUG_SEVERITY_NOTIFICATION,
+                          0,
+                          nullptr,
+                          GL_FALSE);
+
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -116,6 +195,37 @@ bool Application::init() {
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
+
+    // load main font
+    {
+        const auto fontPath = FileSystem::GetExecutableDirectory() / "fonts/Roboto-Regular.ttf";
+        if (!std::filesystem::exists(fontPath)) {
+            spdlog::warn("Font not found: {}. Fallback to default font.", fontPath.string());
+            io.Fonts->AddFontDefault();
+        } else {
+            if (io.Fonts->AddFontFromFileTTF(fontPath.string().c_str(), 13) == nullptr) {
+                spdlog::warn("Fail to load font: {}. Fallback to default font.", fontPath.string());
+                io.Fonts->AddFontDefault();
+            }
+        }
+    }
+
+    // load icon
+    {
+        ImFontConfig fontConfig{};
+        fontConfig.MergeMode            = true;
+        fontConfig.FontDataOwnedByAtlas = false;
+        const auto fontPath =
+          FileSystem::GetExecutableDirectory() / "fonts/materialdesignicons-webfont.ttf";
+        if (!std::filesystem::exists(fontPath)) {
+            spdlog::error("Font not found: {}.", fontPath.string());
+        } else if (io.Fonts->AddFontFromFileTTF(fontPath.string().c_str(),
+                                                0.0f /*size_pixels*/,
+                                                &fontConfig,
+                                                nullptr /*glyph_ranges*/) == nullptr) {
+            spdlog::error("Fail to load font: {}.", fontPath.string());
+        }
+    }
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

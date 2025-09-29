@@ -521,7 +521,6 @@ namespace fuse::sdl3 {
         spdlog::info("[JoyStick removed] ID : {}", deviceEvent.which);
     }
     if (event.type == SDL_EVENT_JOYSTICK_BATTERY_UPDATED) {
-
     }
     if (event.type == SDL_EVENT_JOYSTICK_UPDATE_COMPLETE) {
         // https://github.com/libsdl-org/SDL/commit/4c9fb3e16902607d978a2c2f9ade777ad232b628

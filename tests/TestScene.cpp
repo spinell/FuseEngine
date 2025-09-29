@@ -1,12 +1,11 @@
+#include <FuseCore/scene/Components.h>
 #include <FuseCore/scene/Scene.h>
 
 #include <gtest/gtest.h>
 
-#include <print>
-
 namespace {
 
-    struct TestComponent {
+struct TestComponent {
     int value = 0;
 };
 
@@ -22,9 +21,9 @@ TEST(Scene, createEntity) {
     fuse::Scene scene;
 
     // create some entities
-    std::ignore = scene.createEntity();
-    std::ignore = scene.createEntity();
-    std::ignore = scene.createEntity();
+    scene.createEntity();
+    scene.createEntity();
+    scene.createEntity();
     EXPECT_FALSE(scene.isEmpty());
     EXPECT_EQ(scene.getEntityCount(), 3);
 
@@ -34,9 +33,9 @@ TEST(Scene, createEntity) {
     EXPECT_EQ(scene.getEntityCount(), 0);
 
     // recreate some entities
-    std::ignore = scene.createEntity();
-    std::ignore = scene.createEntity();
-    std::ignore = scene.createEntity();
+    scene.createEntity();
+    scene.createEntity();
+    scene.createEntity();
     EXPECT_FALSE(scene.isEmpty());
     EXPECT_EQ(scene.getEntityCount(), 3);
 }

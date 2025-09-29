@@ -16,6 +16,17 @@ public:
     /// @brief Default constructor. Create a invalid entity.
     Entity() noexcept = default;
 
+    /// @brief Create a entity from a entt entity and the registry
+    /// @param entity   The entt entity.
+    /// @param registry The entt registry.
+    Entity(entt::entity entity, entt::registry& registry) noexcept
+        : mEntity(registry, entity) {}
+
+    /// @brief Create a entity from a entt handle
+    /// @param handle A valid entt::handle
+    Entity(entt::handle handle) noexcept
+        : mEntity(handle) {}
+
     ~Entity() noexcept                               = default;
     Entity(const Entity&) noexcept                   = default;
     Entity& operator=(const Entity&) noexcept        = default;
@@ -34,6 +45,8 @@ public:
         mEntity.destroy();
         mEntity = {};
     }
+
+    [[nodiscard]] unsigned getId() const { return entt::to_integral(mEntity.entity()); }
 
     /// @brief Add a new component to this entity.
     ///
@@ -186,17 +199,6 @@ public:
 
 private:
     friend class Scene;
-
-    /// @brief Create a entity from a entt entity and the registry
-    /// @param entity   The entt entity.
-    /// @param registry The entt registry.
-    Entity(entt::entity entity, entt::registry& registry) noexcept
-        : mEntity(registry, entity) {}
-
-    /// @brief Create a entity from a entt handle
-    /// @param handle A valid entt::handle
-    Entity(entt::handle handle) noexcept
-        : mEntity(handle) {}
 
     entt::handle mEntity; ///< The Entt entity handle (pair of entt::entity + entt::registry).
 };

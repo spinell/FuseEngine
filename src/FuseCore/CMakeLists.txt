@@ -7,6 +7,8 @@ fuse_set_compiler_warnings(FuseCore)
 
 target_sources(FuseCore
     PRIVATE
+        fileSystem/FileSystem.h
+        fileSystem/FileSystem.cpp
         math/Angle.h
         math/Mat4.cpp
         math/Vec3.h
@@ -35,8 +37,19 @@ target_include_directories(FuseCore
 )
 
 target_compile_definitions(FuseCore
+    PUBLIC
+        # platform
+        $<$<PLATFORM_ID:Windows>:FUSE_PLATFORM_WINDOWS>
+        $<$<PLATFORM_ID:Linux>:FUSE_PLATFORM_LINUX>
+        $<$<PLATFORM_ID:Darwin>:FUSE_PLATFORM_OSX>
+        # compiler
+        $<$<CXX_COMPILER_ID:MSVC>:FUSE_COMPILER_MSVC>
+        $<$<CXX_COMPILER_ID:GNU>:FUSE_COMPILER_GCC>
+        $<$<CXX_COMPILER_ID:Clang>:FUSE_COMPILER_CLANG>
     PRIVATE
-        #ENTT_NOEXCEPTION
+        $<$<PLATFORM_ID:Windows>:WIN32_LEAN_AND_MEAN>
+        $<$<PLATFORM_ID:Windows>:NOMINMAX>
+    #ENTT_NOEXCEPTION
         #ENTT_USE_ATOMIC
         #ENTT_ID_TYPE
         #ENTT_SPARSE_PAGE

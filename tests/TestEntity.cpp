@@ -3,8 +3,6 @@
 #include <gmock/gmock-matchers.h>
 #include <gtest/gtest.h>
 
-#include <print>
-
 namespace {
 
 
@@ -214,7 +212,6 @@ TEST(Entity, tryGetComponent) {
     }
 }
 
-
 TEST(Entity, hasComponents) {
     fuse::Scene  scene;
     fuse::Entity entity = scene.createEntity();
@@ -230,8 +227,6 @@ TEST(Entity, hasComponents) {
     EXPECT_TRUE(entity.hasComponents<TestComponent2>());
     EXPECT_TRUE((entity.hasComponents<TestComponent, TestComponent2>()));
 }
-
-
 
 TEST(Entity, hasAnyComponents) {
     fuse::Scene  scene;
@@ -253,14 +248,3 @@ TEST(Entity, hasAnyComponents) {
     EXPECT_TRUE(entity.hasAnyComponents<TestComponent2>());
     EXPECT_TRUE((entity.hasAnyComponents<TestComponent, TestComponent2>()));
 }
-
-
-// entt::to_integral  -> wtf
-// entt::to_entity    -> get versionpart
-// entt::to_version   -> get versionpart
-// entt::to_entity    -> get entity from component instance
-// entt::to_address() ->
-// entt::registry::erase()    Erases the given elements from an entity.
-// entt::registry::erase_if   with callback
-// entt::registry::remove()
-// entt::registry::owned()   Checks whether the given elements belong to any group.

@@ -8,23 +8,6 @@
 
 namespace fuse {
 
-struct NameComponent {
-    std::string name;
-
-    auto operator<=>(const NameComponent&) const = default;
-};
-
-struct IDComponent {
-    IDComponent() {
-        static unsigned id = 0;
-        mId                = id++;
-    }
-
-    auto operator<=>(const IDComponent&) const = default;
-
-    unsigned mId;
-};
-
 class Scene {
 public:
     /// @brief Default constructor. Create a empty scene.
@@ -35,7 +18,7 @@ public:
     /// @brief Copy constructor delete on purpose.
     Scene(const Scene&) = delete;
 
-    /// @brief Move construcotr.
+    /// @brief Move constructor.
     /// @param other The other scene to move on.
     Scene(Scene&& other) = default;
 
@@ -49,13 +32,13 @@ public:
     /// @brief Create a new entity.
     /// @param name The name of the entity.
     /// @return The new created entity.
-    [[nodiscard]] Entity createEntity(std::string name = {});
+    Entity createEntity(std::string name = {});
 
     /// @brief Delete a entity and it component from the scene.
     /// @param entity The entity to delete.
     void destroyEntity(Entity& entity) noexcept;
 
-    /// @brief Dupicate (clone) a entity with it's compoenent.
+    /// @brief Duplicate (clone) a entity with it's comopenent.
     /// @param entity The entity to clone.
     /// @return The new entity.
     Entity duplicateEntity(const Entity& entity);
@@ -71,10 +54,16 @@ public:
     /// @brief Remove all entity and there component from the scene.
     void clear() noexcept;
 
-    /// @brief Retrive the Entt registry.
+#ifdef __cpp_explicit_this_parameter
+    /// @brief Retrieve the Entt registry.
     /// @param self
     /// @return The Entt entity.
     [[nodiscard]] auto& getRegistry(this auto&& self) noexcept { return self.mRegistry; }
+#else
+    [[nodiscard]] entt::registry& getRegistry() noexcept { return mRegistry; }
+
+    [[nodiscard]] const entt::registry& getRegistry() const noexcept { return mRegistry; }
+#endif
 
     /// @brief Get the number of component for an entity.
     /// @param The entity to query the number of component for an entity.
@@ -92,7 +81,7 @@ public:
     [[nodiscard]] static Scene& getRegistryAsScene(const entt::registry& registry);
 
 private:
-    std::string    mName = "Untitle"; ///< The name ofthe scene.
+    std::string    mName = "Untitle"; ///< The name of the scene.
     entt::registry mRegistry;
 };
 

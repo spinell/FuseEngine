@@ -24,7 +24,9 @@
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "VCPKG_INSTALL_OPTIONS": "--no-print-usage",
                 "VCPKG_TRACE_FIND_PACKAGE": false,
-                "VCPKG_MANIFEST_INSTALL": true
+                "VCPKG_MANIFEST_INSTALL": true,
+                "VCPKG_APPLOCAL_DEPS": true,
+                "X_VCPKG_APPLOCAL_DEPS_INSTALL": true
             }
         },
         {

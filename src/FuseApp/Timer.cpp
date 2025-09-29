@@ -1,6 +1,7 @@
 #include "Timer.h"
 
 #include <SDL3/SDL.h>
+
 #include <algorithm>
 
 namespace fuse {
@@ -36,7 +37,7 @@ float GameTimer::totalTime() const noexcept {
     // ----*---------------*-----------------*------------*------> time
     //  mBaseTime       mStopTime        startTime     mCurrTime
     return static_cast<float>(static_cast<double>(mCurrTime - mPausedTime - mBaseTime) *
-                                mSecondsPerCount);
+                              mSecondsPerCount);
 }
 
 float GameTimer::deltaTime() const noexcept { return static_cast<float>(mDeltaTime); }
