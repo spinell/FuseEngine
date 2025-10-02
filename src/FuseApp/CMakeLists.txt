@@ -12,10 +12,6 @@ target_sources(FuseApp
     PRIVATE
         Application.h
         Application.cpp
-        Event.h
-        Event.cpp
-        Keyboard.h
-        Keyboard.cpp
         Timer.cpp
         Timer.h
         Window.h

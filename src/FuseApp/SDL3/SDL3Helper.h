@@ -1,6 +1,6 @@
 #pragma once
-#include <FuseApp/Event.h>
-#include <FuseApp/Keyboard.h>
+#include <FuseCore/Event.h>
+#include <FuseCore/Keyboard.h>
 
 #include <SDL3/SDL.h>
 

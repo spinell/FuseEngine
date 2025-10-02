@@ -2,6 +2,7 @@
 
 #include <FuseApp/ImGui/Widget.h>
 #include <FuseApp/TransformerSystem.h>
+#include <FuseCore/Input.h>
 #include <FuseCore/scene/Components.h>
 
 #include <imgui.h>
@@ -54,6 +55,58 @@ void Application::onUpdate(float deltaTime) {
     const fuse::Mat4 view = mCamera.getViewMatrix();
     transformerSystem.update(mScene, deltaTime);
     mSceneRenderer->renderScene(mScene, proj, view);
+
+    if (fuse::Input::IsKeyDown(fuse::ScanCode::A)) {
+        auto pos = mCamera.getPosition();
+        pos -= mCamera.getRight() * 2;
+        mCamera.setPosition(pos);
+    }
+    if (fuse::Input::IsKeyDown(fuse::ScanCode::D)) {
+        auto pos = mCamera.getPosition();
+        pos += mCamera.getRight() * 2;
+        mCamera.setPosition(pos);
+    }
+    if (fuse::Input::IsKeyDown(fuse::ScanCode::W)) {
+        auto pos = mCamera.getPosition();
+        pos += mCamera.getDirection() * 2;
+        mCamera.setPosition(pos);
+    }
+    if (fuse::Input::IsKeyDown(fuse::ScanCode::S)) {
+        auto pos = mCamera.getPosition();
+        pos -= mCamera.getDirection() * 2;
+        mCamera.setPosition(pos);
+    }
+    if (fuse::Input::IsKeyDown(fuse::ScanCode::Q)) {
+        auto pos = mCamera.getPosition();
+        pos += fuse::Vec3::kAxisY;
+        mCamera.setPosition(pos);
+    }
+    if (fuse::Input::IsKeyDown(fuse::ScanCode::E)) {
+        auto pos = mCamera.getPosition();
+        pos += fuse::Vec3::kAxisYNeg;
+        mCamera.setPosition(pos);
+    }
+    if (fuse::Input::IsKeyPressed(fuse::ScanCode::Z)) {
+        entityToDestroy                                   = createCube(mScene, {0, 0, 0});
+        entityToDestroy.getComponent<fuse::CMesh>().color = {0.5f, 0.5f, 0.5f, 1.0f};
+        entityToDestroy.addComponent<fuse::CTranslator>(fuse::Vec3{1, 0, 0}, 2.0f);
+    }
+    if (fuse::Input::IsKeyPressed(fuse::ScanCode::X)) {
+        if (entityToDestroy.isValid()) {
+            entityToDestroy.destroy();
+        }
+    }
+    if (fuse::Input::IsKeyPressed(fuse::ScanCode::C)) {
+        auto newEnt = mScene.duplicateEntity(entityToDestroy);
+        newEnt.getOrAddComponent<fuse::CTranslator>(fuse::Vec3{0, 1, 0}, 2.0f);
+    }
+
+    const auto [x, y] = fuse::Input::GetMousePositionDelta();
+    // Make each pixel correspond to a 1/8 of a degree.
+    const auto dx = x * fuse::degrees(0.125f);
+    const auto dy = y * fuse::degrees(0.125f);
+    mCamera.pitch(-dy); // rotation around local Up
+    mCamera.yaw(-dx);   // rotation around local right
 }
 
 void Application::onEvent(const fuse::Event& event) {
@@ -63,57 +116,6 @@ void Application::onEvent(const fuse::Event& event) {
         glViewport(0, 0, resizedEvent->getWidth(), resizedEvent->getHeight());
         mCamera.setAspectRatio(static_cast<float>(resizedEvent->getWidth()) /
                                static_cast<float>(resizedEvent->getHeight()));
-    } else if (const auto* moveEvent = event.getIf<fuse::MouseMovedEvent>()) {
-        // Make each pixel correspond to a 1/8 of a degree.
-        auto dx =
-          fuse::degrees(0.125f) * moveEvent->getMouseDelta().first; // rotation around local Up
-        auto dy =
-          fuse::degrees(0.125f) * moveEvent->getMouseDelta().second; // rotation around local right
-        mCamera.pitch(-dy);
-        mCamera.yaw(-dx);
-    } else if (const auto* keyEvent = event.getIf<fuse::KeyPressedEvent>()) {
-        if (keyEvent->getScanCode() == fuse::ScanCode::A) {
-            auto pos = mCamera.getPosition();
-            pos -= mCamera.getRight() * 2;
-            mCamera.setPosition(pos);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::D) {
-            auto pos = mCamera.getPosition();
-            pos += mCamera.getRight() * 2;
-            mCamera.setPosition(pos);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::W) {
-            auto pos = mCamera.getPosition();
-            pos += mCamera.getDirection() * 2;
-            mCamera.setPosition(pos);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::S) {
-            auto pos = mCamera.getPosition();
-            pos -= mCamera.getDirection() * 2;
-            mCamera.setPosition(pos);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::Q) {
-            auto pos = mCamera.getPosition();
-            pos += fuse::Vec3::kAxisY;
-            mCamera.setPosition(pos);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::E) {
-            auto pos = mCamera.getPosition();
-            pos += fuse::Vec3::kAxisYNeg;
-            mCamera.setPosition(pos);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::Z) {
-            entityToDestroy                                   = createCube(mScene, {0, 0, 0});
-            entityToDestroy.getComponent<fuse::CMesh>().color = {0.5f, 0.5f, 0.5f, 1.0f};
-            entityToDestroy.addComponent<fuse::CTranslator>(fuse::Vec3{1, 0, 0}, 2.0f);
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::X) {
-            entityToDestroy.destroy();
-        }
-        if (keyEvent->getScanCode() == fuse::ScanCode::C) {
-            auto newEnt = mScene.duplicateEntity(entityToDestroy);
-            newEnt.getOrAddComponent<fuse::CTranslator>(fuse::Vec3{0, 1, 0}, 2.0f);
-        }
     }
 }
 

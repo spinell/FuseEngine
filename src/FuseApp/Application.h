@@ -1,6 +1,7 @@
 #pragma once
-#include "Event.h"
 #include "Timer.h"
+
+#include <FuseCore/Event.h>
 
 #include <glad/glad.h>
 

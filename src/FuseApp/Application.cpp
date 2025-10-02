@@ -4,6 +4,7 @@
 #include "Window.h"
 
 #include <FuseCore/fileSystem/FileSystem.h>
+#include <FuseCore/Input.h>
 
 #include <imgui.h>
 #include <imgui_impl_opengl3.h>
@@ -269,17 +270,22 @@ void Application::run() {
 
             if (const auto result = fuse::sdl3::ConvertEvent(sdlEvent)) {
                 const Event& event = result.value();
-                const bool   isKeyEvent =
+
+
+                const bool isKeyEvent =
                   event.isA<KeyPressedEvent>() || event.isA<KeyReleasedEvent>();
-                if (isKeyEvent && ImGui::GetIO().WantCaptureKeyboard) {
+                const bool isMouseEvent =
+                  event.isA<MouseButtonEvent>() || event.isA<MouseMovedEvent>();
+
+                // skip mouse event if ImGui want the mouse.
+                // skip keyboard event if ImGui want the keyboard.
+                if ((isKeyEvent || isMouseEvent) &&
+                    (ImGui::GetIO().WantCaptureKeyboard || ImGui::GetIO().WantCaptureMouse)) {
                     continue;
                 }
 
-                const bool isMouseEvent =
-                  event.isA<MouseButtonEvent>() || event.isA<MouseMovedEvent>();
-                if (isMouseEvent && ImGui::GetIO().WantCaptureMouse) {
-                    continue;
-                }
+                // update the inputs and dispatch the event to subclass.
+                Input::OnEvent(event);
                 onEvent(event);
             }
         }
@@ -293,6 +299,7 @@ void Application::run() {
         //spdlog::info("{}x{}", mMainWindow->getSize().first, mMainWindow->getSize().second);
         onImGui();
         onUpdate(mTimer.deltaTime());
+        Input::UpdateStates();
 
         // Rendering
         ImGui::Render();

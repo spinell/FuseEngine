@@ -62,13 +62,13 @@ std::expected<std::vector<char>, FileError> FileSystem::ReadFile(
           FileError{.errorCode = FileErrorCode::PermissionDenied, .path = filename});
     }
 
-    //try {
-    data.resize(fileSize);
-    //} catch (std::bad_alloc& /*ex*/) {
-    ifs.close();
-    return std::unexpected(
-      FileError{.errorCode = FileErrorCode::MemoryAllocation, .path = filename});
-    //}
+    try {
+        data.resize(fileSize);
+    } catch (std::bad_alloc& /*ex*/) {
+        ifs.close();
+        return std::unexpected(
+          FileError{.errorCode = FileErrorCode::MemoryAllocation, .path = filename});
+    }
 
     // fileSize is casted to std::streamsize, this is save because we already have checked
     // that the size is not bigger than  std::numeric_limits<std::streamsize>::max().

@@ -7,6 +7,12 @@ fuse_set_compiler_warnings(FuseCore)
 
 target_sources(FuseCore
     PRIVATE
+        Event.h
+        Event.cpp
+        Keyboard.h
+        Keyboard.cpp
+        Input.h
+        Input.cpp
         fileSystem/FileSystem.h
         fileSystem/FileSystem.cpp
         math/Angle.h
