@@ -1,15 +1,22 @@
-#include "Application.h"
+#include "SandboxApplication.h"
+
+#include "PlayerScript.h"
 
 #include <FuseApp/ImGui/Widget.h>
 #include <FuseApp/TransformerSystem.h>
 #include <FuseCore/Input.h>
-#include <FuseCore/scene/Components.h>
+#include <FuseCore/scene/components/CNativeScript.h>
+#include <FuseCore/scene/components/Components.h>
+#include <FuseCore/scene/NativeScriptSystem.h>
 
 #include <imgui.h>
 #include <spdlog/spdlog.h>
 
 namespace {
 
+float windowWidth  = 0;
+float windowHeight = 0;
+fuse::Entity playerEntity;
 fuse::Entity entityToDestroy;
 
 fuse::Entity createCube(fuse::Scene&      scene,
@@ -34,11 +41,27 @@ Application::Application() = default;
 Application::~Application() = default;
 
 bool Application::onInit() {
-    auto  e = createCube(mScene, {0, 0, -11});
+
+    auto floorEntity = mScene.createEntity("Floor");
+    floorEntity.addComponent<fuse::CTransform>();
+    floorEntity.getComponent<fuse::CTransform>().translation = {0.f, -1.0f, 0.f};
+    floorEntity.getComponent<fuse::CTransform>().scale = {50.f, 1.0f, 50.f};
+    auto& floorMesh = floorEntity.addComponent<fuse::CMesh>();
+    floorMesh.color = {0.3f, 0.3f, 0.3f, 1.0f};
+
+    auto  e = createCube(mScene, {0, 2, -11});
     auto& r = e.addComponent<fuse::CRotator>();
     r.angle = fuse::degrees(10);
 
-    createCube(mScene, {-11, 10, -11});
+    createCube(mScene, {-11, 2, -11});
+
+    playerEntity = mScene.createEntity("Player");
+    playerEntity.addComponent<fuse::CTransform>().translation = {0, 0, 5};
+    playerEntity.addComponent<fuse::CCamera>();
+    playerEntity.addComponent<fuse::CNativeScript>(new PlayerScript());
+
+
+
     mSceneRenderer = std::make_unique<fuse::SceneRenderer>();
     return true;
 }
@@ -46,46 +69,29 @@ bool Application::onInit() {
 void Application::onShutdown() { mSceneRenderer.reset(); }
 
 void Application::onUpdate(float deltaTime) {
-    glClearColor(1.0f, .0f, 1.f, 1.f);
+    fuse::TransformerSystem  transformerSystem;
+    fuse::NativeScriptSystem nativeScriptSystem;
+
+    const auto&      ccamera         = playerEntity.getComponent<fuse::CCamera>();
+    const fuse::Mat4 proj            = fuse::Mat4::CreateProjectionPerspectiveFOVY(ccamera.fovy,
+                                                                        ccamera.aspect,
+                                                                        ccamera.nearPlane,
+                                                                        ccamera.farPlane);
+    const auto&      playerTransform = playerEntity.getComponent<fuse::CTransform>();
+    const fuse::Mat4 view =
+      fuse::Mat4::CreateRotationX(fuse::degrees(playerTransform.rotation.x)) *
+      fuse::Mat4::CreateRotationY(fuse::degrees(playerTransform.rotation.y)) *
+      fuse::Mat4::CreateTranslation(playerEntity.getComponent<fuse::CTransform>().translation);
+    transformerSystem.update(mScene, deltaTime);
+    nativeScriptSystem.update(deltaTime, mScene.getRegistry(), &mScene);
+
+    glClearColor(ccamera.clearColor[0], ccamera.clearColor[1], ccamera.clearColor[2], ccamera.clearColor[3]);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    fuse::TransformerSystem transformerSystem;
+    glViewport(0, 0, windowWidth * ccamera.viewportW, windowHeight * ccamera.viewportH);
+    mSceneRenderer->renderScene(mScene, proj, view.inversed());
 
-    const fuse::Mat4 proj = mCamera.getProjMatrix();
-    const fuse::Mat4 view = mCamera.getViewMatrix();
-    transformerSystem.update(mScene, deltaTime);
-    mSceneRenderer->renderScene(mScene, proj, view);
 
-    if (fuse::Input::IsKeyDown(fuse::ScanCode::A)) {
-        auto pos = mCamera.getPosition();
-        pos -= mCamera.getRight() * 2;
-        mCamera.setPosition(pos);
-    }
-    if (fuse::Input::IsKeyDown(fuse::ScanCode::D)) {
-        auto pos = mCamera.getPosition();
-        pos += mCamera.getRight() * 2;
-        mCamera.setPosition(pos);
-    }
-    if (fuse::Input::IsKeyDown(fuse::ScanCode::W)) {
-        auto pos = mCamera.getPosition();
-        pos += mCamera.getDirection() * 2;
-        mCamera.setPosition(pos);
-    }
-    if (fuse::Input::IsKeyDown(fuse::ScanCode::S)) {
-        auto pos = mCamera.getPosition();
-        pos -= mCamera.getDirection() * 2;
-        mCamera.setPosition(pos);
-    }
-    if (fuse::Input::IsKeyDown(fuse::ScanCode::Q)) {
-        auto pos = mCamera.getPosition();
-        pos += fuse::Vec3::kAxisY;
-        mCamera.setPosition(pos);
-    }
-    if (fuse::Input::IsKeyDown(fuse::ScanCode::E)) {
-        auto pos = mCamera.getPosition();
-        pos += fuse::Vec3::kAxisYNeg;
-        mCamera.setPosition(pos);
-    }
     if (fuse::Input::IsKeyPressed(fuse::ScanCode::Z)) {
         entityToDestroy                                   = createCube(mScene, {0, 0, 0});
         entityToDestroy.getComponent<fuse::CMesh>().color = {0.5f, 0.5f, 0.5f, 1.0f};
@@ -100,22 +106,14 @@ void Application::onUpdate(float deltaTime) {
         auto newEnt = mScene.duplicateEntity(entityToDestroy);
         newEnt.getOrAddComponent<fuse::CTranslator>(fuse::Vec3{0, 1, 0}, 2.0f);
     }
-
-    const auto [x, y] = fuse::Input::GetMousePositionDelta();
-    // Make each pixel correspond to a 1/8 of a degree.
-    const auto dx = x * fuse::degrees(0.125f);
-    const auto dy = y * fuse::degrees(0.125f);
-    mCamera.pitch(-dy); // rotation around local Up
-    mCamera.yaw(-dx);   // rotation around local right
 }
 
 void Application::onEvent(const fuse::Event& event) {
     fuse::Application::onEvent(event);
 
     if (const auto* resizedEvent = event.getIf<fuse::WindowResizedEvent>()) {
-        glViewport(0, 0, resizedEvent->getWidth(), resizedEvent->getHeight());
-        mCamera.setAspectRatio(static_cast<float>(resizedEvent->getWidth()) /
-                               static_cast<float>(resizedEvent->getHeight()));
+        windowWidth = resizedEvent->getWidth();
+        windowHeight = resizedEvent->getHeight();
     }
 }
 

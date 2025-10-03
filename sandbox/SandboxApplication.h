@@ -29,6 +29,5 @@ public:
 
 private:
     std::unique_ptr<fuse::SceneRenderer> mSceneRenderer;
-    Camera                               mCamera;
     fuse::Scene                          mScene;
 };

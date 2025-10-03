@@ -60,7 +60,6 @@ private:
     bool shutdown();
 
     std::unique_ptr<Window> mMainWindow;
-    std::unique_ptr<Window> mMainWindow2;
     bool                    mIsRunning = true;
     GameTimer               mTimer;
 };

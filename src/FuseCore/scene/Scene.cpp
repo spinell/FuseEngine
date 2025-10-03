@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-#include "Components.h"
+#include "components/Components.h"
 
 #include <algorithm>
 #include <format>

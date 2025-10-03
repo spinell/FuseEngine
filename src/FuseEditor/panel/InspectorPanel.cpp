@@ -2,7 +2,7 @@
 
 #include <FuseApp/ImGui/Widget.h>
 #include <FuseCore/math/Vec3.h>
-#include <FuseCore/scene/Components.h>
+#include <FuseCore/scene/components/Components.h>
 #include <FuseEditor/embed/fonts/IconsMaterialDesignIcons.h>
 
 #include <imgui.h>

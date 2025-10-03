@@ -149,13 +149,6 @@ bool Application::init() {
         mMainWindow->setIcon(kIconWith, kIconHeight, reinterpret_cast<unsigned int*>(&buffer));
     }
 
-
-    //mMainWindow2 = std::make_unique<Window>();
-    //if (!mMainWindow2->create(WindowCreateInfo{.title = "Windows 2"})) {
-    //    return false;
-    //};
-
-
     //Use Vsync
     if (!SDL_GL_SetSwapInterval(1)) {
         spdlog::error("Warning: Unable to set VSync! SDL Error: {}\n", SDL_GetError());

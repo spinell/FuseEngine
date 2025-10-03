@@ -1,7 +1,7 @@
 #include "SceneHierachyPanel.h"
 
 #include <FuseApp/ImGui/Widget.h>
-#include <FuseCore/scene/Components.h>
+#include <FuseCore/scene/components/Components.h>
 #include <FuseCore/scene/Scene.h>
 #include <FuseEditor/embed/fonts/IconsMaterialDesignIcons.h>
 

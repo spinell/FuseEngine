@@ -1,6 +1,6 @@
 #include "SceneRenderer.h"
 
-#include <FuseCore/scene/Components.h>
+#include <FuseCore/scene/components/Components.h>
 
 #include <spdlog/spdlog.h>
 

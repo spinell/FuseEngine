@@ -1,6 +1,6 @@
 #include "EditorApplication.h"
 
-#include "FuseCore/scene/Components.h"
+#include <FuseCore/scene/components/Components.h>
 #include "FuseCore/scene/Scene.h"
 #include "panel/InspectorPanel.h"
 #include "panel/LogPanel.h"

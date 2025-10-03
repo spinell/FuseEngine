@@ -1,10 +1,12 @@
 
 add_executable(sandbox
     main.cpp
-    Application.h
-    Application.cpp
+    SandboxApplication.h
+    SandboxApplication.cpp
     Camera.h
     Camera.cpp
+    PlayerScript.h
+    PlayerScript.cpp
 )
 
 fuse_set_compiler_warnings(sandbox)

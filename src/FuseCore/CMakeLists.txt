@@ -20,10 +20,13 @@ target_sources(FuseCore
         math/Vec3.h
         math/Mat4.h
         math/Vec4.h
-        scene/Components.h
         scene/Entity.h
         scene/Scene.h
         scene/Scene.cpp
+        scene/NativeScriptSystem.h
+        scene/NativeScriptSystem.cpp
+        scene/components/CNativeScript.h
+        scene/components/Components.h
         utils/TypeTraits.h
         utils/EnumUtils.h
         utils/EnumUtils.inc.h

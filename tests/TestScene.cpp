@@ -1,4 +1,4 @@
-#include <FuseCore/scene/Components.h>
+#include <FuseCore/scene/components/Components.h>
 #include <FuseCore/scene/Scene.h>
 
 #include <gtest/gtest.h>
